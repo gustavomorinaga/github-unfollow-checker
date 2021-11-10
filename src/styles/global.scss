@@ -1,0 +1,17 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+html,
+body {
+	@apply h-screen m-0;
+}
+
+main,
+#__next {
+	@apply h-full overflow-hidden;
+}
+
+#__next {
+	@apply bg-gray-100 dark:bg-gray-900 bg-hero-pattern;
+}

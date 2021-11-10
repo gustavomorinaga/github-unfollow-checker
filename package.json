@@ -1,0 +1,61 @@
+{
+	"name": "reactsetup",
+	"version": "1.1.0",
+	"private": true,
+	"author": "Gustavo Matheus <gustavo.morinaga27@gmail.com>",
+	"description": "Template for React, with Next.js, SWR, Axios, TypeScript, ESLint, Prettier, Framer Motion, Tailwind and Sass",
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		},
+		"lint-staged": {
+			"*.{js,jsx,ts,tsx}": "yarn run lint:fix"
+		}
+	},
+	"scripts": {
+		"dev": "next dev",
+		"lint": "next lint",
+		"lint:fix": "eslint --cache --fix \"src/**/*.{js,jsx,ts,tsx}\"",
+		"prepare": "husky install",
+		"pre-commit": "yarn lint",
+		"build": "next build",
+		"start": "next start"
+	},
+	"dependencies": {
+		"axios": "^0.24.0",
+		"framer-motion": "^5.2.1",
+		"next": "^12.0.3",
+		"next-compose-plugins": "^2.2.1",
+		"next-images": "^1.8.2",
+		"next-pwa": "^5.4.0",
+		"next-seo": "^4.28.1",
+		"postcss-import": "^14.0.2",
+		"postcss-nesting": "^9.0.0",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-icons": "^4.3.1",
+		"sass": "^1.43.4",
+		"sharp": "^0.29.2",
+		"swr": "^1.0.1"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^14.1.0",
+		"@commitlint/config-conventional": "^14.1.0",
+		"@next/eslint-plugin-next": "^12.0.3",
+		"@types/node": "^16.11.7",
+		"@types/react": "^17.0.34",
+		"@typescript-eslint/eslint-plugin": "^5.3.1",
+		"@typescript-eslint/parser": "^5.3.1",
+		"autoprefixer": "^10.4.0",
+		"eslint": "^7.32.0",
+		"eslint-config-next": "^12.0.3",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"husky": "^7.0.4",
+		"lint-staged": "^11.2.6",
+		"postcss": "^8.3.11",
+		"prettier": "^2.4.1",
+		"tailwindcss": "^2.2.19",
+		"typescript": "^4.4.4"
+	}
+}
