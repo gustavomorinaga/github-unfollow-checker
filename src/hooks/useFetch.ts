@@ -3,13 +3,18 @@ import useSWR, { SWRConfiguration } from 'swr';
 // --- Services ---
 import { fetcher } from '@services/api';
 
+interface IUseFetchOpts extends SWRConfiguration {
+	method?: string;
+	body?: any;
+}
+
 const SECONDS = 30;
 
-export function useFetch<Data = any, Error = any>(url: string, opts?: SWRConfiguration) {
-	const { data, error, mutate } = useSWR<Data, Error>(
+export function useFetch<Data = any, Error = any>(url: string, opts?: IUseFetchOpts) {
+	const { data, error, mutate, isValidating } = useSWR<Data, Error>(
 		url,
 		async url => {
-			const response = await fetcher(`${url}`);
+			const response = await fetcher(`${url}`, opts.method || 'GET', opts.body || {});
 
 			return response;
 		},
@@ -19,5 +24,5 @@ export function useFetch<Data = any, Error = any>(url: string, opts?: SWRConfigu
 		}
 	);
 
-	return { data, error, mutate };
+	return { data, error, mutate, isValidating };
 }

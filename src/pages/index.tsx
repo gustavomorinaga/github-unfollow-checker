@@ -1,48 +1,29 @@
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useSession } from 'next-auth/client';
 import { NextSeo } from 'next-seo';
-import { motion } from 'framer-motion';
 
 // --- Components ---
-import SearchComponent from '@components/Search';
-
-// -- Animations --
-import { slide } from '@animations/index';
+import Loader from '@components/Loader';
+import WelcomeComponent from '@components/Welcome';
+import HeaderComponent from '@components/Header';
+import UnfollowCheckerComponent from '@components/UnfollowChecker';
 
 const HomePage: NextPage = () => {
-	const [login, setLogin] = useState('');
+	const [session, loading] = useSession();
 
-	const router = useRouter();
-
-	const handleChangeLogin = ({ currentTarget }) => setLogin(currentTarget.value);
-
-	const handleSearchLogin = (event: Event) => {
-		event.preventDefault();
-		login && router.push(`/${login.trim()}`, undefined, { shallow: true });
-	};
+	if (loading) return <Loader />;
 
 	return (
-		<motion.div
-			initial="initial"
-			animate="animate"
-			exit="exit"
-			variants={slide}
-			transition={{ type: 'spring', stiffness: 100 }}
-			style={{ height: '100%' }}
-		>
+		<>
 			<NextSeo
-				title="🔍 Search GitHub Profile..."
-				description="A short description goes here."
+				title="GitHub Unfollow Checker"
+				description="Tool to check who doesn't follow you back on GitHub"
 			/>
 
-			<SearchComponent
-				login={login}
-				handleChangeLogin={handleChangeLogin}
-				handleSearchLogin={handleSearchLogin}
-				placeholder="Search GitHub Profile..."
-			/>
-		</motion.div>
+			{session && <HeaderComponent account={session.user} />}
+
+			<main>{!session ? <WelcomeComponent /> : <UnfollowCheckerComponent />}</main>
+		</>
 	);
 };
 

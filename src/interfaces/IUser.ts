@@ -1,17 +1,18 @@
 export interface IUser {
-	avatar_url: string;
-	bio: string;
-	followers: number;
-	following: number;
+	email: string;
 	html_url: string;
-	location: string;
+	image: string;
 	login: string;
 	name: string;
-	public_repos: number;
-	url: string;
 }
 
-export interface IUser_Page {
-	user: IUser;
-	error: any;
+export interface IUnfollower {
+	avatar_url: string;
+	html_url: string;
+	login: string;
+}
+
+export interface IUnfollower_Payload {
+	diff: IUnfollower[];
+	count: number;
 }

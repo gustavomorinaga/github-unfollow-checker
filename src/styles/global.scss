@@ -13,5 +13,9 @@ main,
 }
 
 #__next {
-	@apply bg-gray-100 dark:bg-gray-900 bg-hero-pattern;
+	@apply bg-gray-100 dark:bg-indigo-800 bg-wave md:bg-left-bottom bg-bottom bg-no-repeat md:bg-contain bg-cover;
+}
+
+main {
+	@apply flex flex-col items-center;
 }

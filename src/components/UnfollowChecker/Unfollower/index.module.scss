@@ -1,0 +1,44 @@
+.unfollower {
+	@apply flex items-center justify-between gap-4 p-4
+		bg-gray-100 border-2 border-gray-400 hover:border-blue-400 rounded-3xl shadow-md
+		transition-colors ease-in-out;
+
+	& .details,
+	& .actions {
+		@apply flex items-center;
+	}
+
+	& .details {
+		@apply gap-4;
+
+		& .avatar {
+			@apply relative flex w-14 h-14 overflow-hidden pointer-events-auto rounded-full;
+		}
+
+		& .content {
+			& .login {
+				@apply text-xl font-normal text-gray-600 hover:text-blue-400
+				transition-colors ease-in-out;
+			}
+		}
+	}
+
+	& .actions {
+		@apply gap-2;
+
+		& > button {
+			@apply flex items-center gap-2 px-4 py-2 rounded-2xl
+				text-xl text-gray-600
+				border-2 border-gray-300
+				transition-colors ease-in-out;
+		}
+
+		& .add_whitelist {
+			@apply hover:bg-green-200 hover:text-green-700 hover:border-green-700;
+		}
+
+		& .unfollow {
+			@apply hover:bg-red-200 hover:text-red-700 hover:border-red-700;
+		}
+	}
+}

@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-export const api = axios.create({
-	baseURL: process.env.API_BASE_URL,
-});
+export const api = axios.create();
 
-export const fetcher = async <Data = any>(url: string): Promise<Data> =>
-	await api.get<Data>(url).then<Data>(res => res.data);
+export const fetcher = async <Data = any>(
+	url: string,
+	method?: any,
+	body?: any
+): Promise<Data> => await api(url, { method, data: body }).then<Data>(res => res.data);

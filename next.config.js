@@ -6,9 +6,6 @@ const runtimeCaching = require('next-pwa/cache');
 
 const nextConfig = {
 	esModule: true,
-	env: {
-		API_BASE_URL: process.env.API_BASE_URL,
-	},
 	future: {
 		strictPostcssConfiguration: true,
 	},

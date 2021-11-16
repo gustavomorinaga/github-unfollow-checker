@@ -26,9 +26,11 @@ class MyDocument extends Document<DocumentProps> {
 					/>
 					<link rel="apple-touch-icon" href="./assets/icons/icon-32x32.png"></link>
 					<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+					<link rel="preconnect" href="https://fonts.googleapis.com" />
 					<link rel="preconnect" href="https://fonts.gstatic.com" />
 					<link
-						href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap"
+						href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;800&display=swap"
 						rel="stylesheet"
 					/>
 				</Head>

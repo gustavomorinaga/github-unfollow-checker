@@ -1,0 +1,7 @@
+.header {
+	@apply w-full px-4 flex items-center justify-between;
+
+	& .site_name {
+		@apply text-3xl font-extrabold text-gray-100;
+	}
+}

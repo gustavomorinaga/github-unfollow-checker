@@ -18,8 +18,7 @@
 			"@docs/*": ["./docs/*"],
 			"@icons/*": ["./public/assets/icons/*"],
 			"@images/*": ["./public/assets/images/*"],
-			"@sounds/*": ["./public/assets/sounds/*"],
-			"@videos/*": ["./public/assets/videos/*"],
+			"@svgs/*": ["./public/assets/svgs/*"],
 			"@animations/*": ["./src/animations/*"],
 			"@components/*": ["./src/components/*"],
 			"@hooks/*": ["./src/hooks/*"],
@@ -28,6 +27,7 @@
 			"@services/*": ["./src/services/*"],
 			"@styles/*": ["./src/styles/*"]
 		},
+		"typeRoots": ["./types"],
 		"incremental": true
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

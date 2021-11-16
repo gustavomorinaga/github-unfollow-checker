@@ -1,0 +1,17 @@
+.container {
+	@apply h-full flex flex-col items-center justify-center gap-4 text-center;
+
+	& h1 {
+		@apply text-5xl font-extrabold text-gray-100;
+	}
+
+	& p {
+		@apply text-gray-300 text-lg;
+	}
+
+	& .signIn {
+		@apply flex items-center justify-center gap-2 px-6 py-4
+			bg-green-300 hover:bg-green-400
+			rounded-3xl text-xl text-gray-800 transition-colors ease-in-out;
+	}
+}
