@@ -19,3 +19,15 @@ main,
 main {
 	@apply flex flex-col items-center;
 }
+
+.button {
+	@apply flex items-center gap-2 px-4 py-2 rounded-2xl
+		bg-gray-100
+		md:text-xl text-base text-gray-600
+		border-2 border-gray-300
+		transition-colors ease-in-out;
+
+	& span {
+		@apply lg:block hidden;
+	}
+}

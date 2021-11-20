@@ -20,7 +20,6 @@ export default async function followersHandler(
 	const {
 		method,
 		query: { login },
-		body: { whitelist },
 	} = req;
 
 	const requestConfig = {
@@ -29,7 +28,7 @@ export default async function followersHandler(
 		},
 	};
 
-	if (method === 'POST') {
+	if (method === 'GET') {
 		try {
 			let followers = [];
 			let following = [];
@@ -58,15 +57,6 @@ export default async function followersHandler(
 				tempFollowingCount = data.length;
 				followingPage++;
 			} while (tempFollowingCount <= USERS_PER_PAGE && tempFollowingCount > 0);
-
-			console.log(whitelist);
-
-			if (whitelist && whitelist.length)
-				whitelist.forEach(user => {
-					following.forEach((follower, index) => {
-						if (user === follower.login) following.splice(index, 1);
-					});
-				});
 
 			const diffUsers = following.filter(follower =>
 				followers.every(follow => !follow.login.includes(follower.login))

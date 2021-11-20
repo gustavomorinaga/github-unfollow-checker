@@ -9,15 +9,17 @@
 	}
 
 	& .details {
-		@apply gap-4;
+		@apply flex flex-1 min-w-0 w-full gap-4;
 
 		& .avatar {
-			@apply relative flex w-14 h-14 overflow-hidden pointer-events-auto rounded-full;
+			@apply relative block md:w-14 w-10 md:h-14 h-10 overflow-hidden pointer-events-auto rounded-full;
 		}
 
 		& .content {
+			@apply flex min-w-0;
+
 			& .login {
-				@apply text-xl font-normal text-gray-600 hover:text-blue-400
+				@apply md:text-xl text-base font-normal truncate text-gray-600 hover:text-blue-400
 				transition-colors ease-in-out;
 			}
 		}
@@ -26,17 +28,11 @@
 	& .actions {
 		@apply gap-2;
 
-		& > button {
-			@apply flex items-center gap-2 px-4 py-2 rounded-2xl
-				text-xl text-gray-600
-				border-2 border-gray-300
-				transition-colors ease-in-out;
-		}
-
 		& .add_whitelist {
 			@apply hover:bg-green-200 hover:text-green-700 hover:border-green-700;
 		}
 
+		& .remove_whitelist,
 		& .unfollow {
 			@apply hover:bg-red-200 hover:text-red-700 hover:border-red-700;
 		}

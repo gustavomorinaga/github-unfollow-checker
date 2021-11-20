@@ -16,6 +16,7 @@ export default function AccountComponent({ account }): JSX.Element {
 			<a
 				className={styles.login}
 				href={account.html_url}
+				title="View Your Profile"
 				target="_blank"
 				rel="noopener noreferrer"
 			>
