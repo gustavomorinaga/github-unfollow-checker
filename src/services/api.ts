@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+export const BASE_URL = 'https://api.github.com';
+
 export const api = axios.create();
 
 export const fetcher = async <Data = any>(

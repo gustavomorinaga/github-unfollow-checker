@@ -8,7 +8,7 @@ import Loader from '@components/Loader';
 import UnfollowersListComponent from './UnfollowersList';
 
 // --- Interfaces ---
-import { IUnfollower_Payload } from '@interfaces/IUnfollower';
+import { IUnfollower } from '@interfaces/IUnfollower';
 
 // --- Services ---
 import { api } from '@services/api';
@@ -55,24 +55,36 @@ export default function UnfollowCheckerComponent({
 	const handleUnfollowUser = async (unfollower: string) => {
 		await api.delete(`/api/${session.user.login}/${unfollower}`);
 
-		data.diff = data.diff.filter(({ login }) => login !== unfollower);
-		data.count--;
+		data = data.filter(({ login }) => login !== unfollower);
 
-		await mutate(data, true);
+		await mutate(data, false);
 	};
 
-	let { data, error, mutate } = useFetch<IUnfollower_Payload>(
-		`/api/${session.user.login}`
-	);
+	const handleUnfollowAllUsers = async () => {
+		const filteredUsers = data
+			.map(({ login }) => login)
+			.filter(login => !whitelist.includes(login));
+
+		await api.delete(`/api/${session.user.login}/unfollowAll`, {
+			data: { unfollowers: filteredUsers },
+		});
+
+		data = data.filter(({ login }) => !filteredUsers.includes(login));
+
+		await mutate(data, false);
+	};
+
+	let { data, error, mutate } = useFetch<IUnfollower[]>(`/api/${session.user.login}`);
 
 	if (error) return <span>Error!</span>;
 	if (!data) return <Loader />;
 
 	return (
 		<UnfollowersListComponent
-			unfollowers={data.diff}
+			unfollowers={data}
 			whitelist={whitelist}
 			handleUnfollowUser={handleUnfollowUser}
+			handleUnfollowAllUsers={handleUnfollowAllUsers}
 			handleAddUserToWhitelist={handleAddUserToWhitelist}
 			handleRemoveUserFromWhitelist={handleRemoveUserFromWhitelist}
 		/>

@@ -16,7 +16,8 @@ export default async function followersHandler(
 
 	const {
 		method,
-		query: { login, unfollower },
+		query: { login },
+		body: { unfollowers },
 	} = req;
 
 	const requestConfig = {
@@ -26,14 +27,14 @@ export default async function followersHandler(
 	};
 
 	if (method === 'DELETE') {
-		if (!login || !unfollower)
-			return res
-				.status(400)
-				.send({ error: 'Login and Unfollower not found in the params!' });
+		if (!login) res.status(400).send({ error: 'Login not found in the params!' });
 
-		await api.delete(`${BASE_URL}/user/following/${unfollower}`, requestConfig);
+		unfollowers.forEach(
+			async (unfollower: string) =>
+				await api.delete(`${BASE_URL}/user/following/${unfollower}`, requestConfig)
+		);
 
-		return res.status(200).send({ message: 'User unfollowed!' });
+		return res.status(200).send({ message: 'Users unfolloweds!' });
 	}
 
 	res.setHeader('Allow', ['DELETE']);

@@ -3,8 +3,3 @@ export interface IUnfollower {
 	html_url: string;
 	login: string;
 }
-
-export interface IUnfollower_Payload {
-	diff: IUnfollower[];
-	count: number;
-}

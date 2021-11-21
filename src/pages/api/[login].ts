@@ -1,10 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 // --- Services ---
-import { api } from '@services/api';
+import { api, BASE_URL } from '@services/api';
 import { getSession } from 'next-auth/client';
 
-const BASE_URL = 'https://api.github.com';
 const USERS_PER_PAGE = 100;
 
 export default async function followersHandler(
@@ -30,6 +29,8 @@ export default async function followersHandler(
 
 	if (method === 'GET') {
 		try {
+			if (!login) res.status(400).send({ error: 'Login not found in the params!' });
+
 			let followers = [];
 			let following = [];
 
@@ -70,12 +71,7 @@ export default async function followersHandler(
 
 			diff.sort((a, b) => a.login.localeCompare(b.login));
 
-			const response = {
-				diff,
-				count: diff.length,
-			};
-
-			return res.status(200).send(response);
+			return res.status(200).send(diff);
 		} catch (error) {
 			return res.status(500).send({ error });
 		}
