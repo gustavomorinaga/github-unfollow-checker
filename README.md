@@ -48,7 +48,7 @@
 
 -->
 
-## 🚀 [Demo](https://reactsetup-sigma.vercel.app)
+## 🚀 [Demo](https://github-unfollow-checker.vercel.app)
 
 ## ❔ About
 
