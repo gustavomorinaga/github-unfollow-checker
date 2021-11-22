@@ -60,7 +60,7 @@ export default function UnfollowersListComponent({
 							onClick={() => handleChangeView()}
 						>
 							<FaUsers />
-							View Whitelist
+							Whitelist
 						</button>
 					) : (
 						<button
@@ -70,7 +70,7 @@ export default function UnfollowersListComponent({
 							onClick={() => handleChangeView()}
 						>
 							<FaUsers />
-							View Unfollowers
+							Unfollowers
 						</button>
 					)}
 					<button
