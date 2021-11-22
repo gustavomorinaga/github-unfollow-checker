@@ -1,5 +1,5 @@
 .container {
-	@apply relative md:w-4/6 w-full h-full pb-16 mb-24 overflow-hidden;
+	@apply relative md:w-4/6 w-full h-full md:pb-16 pb-24 mb-24 overflow-hidden;
 
 	& header {
 		@apply flex md:flex-row flex-col items-center justify-between gap-2 md:mr-0 mr-4 mb-4;
@@ -21,6 +21,10 @@
 
 			& .unfollow_all {
 				@apply hover:bg-red-200 hover:text-red-700 hover:border-red-700;
+
+				&:disabled {
+					@apply opacity-60 pointer-events-none;
+				}
 			}
 		}
 	}

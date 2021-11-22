@@ -1,11 +1,8 @@
 .container {
-	@apply w-full h-full flex items-center justify-center;
+	@apply absolute inset-0 flex items-center justify-center;
 
 	& .ldsRoller {
-		@apply relative
-			inline-block
-			w-5
-			h-5;
+		@apply relative inline-block w-5 h-5 -ml-16;
 
 		& div {
 			animation: ldsRoller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
@@ -14,13 +11,7 @@
 
 		& div:after {
 			content: ' ';
-			display: block;
-			position: absolute;
-			width: 7px;
-			height: 7px;
-			border-radius: 50%;
-			background: #fff;
-			margin: -4px 0 0 -4px;
+			@apply absolute block w-2 h-2 rounded-full bg-white -mx-1 my-0 shadow-md;
 		}
 
 		& div:nth-child(1) {

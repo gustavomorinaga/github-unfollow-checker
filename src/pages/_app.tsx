@@ -8,11 +8,11 @@ import SEO from '../../next-seo.config';
 // --- Styles ---
 import '@styles/global.scss';
 
-const MyApp: React.FC<AppProps> = ({ Component, pageProps, router: { route } }) => {
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
 	return (
 		<Provider session={pageProps.session}>
 			<DefaultSeo {...SEO} />
-			<Component {...pageProps} key={route} />
+			<Component {...pageProps} />
 		</Provider>
 	);
 };

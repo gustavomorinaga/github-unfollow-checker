@@ -74,7 +74,7 @@ export default function UnfollowerComponent({
 					className={`button ${styles.unfollow}`}
 					aria-label="Unfollow"
 					title="Unfollow"
-					onClick={() => handleUnfollowUser(unfollower.login)}
+					onClick={() => handleUnfollowUser(unfollower.login, view)}
 				>
 					<FaUserSlash />
 					<span>Unfollow</span>

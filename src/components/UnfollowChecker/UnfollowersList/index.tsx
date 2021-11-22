@@ -3,6 +3,7 @@ import { AnimatePresence, Reorder } from 'framer-motion';
 
 // --- Interfaces ---
 import { IUnfollower } from '@interfaces/IUnfollower';
+import { IView } from '@interfaces/IView';
 
 // --- Styles ---
 import styles from './index.module.scss';
@@ -13,7 +14,6 @@ import UnfollowerComponent from '../Unfollower';
 
 // --- Animations ---
 import slideFade from '@animations/slideFade';
-import { IView } from '@interfaces/IView';
 
 export default function UnfollowersListComponent({
 	unfollowers,
@@ -52,15 +52,27 @@ export default function UnfollowersListComponent({
 					)}
 				</span>
 				<div className={styles.actions}>
-					<button
-						className={`button ${styles.whitelist}`}
-						aria-label={view === IView.UNFOLLOWERS ? 'Whitelist' : 'Unfollowers'}
-						title={view === IView.UNFOLLOWERS ? 'Whitelist' : 'Unfollowers'}
-						onClick={() => handleChangeView()}
-					>
-						<FaUsers />
-						{view === IView.UNFOLLOWERS ? 'Whitelist' : 'Unfollowers'}
-					</button>
+					{view === IView.UNFOLLOWERS ? (
+						<button
+							className={`button ${styles.whitelist}`}
+							aria-label="Whitelist"
+							title="Whitelist"
+							onClick={() => handleChangeView()}
+						>
+							<FaUsers />
+							View Whitelist
+						</button>
+					) : (
+						<button
+							className={`button ${styles.whitelist}`}
+							aria-label="Unfollowers"
+							title="Unfollowers"
+							onClick={() => handleChangeView()}
+						>
+							<FaUsers />
+							View Unfollowers
+						</button>
+					)}
 					<button
 						className={`button ${styles.unfollow_all}`}
 						aria-label="Unfollow All"
@@ -70,7 +82,7 @@ export default function UnfollowersListComponent({
 								unfollowers.length - whitelist.length <= 0) ||
 							(view === IView.WHITELIST && whitelist.length <= 0)
 						}
-						onClick={() => handleUnfollowAllUsers()}
+						onClick={() => handleUnfollowAllUsers(view)}
 					>
 						<FaUsersSlash />
 						Unfollow All
@@ -79,8 +91,8 @@ export default function UnfollowersListComponent({
 			</header>
 			<Reorder.Group className={styles.list} values={users} onReorder={setUsers}>
 				<AnimatePresence>
-					{(unfollowers.length && view === IView.UNFOLLOWERS) ||
-					(whitelist.length && view === IView.WHITELIST) ? (
+					{(view === IView.UNFOLLOWERS && unfollowers.length - whitelist.length > 0) ||
+					(view === IView.WHITELIST && whitelist.length) ? (
 						unfollowers
 							.filter(
 								({ login }) =>

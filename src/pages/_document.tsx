@@ -10,22 +10,10 @@ class MyDocument extends Document<DocumentProps> {
 		return (
 			<Html lang="en">
 				<Head>
-					<meta name="theme-color" content="#a78bfa" />
-					<link rel="manifest" href="./site.webmanifest" />
-					<link
-						href="./assets/icons/icon-16x16.png"
-						rel="icon"
-						type="image/png"
-						sizes="16x16"
-					/>
-					<link
-						href="./assets/icons/icon-32x32.png"
-						rel="icon"
-						type="image/png"
-						sizes="32x32"
-					/>
-					<link rel="apple-touch-icon" href="./assets/icons/icon-32x32.png"></link>
+					<link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml" />
 					<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+					<link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png" />
+					<link rel="manifest" href="./site.webmanifest" />
 
 					<link rel="preconnect" href="https://fonts.googleapis.com" />
 					<link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -33,6 +21,8 @@ class MyDocument extends Document<DocumentProps> {
 						href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;800&display=swap"
 						rel="stylesheet"
 					/>
+
+					<meta name="theme-color" content="#3730A3" />
 				</Head>
 				<body>
 					<Main />

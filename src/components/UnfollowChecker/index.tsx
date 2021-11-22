@@ -5,10 +5,12 @@ import { useFetch } from '@hooks/useFetch';
 
 // --- Components ---
 import Loader from '@components/Loader';
+import ErrorComponent from '@components/Error';
 import UnfollowersListComponent from './UnfollowersList';
 
 // --- Interfaces ---
 import { IUnfollower } from '@interfaces/IUnfollower';
+import { IView } from '@interfaces/IView';
 
 // --- Services ---
 import { api } from '@services/api';
@@ -52,21 +54,41 @@ export default function UnfollowCheckerComponent({
 		}
 	};
 
-	const handleUnfollowUser = async (unfollower: string) => {
-		await api.delete(`/api/${session.user.login}/${unfollower}`);
+	const handleUnfollowUser = async (unfollower: string, view: IView) => {
+		const isUserUnfollowed = await api.delete(`/api/${session.user.login}/${unfollower}`);
 
-		data = data.filter(({ login }) => login !== unfollower);
+		if (isUserUnfollowed) {
+			data = data.filter(({ login }) => login !== unfollower);
+
+			if (view === IView.WHITELIST) handleSetWhitelist({ unfollower, remove: true });
+		}
 
 		await mutate(data, false);
 	};
 
-	const handleUnfollowAllUsers = async () => {
+	const handleUnfollowAllUsers = async (view: IView) => {
 		const filteredUsers = data
 			.map(({ login }) => login)
-			.filter(login => !whitelist.includes(login));
+			.filter(login =>
+				view === IView.UNFOLLOWERS
+					? !whitelist.includes(login)
+					: whitelist.includes(login)
+			);
 
-		await api.delete(`/api/${session.user.login}/unfollowAll`, {
-			data: { unfollowers: filteredUsers },
+		const isAllUsersUnfollowed = await api.delete(
+			`/api/${session.user.login}/unfollowAll`,
+			{
+				data: { unfollowers: filteredUsers },
+			}
+		);
+
+		if (!isAllUsersUnfollowed) return;
+
+		if (view === IView.WHITELIST) whitelist.length = 0;
+
+		setCookie(null, 'whitelist', JSON.stringify([]), {
+			maxAge: WEEK,
+			path: '/',
 		});
 
 		data = data.filter(({ login }) => !filteredUsers.includes(login));
@@ -76,7 +98,7 @@ export default function UnfollowCheckerComponent({
 
 	let { data, error, mutate } = useFetch<IUnfollower[]>(`/api/${session.user.login}`);
 
-	if (error) return <span>Error!</span>;
+	if (error) return <ErrorComponent />;
 	if (!data) return <Loader />;
 
 	return (

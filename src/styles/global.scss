@@ -7,13 +7,17 @@ body {
 	@apply h-screen m-0;
 }
 
+body {
+	@apply bg-indigo-800;
+}
+
 main,
 #__next {
 	@apply h-full overflow-hidden;
 }
 
 #__next {
-	@apply bg-gray-100 dark:bg-indigo-800 bg-wave md:bg-left-bottom bg-bottom bg-no-repeat md:bg-contain bg-cover;
+	@apply relative bg-wave md:bg-left-bottom bg-left bg-no-repeat md:bg-contain bg-cover;
 }
 
 main {

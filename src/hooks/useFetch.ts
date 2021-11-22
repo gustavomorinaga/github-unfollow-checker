@@ -16,9 +16,9 @@ export function useFetch<Data = any, Error = any>(url: string, opts?: SWRConfigu
 		{
 			...opts,
 			// refreshInterval: SECONDS * 1000,
-			revalidateIfStale: false,
-			revalidateOnFocus: false,
-			revalidateOnReconnect: false,
+			// revalidateIfStale: false,
+			// revalidateOnFocus: false,
+			// revalidateOnReconnect: false,
 		}
 	);
 

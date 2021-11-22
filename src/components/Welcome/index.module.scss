@@ -1,17 +1,42 @@
 .container {
-	@apply h-full flex flex-col items-center justify-center gap-4 text-center;
+	@apply relative;
 
-	& h1 {
-		@apply text-5xl font-extrabold text-gray-100;
+	&,
+	& .content {
+		@apply w-full h-full flex flex-col items-center justify-center gap-4 text-center;
 	}
 
-	& p {
-		@apply text-gray-300 text-lg;
+	& .content {
+		@apply md:-mt-0 -mt-32 px-4;
+
+		& h1 {
+			@apply md:text-5xl text-4xl font-extrabold text-gray-100;
+		}
+
+		& p {
+			@apply text-gray-300 text-lg;
+		}
+
+		& .signIn {
+			@apply flex items-center justify-center gap-2 px-6 py-4
+				bg-green-300 hover:bg-green-400 shadow-xl
+				rounded-3xl text-xl text-gray-800 transition-colors ease-in-out;
+		}
 	}
 
-	& .signIn {
-		@apply flex items-center justify-center gap-2 px-6 py-4
-			bg-green-300 hover:bg-green-400
-			rounded-3xl text-xl text-gray-800 transition-colors ease-in-out;
+	& footer {
+		@apply absolute left-0 right-0 bottom-0 h-auto my-4;
+
+		& address {
+			@apply not-italic text-gray-700;
+
+			& .author strong {
+				@apply hover:underline hover:text-indigo-500 transition-colors ease-in-out;
+			}
+		}
+
+		& .vercel {
+			@apply relative block w-28 h-8 mx-auto;
+		}
 	}
 }
