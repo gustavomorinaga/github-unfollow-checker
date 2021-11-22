@@ -10,16 +10,16 @@
 		@apply md:-mt-0 -mt-32 px-4;
 
 		& h1 {
-			@apply md:text-5xl text-4xl font-extrabold text-gray-100;
+			@apply my-0 md:text-5xl text-4xl font-extrabold font-sans leading-tight text-gray-100;
 		}
 
 		& p {
-			@apply text-gray-300 text-lg;
+			@apply my-0 text-gray-300 text-lg font-sans;
 		}
 
 		& .signIn {
 			@apply flex items-center justify-center gap-2 px-6 py-4
-				bg-green-300 hover:bg-green-400 shadow-xl
+				bg-green-300 hover:bg-green-400 shadow-xl cursor-pointer
 				rounded-3xl text-xl text-gray-800 transition-colors ease-in-out;
 		}
 	}
@@ -28,10 +28,10 @@
 		@apply absolute left-0 right-0 bottom-0 h-auto my-4;
 
 		& address {
-			@apply not-italic text-gray-700;
+			@apply not-italic font-sans text-gray-700;
 
 			& .author strong {
-				@apply hover:underline hover:text-indigo-500 transition-colors ease-in-out;
+				@apply no-underline hover:underline hover:text-indigo-500 transition-colors ease-in-out;
 			}
 		}
 

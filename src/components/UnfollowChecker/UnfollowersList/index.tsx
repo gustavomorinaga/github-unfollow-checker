@@ -107,6 +107,7 @@ export default function UnfollowersListComponent({
 									initial="initial"
 									animate="animate"
 									exit="exit"
+									drag={false}
 								>
 									<UnfollowerComponent
 										unfollower={unfollower}

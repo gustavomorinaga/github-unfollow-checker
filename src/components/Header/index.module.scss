@@ -2,6 +2,6 @@
 	@apply w-full px-4 flex items-center justify-between;
 
 	& .site_name {
-		@apply md:text-3xl font-extrabold text-gray-100;
+		@apply md:text-3xl text-lg font-sans font-extrabold text-gray-100;
 	}
 }

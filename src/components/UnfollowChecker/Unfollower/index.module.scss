@@ -19,8 +19,8 @@
 			@apply flex min-w-0;
 
 			& .login {
-				@apply md:text-xl text-base font-normal truncate text-gray-600 hover:text-blue-400
-				transition-colors ease-in-out;
+				@apply md:text-xl text-base font-sans font-normal truncate text-gray-600 hover:text-blue-400
+				no-underline hover:underline transition-colors ease-in-out;
 			}
 		}
 	}

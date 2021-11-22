@@ -5,7 +5,7 @@
 		@apply flex md:flex-row flex-col items-center justify-between gap-2 md:mr-0 mr-4 mb-4;
 
 		& .count_result {
-			@apply md:pl-4 pl-0 text-gray-200;
+			@apply md:pl-4 pl-0 font-sans text-gray-200;
 		}
 
 		& .actions {
@@ -30,7 +30,7 @@
 	}
 
 	& .list {
-		@apply h-full flex flex-col gap-4 px-4 pb-8
+		@apply h-full flex flex-col gap-4 px-4 pb-8 list-none
 		overflow-y-auto scrollbar scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full
 		hover:scrollbar-thumb-gray-500;
 
@@ -45,6 +45,6 @@
 
 	& .data_feedback {
 		@apply p-4 bg-green-100 border-2 border-green-200 rounded-2xl
-			text-center text-gray-800 text-xl font-normal;
+			text-center text-gray-800 text-xl font-sans font-normal;
 	}
 }

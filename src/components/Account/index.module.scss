@@ -9,16 +9,16 @@
 		@apply md:flex md:flex-col hidden;
 
 		& .name {
-			@apply text-white;
+			@apply text-white font-sans;
 		}
 
 		& .login {
-			@apply flex items-center gap-1 text-gray-400 hover:underline;
+			@apply max-w-max flex items-center gap-1 font-sans text-gray-400 no-underline hover:underline;
 		}
 	}
 
 	& .signOut {
-		@apply flex items-center justify-center p-2
+		@apply flex items-center justify-center p-2 cursor-pointer
 			bg-transparent hover:bg-red-900 rounded-2xl
 			text-2xl text-red-500 hover:text-red-300
 			border-2 border-transparent hover:border-red-700
