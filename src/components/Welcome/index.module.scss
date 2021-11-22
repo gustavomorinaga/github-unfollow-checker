@@ -30,7 +30,7 @@
 		& address {
 			@apply not-italic font-sans text-gray-700;
 
-			& .author strong {
+			& .author {
 				@apply no-underline hover:underline hover:text-indigo-500 transition-colors ease-in-out;
 			}
 		}
