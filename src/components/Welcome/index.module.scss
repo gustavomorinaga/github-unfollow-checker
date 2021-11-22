@@ -20,7 +20,7 @@
 		& .signIn {
 			@apply flex items-center justify-center gap-2 px-6 py-4
 				bg-green-300 hover:bg-green-400 shadow-xl cursor-pointer
-				rounded-3xl text-xl text-gray-800 transition-colors ease-in-out;
+				rounded-3xl font-sans text-xl text-gray-800 transition-colors ease-in-out;
 		}
 	}
 
