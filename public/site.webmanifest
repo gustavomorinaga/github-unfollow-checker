@@ -1,8 +1,8 @@
 {
-	"name": "Next.JS Template",
-	"short_name": "Next Template",
-	"theme_color": "#a78bfa",
-	"background_color": "#374151",
+	"name": "GitHub Unfollow Checker",
+	"short_name": "GitHub Unfollow Checker",
+	"theme_color": "#3730A3",
+	"background_color": "#3730A3",
 	"display": "standalone",
 	"lang": "en",
 	"orientation": "portrait",
