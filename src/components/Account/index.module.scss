@@ -1,12 +1,12 @@
 .account {
-	@apply flex items-center gap-2 p-4;
+	@apply flex items-center gap-2 py-4;
 
 	& .avatar {
 		@apply relative block md:w-12 w-10 md:h-12 h-10 overflow-hidden pointer-events-none border-2 border-gray-100 rounded-full;
 	}
 
 	& .content {
-		@apply md:flex md:flex-col hidden;
+		@apply lg:flex lg:flex-col hidden;
 
 		& .name {
 			@apply text-white font-sans;

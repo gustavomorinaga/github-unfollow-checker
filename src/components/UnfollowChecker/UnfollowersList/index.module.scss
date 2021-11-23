@@ -1,5 +1,5 @@
 .container {
-	@apply relative md:w-4/6 w-full h-full md:pb-16 pb-24 mb-24 overflow-hidden;
+	@apply relative md:w-4/6 w-full h-full md:pb-16 pb-24 mb-44 overflow-hidden;
 
 	& header {
 		@apply flex md:flex-row flex-col items-center justify-between gap-2 md:mr-0 mr-4 mb-4;

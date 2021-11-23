@@ -6,8 +6,9 @@ import { parseCookies } from 'nookies';
 
 // --- Components ---
 import Loader from '@components/Loader';
-import WelcomeComponent from '@components/Welcome';
 import HeaderComponent from '@components/Header';
+import FooterComponent from '@components/Footer';
+import WelcomeComponent from '@components/Welcome';
 import UnfollowCheckerComponent from '@components/UnfollowChecker';
 
 export async function getServerSideProps(context: any) {
@@ -43,6 +44,20 @@ const HomePage: NextPage<{ whitelist?: string[] }> = props => {
 			<NextSeo
 				title="GitHub Unfollow Checker"
 				description="Tool to check who doesn't follow you back on GitHub"
+				openGraph={{
+					type: 'website',
+					url: 'https://github-unfollow-checker.vercel.app',
+					title: 'GitHub Unfollow Checker',
+					description: "A simple tool to check the users that doesn't follow you back 🧐",
+					images: [
+						{
+							url: 'https://github-unfollow-checker.vercel.app/assets/icons/icon.svg',
+							width: 240,
+							height: 240,
+							alt: 'GitHub Unfollow Checker Icon',
+						},
+					],
+				}}
 			/>
 
 			{session && <HeaderComponent account={session.user} />}
@@ -58,6 +73,8 @@ const HomePage: NextPage<{ whitelist?: string[] }> = props => {
 					/>
 				)}
 			</main>
+
+			<FooterComponent />
 		</>
 	);
 };

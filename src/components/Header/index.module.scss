@@ -1,5 +1,5 @@
 .header {
-	@apply w-full px-4 flex items-center justify-between;
+	@apply w-full px-4 flex items-center justify-between gap-4;
 
 	& .site_name {
 		@apply md:text-3xl text-lg font-sans font-extrabold text-gray-100;

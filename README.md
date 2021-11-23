@@ -14,7 +14,7 @@
   <br>
 </p>
 <p align="center">
-  A simple tool to check the users that don't follow you back 🧐
+  A simple tool to check the users that doesn't follow you back 🧐
 </p>
 
 ---
@@ -52,7 +52,7 @@
 
 ## ❔ About
 
-This project allow you to check and unfollow the users don't follow you back in the GitHub.
+This project allow you to check and unfollow the users that doesn't follow you back in the GitHub.
 
 One of the schemes that some social media users use to earn more followers is to follow the person and then stop following later on. And it looks like this scheme is being used here on GitHub as well.
 

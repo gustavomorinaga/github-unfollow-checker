@@ -46,8 +46,12 @@ export default function UnfollowersListComponent({
 						</>
 					) : (
 						<>
-							<strong>{unfollowers.length - whitelist.length}</strong> users don&apos;t
-							follow you back
+							<strong>
+								{unfollowers.length - whitelist.length < 0
+									? 0
+									: unfollowers.length - whitelist.length}
+							</strong>
+							&nbsp;users don&apos;t follow you back
 						</>
 					)}
 				</span>
