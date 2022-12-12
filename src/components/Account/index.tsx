@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { signOut } from 'next-auth/client';
+import { signOut } from 'next-auth/react';
 
 // --- Styles ---
 import styles from './index.module.scss';
@@ -24,9 +24,9 @@ export default function AccountComponent({ account }): JSX.Element {
 					<Image
 						src={account.image}
 						alt={`${account.image} Profile Image`}
+						width={100}
+						height={100}
 						loading="lazy"
-						layout="fill"
-						objectFit="cover"
 					/>
 				</picture>
 			</a>

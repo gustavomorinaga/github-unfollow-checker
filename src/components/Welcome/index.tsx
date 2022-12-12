@@ -1,4 +1,4 @@
-import { signIn } from 'next-auth/client';
+import { signIn } from 'next-auth/react';
 
 // --- Styles ---
 import styles from './index.module.scss';

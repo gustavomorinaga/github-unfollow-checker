@@ -3,39 +3,44 @@ const withImages = require('next-images');
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 
-const nextConfig = {
-	esModule: true,
-	future: {
-		strictPostcssConfiguration: true,
-	},
-	extends: [],
-	images: {
-		formats: ['image/avif', 'image/webp'],
-		domains: ['avatars.githubusercontent.com'],
-	},
-	// swcMinify: true,
-};
+const isProduction = process.env.NODE_ENV === 'production';
 
-module.exports = withPlugins(
-	[
+module.exports = async _phase => {
+	/** @type {import('next').NextConfig} */
+	const nextConfig = {
+		reactStrictMode: true,
+		swcMinify: true,
+		images: {
+			formats: ['image/avif', 'image/webp'],
+			domains: ['avatars.githubusercontent.com'],
+		},
+	};
+
+	return withPlugins(
 		[
-			withImages,
-			{
-				inlineImageLimit: false,
-			},
-		],
-		[
-			withPWA,
-			{
-				pwa: {
-					disable: process.env.NODE_ENV !== 'production',
+			[
+				withImages({
+					webpack(config) {
+						config.module.rules.push({
+							test: /\.svg$/,
+							use: ['@svgr/webpack'],
+						});
+
+						return config;
+					},
+				}),
+			],
+			[
+				withPWA({
 					dest: 'public',
 					register: true,
 					skipWaiting: true,
 					runtimeCaching,
-				},
-			},
+					buildExcludes: [/middleware-manifest.json$/],
+					disable: !isProduction,
+				}),
+			],
 		],
-	],
-	nextConfig
-);
+		nextConfig
+	)(_phase, { defaultConfig: {} });
+};

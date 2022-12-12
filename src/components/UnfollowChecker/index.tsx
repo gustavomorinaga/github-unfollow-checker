@@ -1,5 +1,3 @@
-import { setCookie } from 'nookies';
-
 // --- Hooks ---
 import { useFetch } from '@hooks/useFetch';
 
@@ -11,18 +9,26 @@ import UnfollowersListComponent from './UnfollowersList';
 // --- Interfaces ---
 import { IUnfollower } from '@interfaces/IUnfollower';
 import { IView } from '@interfaces/IView';
+import { ISession } from '@interfaces/ISession';
 
 // --- Services ---
 import { api } from '@services/api';
 
-const DAY_SECONDS = 86400;
-const WEEK = DAY_SECONDS * 7;
+interface IUnfollowCheckerProps {
+	session: ISession;
+	whitelist?: string[];
+	handleSetWhitelist?: (props: { unfollower: string; remove?: boolean }) => void;
+}
 
 export default function UnfollowCheckerComponent({
 	session,
 	whitelist,
 	handleSetWhitelist,
-}): JSX.Element {
+}: IUnfollowCheckerProps): JSX.Element {
+	let { data, error, mutate } = useFetch<IUnfollower[]>(`/api/${session.user.login}`, {
+		headers: { 'x-access-token': session.accessToken },
+	});
+
 	const existUserInWhitelist = (unfollower: string) =>
 		whitelist.some((login: string) => login === unfollower);
 
@@ -31,10 +37,7 @@ export default function UnfollowCheckerComponent({
 			const newWhitelist = [...whitelist, unfollower];
 			handleSetWhitelist({ unfollower });
 
-			setCookie(null, 'whitelist', JSON.stringify(newWhitelist), {
-				maxAge: WEEK,
-				path: '/',
-			});
+			localStorage.setItem('whitelist', JSON.stringify(newWhitelist));
 
 			await mutate(data, false);
 		}
@@ -45,17 +48,17 @@ export default function UnfollowCheckerComponent({
 			const newWhitelist = whitelist.filter((login: string) => login !== unfollower);
 			handleSetWhitelist({ unfollower, remove: true });
 
-			setCookie(null, 'whitelist', JSON.stringify(newWhitelist), {
-				maxAge: WEEK,
-				path: '/',
-			});
+			localStorage.setItem('whitelist', JSON.stringify(newWhitelist));
 
 			await mutate(data, false);
 		}
 	};
 
 	const handleUnfollowUser = async (unfollower: string, view: IView) => {
-		const isUserUnfollowed = await api.delete(`/api/${session.user.login}/${unfollower}`);
+		const isUserUnfollowed = await api.delete(
+			`/api/${session.user.login}/${unfollower}`,
+			{ headers: { 'x-access-token': session.accessToken } }
+		);
 
 		if (isUserUnfollowed) {
 			data = data.filter(({ login }) => login !== unfollower);
@@ -78,6 +81,7 @@ export default function UnfollowCheckerComponent({
 		const isAllUsersUnfollowed = await api.delete(
 			`/api/${session.user.login}/unfollowAll`,
 			{
+				headers: { 'x-access-token': session.accessToken },
 				data: { unfollowers: filteredUsers },
 			}
 		);
@@ -86,17 +90,12 @@ export default function UnfollowCheckerComponent({
 
 		if (view === IView.WHITELIST) whitelist.length = 0;
 
-		setCookie(null, 'whitelist', JSON.stringify([]), {
-			maxAge: WEEK,
-			path: '/',
-		});
+		localStorage.setItem('whitelist', JSON.stringify([]));
 
 		data = data.filter(({ login }) => !filteredUsers.includes(login));
 
 		await mutate(data, false);
 	};
-
-	let { data, error, mutate } = useFetch<IUnfollower[]>(`/api/${session.user.login}`);
 
 	if (error) return <ErrorComponent />;
 	if (!data) return <Loader />;

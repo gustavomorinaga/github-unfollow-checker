@@ -28,8 +28,8 @@ export default function FooterComponent(): JSX.Element {
 					<Image
 						src="/assets/svgs/powered-by-vercel.svg"
 						alt="Powered By Vercel"
-						layout="fill"
-						objectFit="contain"
+						width={212}
+						height={44}
 					/>
 				</picture>
 			</a>

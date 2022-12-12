@@ -25,10 +25,10 @@ export default function UnfollowersListComponent({
 }: {
 	unfollowers: IUnfollower[];
 	whitelist: string[];
-	handleUnfollowUser: any;
-	handleUnfollowAllUsers: any;
-	handleAddUserToWhitelist: any;
-	handleRemoveUserFromWhitelist: any;
+	handleUnfollowUser: (unfollower: string, view: IView) => Promise<void>;
+	handleUnfollowAllUsers: (view: IView) => Promise<void>;
+	handleAddUserToWhitelist: (unfollower: string) => Promise<void>;
+	handleRemoveUserFromWhitelist: (unfollower: string) => Promise<void>;
 }): JSX.Element {
 	const [view, setView] = useState<IView>(IView.UNFOLLOWERS);
 	const [users, setUsers] = useState(unfollowers);

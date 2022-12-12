@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import { Provider } from 'next-auth/client';
+import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
 
 // --- Configs ---
@@ -10,10 +10,10 @@ import '@styles/global.scss';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
 	return (
-		<Provider session={pageProps.session}>
+		<SessionProvider session={pageProps.session}>
 			<DefaultSeo {...SEO} />
 			<Component {...pageProps} />
-		</Provider>
+		</SessionProvider>
 	);
 };
 

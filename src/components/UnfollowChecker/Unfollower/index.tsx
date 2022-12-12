@@ -17,9 +17,9 @@ export default function UnfollowerComponent({
 }: {
 	unfollower: IUnfollower;
 	view: IView;
-	handleUnfollowUser: any;
-	handleAddUserToWhitelist: any;
-	handleRemoveUserFromWhitelist: any;
+	handleUnfollowUser: (unfollower: string, view: IView) => Promise<void>;
+	handleAddUserToWhitelist: (unfollower: string) => Promise<void>;
+	handleRemoveUserFromWhitelist: (unfollower: string) => Promise<void>;
 }): JSX.Element {
 	return (
 		<div className={styles.unfollower}>
@@ -28,11 +28,11 @@ export default function UnfollowerComponent({
 					<picture className={styles.avatar}>
 						<Image
 							src={unfollower.avatar_url}
-							loading="lazy"
-							layout="fill"
-							objectFit="cover"
 							alt={`${unfollower.login} Profile Image`}
 							title={unfollower.login}
+							loading="lazy"
+							width={100}
+							height={100}
 						/>
 					</picture>
 				</a>

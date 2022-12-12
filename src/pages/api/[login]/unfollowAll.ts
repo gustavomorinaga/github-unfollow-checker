@@ -2,23 +2,27 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 // --- Services ---
 import { api, BASE_URL } from '@services/api';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
+
+// --- Interfaces ---
+import { ISession } from '@interfaces/ISession';
 
 export default async function followersHandler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { accessToken } = await getSession({ req });
+	const {
+		method,
+		headers,
+		query: { login },
+		body: { unfollowers },
+	} = req;
+
+	const accessToken = headers['x-access-token'];
 	if (!accessToken)
 		return res
 			.status(401)
 			.send({ error: 'User unauthorized or undefined access token!' });
-
-	const {
-		method,
-		query: { login },
-		body: { unfollowers },
-	} = req;
 
 	const requestConfig = {
 		headers: {
