@@ -18,7 +18,6 @@
 		"dev": "next dev",
 		"start": "next start",
 		"build": "pnpm run partytown && next build",
-		"now-build": "next build",
 		"partytown": "partytown copylib public/~partytown",
 		"lint": "next lint",
 		"lint:fix": "eslint src --fix && pnpm run format",

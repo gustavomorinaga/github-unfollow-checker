@@ -10,7 +10,6 @@ module.exports = async _phase => {
 	const nextConfig = {
 		reactStrictMode: true,
 		swcMinify: true,
-		target: 'serverless',
 		images: {
 			formats: ['image/avif', 'image/webp'],
 			domains: ['avatars.githubusercontent.com'],
