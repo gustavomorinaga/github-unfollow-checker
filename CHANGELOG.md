@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.2](https://github.com/gmatthewsfeuer/github-unfollow-checker/compare/v2.0.1...v2.0.2) (2022-12-12)
+
+
+### Bug Fixes
+
+* robot config ([e6de21f](https://github.com/gmatthewsfeuer/github-unfollow-checker/commit/e6de21fd0644a49131c0d9b2bdbb2e2dadd92edb))
+
 ### [2.0.1](https://github.com/gmatthewsfeuer/github-unfollow-checker/compare/v2.0.0...v2.0.1) (2022-12-12)
 
 
