@@ -1,5 +1,10 @@
 import Document, { DocumentProps, Html, Head, Main, NextScript } from 'next/document';
 
+// --- Partytown ---
+import { Partytown } from '@builder.io/partytown/react';
+
+const isProduction = process.env.NODE_ENV === 'production';
+
 class MyDocument extends Document<DocumentProps> {
 	render(): JSX.Element {
 		return (
@@ -18,6 +23,8 @@ class MyDocument extends Document<DocumentProps> {
 					/>
 
 					<meta name="theme-color" content="#3730A3" />
+
+					<Partytown debug={!isProduction} forward={['dataLayer.push']} />
 				</Head>
 				<body>
 					<Main />
