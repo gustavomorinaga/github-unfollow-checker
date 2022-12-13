@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 import { FaAt, FaDoorClosed, FaDoorOpen } from 'react-icons/fa';
 import { useState } from 'react';
 
-export default function AccountComponent({ account }): JSX.Element {
+export default function Account({ account }): JSX.Element {
 	const [isHover, setIsHover] = useState(false);
 
 	const handleSignOutIcon = (value: boolean) => setIsHover(value);

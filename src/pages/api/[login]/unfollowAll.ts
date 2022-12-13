@@ -2,10 +2,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 // --- Services ---
 import { api, BASE_URL } from '@services/api';
-import { getSession } from 'next-auth/react';
-
-// --- Interfaces ---
-import { ISession } from '@interfaces/ISession';
 
 export default async function followersHandler(
 	req: NextApiRequest,

@@ -3,8 +3,8 @@ import { useFetch } from '@hooks/useFetch';
 
 // --- Components ---
 import Loader from '@components/Loader';
-import ErrorComponent from '@components/Error';
-import UnfollowersListComponent from './UnfollowersList';
+import Error from '@components/Error';
+import UnfollowersList from './UnfollowersList';
 
 // --- Interfaces ---
 import { IUnfollower } from '@interfaces/IUnfollower';
@@ -13,6 +13,7 @@ import { ISession } from '@interfaces/ISession';
 
 // --- Services ---
 import { api } from '@services/api';
+import { useCallback } from 'react';
 
 interface IUnfollowCheckerProps {
 	session: ISession;
@@ -20,7 +21,7 @@ interface IUnfollowCheckerProps {
 	handleSetWhitelist?: (props: { unfollower: string; remove?: boolean }) => void;
 }
 
-export default function UnfollowCheckerComponent({
+export default function UnfollowChecker({
 	session,
 	whitelist,
 	handleSetWhitelist,
@@ -29,45 +30,56 @@ export default function UnfollowCheckerComponent({
 		headers: { 'x-access-token': session.accessToken },
 	});
 
-	const existUserInWhitelist = (unfollower: string) =>
-		whitelist.some((login: string) => login === unfollower);
+	const existUserInWhitelist = useCallback(
+		(unfollower: string) => whitelist.some((login: string) => login === unfollower),
+		[whitelist]
+	);
 
-	const handleAddUserToWhitelist = async (unfollower: string) => {
-		if (!existUserInWhitelist(unfollower)) {
+	const handleAddUserToWhitelist = useCallback(
+		async (unfollower: string) => {
+			if (existUserInWhitelist(unfollower)) return;
+
 			const newWhitelist = [...whitelist, unfollower];
 			handleSetWhitelist({ unfollower });
 
 			localStorage.setItem('whitelist', JSON.stringify(newWhitelist));
 
 			await mutate(data, false);
-		}
-	};
+		},
+		[data, existUserInWhitelist, handleSetWhitelist, mutate, whitelist]
+	);
 
-	const handleRemoveUserFromWhitelist = async (unfollower: string) => {
-		if (existUserInWhitelist(unfollower)) {
+	const handleRemoveUserFromWhitelist = useCallback(
+		async (unfollower: string) => {
+			if (!existUserInWhitelist(unfollower)) return;
+
 			const newWhitelist = whitelist.filter((login: string) => login !== unfollower);
 			handleSetWhitelist({ unfollower, remove: true });
 
 			localStorage.setItem('whitelist', JSON.stringify(newWhitelist));
 
 			await mutate(data, false);
-		}
-	};
+		},
+		[data, existUserInWhitelist, handleSetWhitelist, mutate, whitelist]
+	);
 
-	const handleUnfollowUser = async (unfollower: string, view: IView) => {
-		const isUserUnfollowed = await api.delete(
-			`/api/${session.user.login}/${unfollower}`,
-			{ headers: { 'x-access-token': session.accessToken } }
-		);
+	const handleUnfollowUser = useCallback(
+		async (unfollower: string, view: IView) => {
+			const isUserUnfollowed = await api.delete(
+				`/api/${session.user.login}/${unfollower}`,
+				{ headers: { 'x-access-token': session.accessToken } }
+			);
 
-		if (isUserUnfollowed) {
-			data = data.filter(({ login }) => login !== unfollower);
+			if (!isUserUnfollowed) return;
+
+			const filteredData = data.filter(({ login }) => login !== unfollower);
 
 			if (view === IView.WHITELIST) handleSetWhitelist({ unfollower, remove: true });
-		}
 
-		await mutate(data, false);
-	};
+			await mutate(filteredData, false);
+		},
+		[data, handleSetWhitelist, mutate, session.accessToken, session.user.login]
+	);
 
 	const handleUnfollowAllUsers = async (view: IView) => {
 		const filteredUsers = data
@@ -97,11 +109,11 @@ export default function UnfollowCheckerComponent({
 		await mutate(data, false);
 	};
 
-	if (error) return <ErrorComponent />;
+	if (error) return <Error />;
 	if (!data) return <Loader />;
 
 	return (
-		<UnfollowersListComponent
+		<UnfollowersList
 			unfollowers={data}
 			whitelist={whitelist}
 			handleUnfollowUser={handleUnfollowUser}

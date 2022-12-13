@@ -8,13 +8,11 @@ import SEO from '../../next-seo.config';
 // --- Styles ---
 import '@styles/global.scss';
 
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+export default function _app({ Component, pageProps, router: { route } }: AppProps) {
 	return (
 		<SessionProvider session={pageProps.session}>
 			<DefaultSeo {...SEO} />
-			<Component {...pageProps} />
+			<Component {...pageProps} key={route} />
 		</SessionProvider>
 	);
-};
-
-export default MyApp;
+}

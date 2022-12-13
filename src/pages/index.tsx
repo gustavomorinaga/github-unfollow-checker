@@ -1,13 +1,14 @@
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 // --- Components ---
 import Loader from '@components/Loader';
-import HeaderComponent from '@components/Header';
-import FooterComponent from '@components/Footer';
-import WelcomeComponent from '@components/Welcome';
-import UnfollowCheckerComponent from '@components/UnfollowChecker';
+const Header = dynamic(() => import('@components/Header'));
+import Footer from '@components/Footer';
+const Welcome = dynamic(() => import('@components/Welcome'));
+const UnfollowChecker = dynamic(() => import('@components/UnfollowChecker'));
 
 // --- Interfaces ---
 import { ISession } from '@interfaces/ISession';
@@ -42,13 +43,13 @@ const HomePage: NextPage<{ whitelist?: string[] }> = props => {
 
 	return (
 		<>
-			{session && <HeaderComponent account={session.user} />}
+			{session && <Header account={session.user} />}
 
 			<main>
 				{!session ? (
-					<WelcomeComponent />
+					<Welcome />
 				) : (
-					<UnfollowCheckerComponent
+					<UnfollowChecker
 						session={session as ISession}
 						whitelist={whitelist}
 						handleSetWhitelist={handleSetWhitelist}
@@ -56,7 +57,7 @@ const HomePage: NextPage<{ whitelist?: string[] }> = props => {
 				)}
 			</main>
 
-			<FooterComponent />
+			<Footer />
 		</>
 	);
 };

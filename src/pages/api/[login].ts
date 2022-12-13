@@ -6,10 +6,6 @@ import { unstable_getServerSession } from 'next-auth';
 // --- Services ---
 import { api, BASE_URL } from '@services/api';
 
-// --- Interfaces ---
-import { ISession } from '@interfaces/ISession';
-import { getSession } from 'next-auth/react';
-
 const USERS_PER_PAGE = 100;
 
 export default async function followersHandler(

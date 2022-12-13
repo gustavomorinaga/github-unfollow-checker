@@ -3,7 +3,7 @@ import Image from 'next/image';
 // --- Styles ---
 import styles from './index.module.scss';
 
-export default function FooterComponent(): JSX.Element {
+export default function Footer(): JSX.Element {
 	return (
 		<footer className={styles.footer}>
 			<address>

@@ -10,12 +10,12 @@ import styles from './index.module.scss';
 import { FaUsers, FaUsersSlash } from 'react-icons/fa';
 
 // --- Components ---
-import UnfollowerComponent from '../Unfollower';
+import Unfollower from '../Unfollower';
 
 // --- Animations ---
 import slideFade from '@animations/slideFade';
 
-export default function UnfollowersListComponent({
+export default function UnfollowersList({
 	unfollowers,
 	whitelist,
 	handleUnfollowUser,
@@ -113,7 +113,7 @@ export default function UnfollowersListComponent({
 									exit="exit"
 									drag={false}
 								>
-									<UnfollowerComponent
+									<Unfollower
 										unfollower={unfollower}
 										view={view}
 										handleUnfollowUser={handleUnfollowUser}
