@@ -10,12 +10,12 @@ import styles from './index.module.scss';
 import { FaUsers, FaUsersSlash } from 'react-icons/fa';
 
 // --- Components ---
-import UnfollowerComponent from '../Unfollower';
+import Unfollower from '../Unfollower';
 
 // --- Animations ---
 import slideFade from '@animations/slideFade';
 
-export default function UnfollowersListComponent({
+export default function UnfollowersList({
 	unfollowers,
 	whitelist,
 	handleUnfollowUser,
@@ -25,10 +25,10 @@ export default function UnfollowersListComponent({
 }: {
 	unfollowers: IUnfollower[];
 	whitelist: string[];
-	handleUnfollowUser: any;
-	handleUnfollowAllUsers: any;
-	handleAddUserToWhitelist: any;
-	handleRemoveUserFromWhitelist: any;
+	handleUnfollowUser: (unfollower: string, view: IView) => Promise<void>;
+	handleUnfollowAllUsers: (view: IView) => Promise<void>;
+	handleAddUserToWhitelist: (unfollower: string) => Promise<void>;
+	handleRemoveUserFromWhitelist: (unfollower: string) => Promise<void>;
 }): JSX.Element {
 	const [view, setView] = useState<IView>(IView.UNFOLLOWERS);
 	const [users, setUsers] = useState(unfollowers);
@@ -113,7 +113,7 @@ export default function UnfollowersListComponent({
 									exit="exit"
 									drag={false}
 								>
-									<UnfollowerComponent
+									<Unfollower
 										unfollower={unfollower}
 										view={view}
 										handleUnfollowUser={handleUnfollowUser}

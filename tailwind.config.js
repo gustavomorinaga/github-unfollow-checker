@@ -1,7 +1,8 @@
-module.exports = {
-	purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-	darkMode: 'media',
+/** @type {import('tailwindcss').Config} */
+const tailwindConfig = {
 	important: true,
+	content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+	plugins: [require('tailwind-scrollbar')({ nocompatible: true })],
 	theme: {
 		minWidth: {
 			0: '0',
@@ -19,9 +20,6 @@ module.exports = {
 			}),
 		},
 	},
-	variants: {
-		extend: {},
-		scrollbar: ['dark', 'rounded'],
-	},
-	plugins: [require('tailwind-scrollbar')],
 };
+
+module.exports = tailwindConfig;

@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+// --- Auth ---
+import { unstable_getServerSession } from 'next-auth';
+
 // --- Services ---
 import { api, BASE_URL } from '@services/api';
-import { getSession } from 'next-auth/client';
 
 const USERS_PER_PAGE = 100;
 
@@ -10,16 +12,17 @@ export default async function followersHandler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { accessToken } = await getSession({ req });
+	const {
+		method,
+		headers,
+		query: { login },
+	} = req;
+
+	const accessToken = headers['x-access-token'];
 	if (!accessToken)
 		return res
 			.status(401)
 			.send({ error: 'User unauthorized or undefined access token!' });
-
-	const {
-		method,
-		query: { login },
-	} = req;
 
 	const requestConfig = {
 		headers: {
@@ -49,6 +52,7 @@ export default async function followersHandler(
 				tempFollowersCount = data.length;
 				followersPage++;
 			} while (tempFollowersCount <= USERS_PER_PAGE && tempFollowersCount > 0);
+
 			do {
 				const { data } = await api.get(
 					`${BASE_URL}/users/${login}/following?page=${followingPage}&per_page=${USERS_PER_PAGE}`,

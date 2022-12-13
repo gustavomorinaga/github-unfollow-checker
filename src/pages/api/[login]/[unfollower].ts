@@ -1,23 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { AxiosError } from 'axios';
 
 // --- Services ---
 import { api, BASE_URL } from '@services/api';
-import { getSession } from 'next-auth/client';
 
 export default async function followersHandler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const { accessToken } = await getSession({ req });
+	const {
+		method,
+		headers,
+		query: { login, unfollower },
+	} = req;
+
+	const accessToken = headers['x-access-token'];
 	if (!accessToken)
 		return res
 			.status(401)
 			.send({ error: 'User unauthorized or undefined access token!' });
-
-	const {
-		method,
-		query: { login, unfollower },
-	} = req;
 
 	const requestConfig = {
 		headers: {
@@ -26,14 +27,20 @@ export default async function followersHandler(
 	};
 
 	if (method === 'DELETE') {
-		if (!login || !unfollower)
-			return res
-				.status(400)
-				.send({ error: 'Login and Unfollower not found in the params!' });
+		try {
+			if (!login || !unfollower)
+				return res
+					.status(400)
+					.send({ error: 'Login and Unfollower not found in the params!' });
 
-		await api.delete(`${BASE_URL}/user/following/${unfollower}`, requestConfig);
+			await api.delete(`${BASE_URL}/user/following/${unfollower}`, requestConfig);
 
-		return res.status(200).send({ message: 'User unfollowed!' });
+			return res.status(200).send({ message: 'User unfollowed!' });
+		} catch (error) {
+			if (error instanceof AxiosError) {
+				return res.status(error.response.status).send(error.response.data);
+			}
+		}
 	}
 
 	res.setHeader('Allow', ['DELETE']);

@@ -3,7 +3,7 @@ import Image from 'next/image';
 // --- Styles ---
 import styles from './index.module.scss';
 
-export default function FooterComponent(): JSX.Element {
+export default function Footer(): JSX.Element {
 	return (
 		<footer className={styles.footer}>
 			<address>
@@ -28,8 +28,8 @@ export default function FooterComponent(): JSX.Element {
 					<Image
 						src="/assets/svgs/powered-by-vercel.svg"
 						alt="Powered By Vercel"
-						layout="fill"
-						objectFit="contain"
+						width={212}
+						height={44}
 					/>
 				</picture>
 			</a>

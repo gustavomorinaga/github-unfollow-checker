@@ -21,6 +21,8 @@
 		"sourceType": "module"
 	},
 	"rules": {
-		"prettier/prettier": "error"
+		"prettier/prettier": "error",
+		"react/no-children-prop": "off",
+		"no-mixed-operators": ["error", { "allowSamePrecedence": false }]
 	}
 }

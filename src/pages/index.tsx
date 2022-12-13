@@ -1,29 +1,31 @@
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
-import { useSession } from 'next-auth/client';
-import { NextSeo } from 'next-seo';
-import { parseCookies } from 'nookies';
+import { useSession } from 'next-auth/react';
 
 // --- Components ---
 import Loader from '@components/Loader';
-import HeaderComponent from '@components/Header';
-import FooterComponent from '@components/Footer';
-import WelcomeComponent from '@components/Welcome';
-import UnfollowCheckerComponent from '@components/UnfollowChecker';
+const Header = dynamic(() => import('@components/Header'));
+import Footer from '@components/Footer';
+const Welcome = dynamic(() => import('@components/Welcome'));
+const UnfollowChecker = dynamic(() => import('@components/UnfollowChecker'));
 
-export async function getServerSideProps(context: any) {
-	const cookies = parseCookies(context);
-	if (!cookies.whitelist) cookies.whitelist = '[]';
+// --- Interfaces ---
+import { ISession } from '@interfaces/ISession';
+
+export async function getServerSideProps() {
+	const whitelist = [];
+	if (typeof window !== 'undefined') JSON.parse(localStorage.getItem('whitelist'));
 
 	return {
 		props: {
-			whitelist: JSON.parse(cookies.whitelist),
+			whitelist,
 		},
 	};
 }
 
 const HomePage: NextPage<{ whitelist?: string[] }> = props => {
-	const [session, loading] = useSession();
+	const { data: session, status } = useSession();
 	const [whitelist, setWhitelist] = useState(props.whitelist);
 
 	const handleSetWhitelist = ({
@@ -37,44 +39,25 @@ const HomePage: NextPage<{ whitelist?: string[] }> = props => {
 			? setWhitelist(whitelist.filter((login: string) => login !== unfollower))
 			: setWhitelist([...whitelist, unfollower]);
 
-	if (loading) return <Loader />;
+	if (status === 'loading') return <Loader />;
 
 	return (
 		<>
-			<NextSeo
-				title="GitHub Unfollow Checker"
-				description="Tool to check who doesn't follow you back on GitHub"
-				openGraph={{
-					type: 'website',
-					url: 'https://github-unfollow-checker.vercel.app',
-					title: 'GitHub Unfollow Checker',
-					description: "A simple tool to check the users that doesn't follow you back 🧐",
-					images: [
-						{
-							url: 'https://github-unfollow-checker.vercel.app/assets/icons/icon.svg',
-							width: 240,
-							height: 240,
-							alt: 'GitHub Unfollow Checker Icon',
-						},
-					],
-				}}
-			/>
-
-			{session && <HeaderComponent account={session.user} />}
+			{session && <Header account={session.user} />}
 
 			<main>
 				{!session ? (
-					<WelcomeComponent />
+					<Welcome />
 				) : (
-					<UnfollowCheckerComponent
-						session={session}
+					<UnfollowChecker
+						session={session as ISession}
 						whitelist={whitelist}
 						handleSetWhitelist={handleSetWhitelist}
 					/>
 				)}
 			</main>
 
-			<FooterComponent />
+			<Footer />
 		</>
 	);
 };

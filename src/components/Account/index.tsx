@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { signOut } from 'next-auth/client';
+import { signOut } from 'next-auth/react';
 
 // --- Styles ---
 import styles from './index.module.scss';
 import { FaAt, FaDoorClosed, FaDoorOpen } from 'react-icons/fa';
 import { useState } from 'react';
 
-export default function AccountComponent({ account }): JSX.Element {
+export default function Account({ account }): JSX.Element {
 	const [isHover, setIsHover] = useState(false);
 
 	const handleSignOutIcon = (value: boolean) => setIsHover(value);
@@ -24,9 +24,9 @@ export default function AccountComponent({ account }): JSX.Element {
 					<Image
 						src={account.image}
 						alt={`${account.image} Profile Image`}
+						width={100}
+						height={100}
 						loading="lazy"
-						layout="fill"
-						objectFit="cover"
 					/>
 				</picture>
 			</a>
