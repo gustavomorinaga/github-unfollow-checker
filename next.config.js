@@ -11,7 +11,6 @@ module.exports = async _phase => {
 		reactStrictMode: true,
 		swcMinify: true,
 		images: {
-			formats: ['image/avif', 'image/webp'],
 			domains: ['avatars.githubusercontent.com'],
 		},
 	};

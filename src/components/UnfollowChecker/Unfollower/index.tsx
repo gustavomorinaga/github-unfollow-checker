@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 // --- Interfaces ---
 import { IUnfollower } from '@interfaces/IUnfollower';
 import { IView } from '@interfaces/IView';
@@ -26,7 +24,7 @@ export default function Unfollower({
 			<div className={styles.details}>
 				<a href={unfollower.html_url} target="_blank" rel="noopener noreferrer">
 					<picture className={styles.avatar}>
-						<Image
+						<img
 							src={unfollower.avatar_url}
 							alt={`${unfollower.login} Profile Image`}
 							title={unfollower.login}

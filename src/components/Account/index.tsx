@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 
 // --- Styles ---
@@ -21,7 +20,7 @@ export default function Account({ account }): JSX.Element {
 				rel="noopener noreferrer"
 			>
 				<picture className={styles.avatar}>
-					<Image
+					<img
 						src={account.image}
 						alt={`${account.image} Profile Image`}
 						width={100}

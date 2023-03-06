@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 // --- Styles ---
 import styles from './index.module.scss';
 
@@ -25,7 +23,7 @@ export default function Footer(): JSX.Element {
 				rel="noopener noreferrer"
 			>
 				<picture className={styles.vercel}>
-					<Image
+					<img
 						src="/assets/svgs/powered-by-vercel.svg"
 						alt="Powered By Vercel"
 						width={212}
