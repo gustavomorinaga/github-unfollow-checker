@@ -2474,7 +2474,7 @@ packages:
     dependencies:
       '@babel/core': 7.15.5
       find-cache-dir: 3.3.2
-      loader-utils: 2.0.0
+      loader-utils: 2.0.4
       make-dir: 3.1.0
       schema-utils: 2.7.1
       webpack: 5.75.0
@@ -3900,7 +3900,7 @@ packages:
     peerDependencies:
       webpack: ^4.0.0 || ^5.0.0
     dependencies:
-      loader-utils: 2.0.0
+      loader-utils: 2.0.4
       schema-utils: 3.1.1
       webpack: 5.75.0
     dev: false
@@ -4780,8 +4780,8 @@ packages:
     engines: {node: '>=6.11.5'}
     dev: false
 
-  /loader-utils@2.0.0:
-    resolution: {integrity: sha512-rP4F0h2RaWSvPEkD7BLDFQnvSf+nK+wr3ESUjNTyAGobqrijmW92zc+SO6d4p4B1wh7+B/Jg1mkQe5NYUEHtHQ==}
+  /loader-utils@2.0.4:
+    resolution: {integrity: sha512-xXqpXoINfFhgua9xiqD8fPFHgkoq1mmmpE92WlDbm9rNRd/EbRb+Gqf908T2DMfuHjjJlksiK2RbHVOdD/MqSw==}
     engines: {node: '>=8.9.0'}
     dependencies:
       big.js: 5.2.2
@@ -7176,7 +7176,7 @@ packages:
         optional: true
     dependencies:
       file-loader: 6.2.0(webpack@5.75.0)
-      loader-utils: 2.0.0
+      loader-utils: 2.0.4
       mime-types: 2.1.29
       schema-utils: 3.1.1
       webpack: 5.75.0
