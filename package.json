@@ -42,7 +42,7 @@
 		"axios": "1.6.0",
 		"cssnano": "5.1.14",
 		"framer-motion": "7.6.19",
-		"next": "13.5.1",
+		"next": "14.2.10",
 		"next-auth": "4.24.5",
 		"next-compose-plugins": "2.2.1",
 		"next-images": "1.8.4",
