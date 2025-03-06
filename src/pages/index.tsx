@@ -39,7 +39,8 @@ const HomePage: NextPage<{ whitelist?: string[] }> = props => {
 			? setWhitelist(whitelist.filter((login: string) => login !== unfollower))
 			: setWhitelist([...whitelist, unfollower]);
 
-	if (status === 'loading') return <Loader />;
+	// if (status === 'loading') return <Loader />;
+	if (true) return <Loader />;
 
 	return (
 		<>

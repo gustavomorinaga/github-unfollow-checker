@@ -1,6 +1,18 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss';
+@plugin 'tailwind-scrollbar';
+
+@theme {
+	--animate-roller: roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+
+	@keyframes roller {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+}
 
 html,
 body {
@@ -17,7 +29,7 @@ main,
 }
 
 #__next {
-	@apply relative bg-wave md:bg-left-bottom bg-left bg-no-repeat md:bg-contain bg-cover;
+	@apply relative bg-[url(/assets/svgs/wave.svg)] md:bg-left-bottom bg-left bg-no-repeat md:bg-contain bg-cover;
 }
 
 main {

@@ -6,7 +6,6 @@ import { IUnfollower } from '@interfaces/IUnfollower';
 import { IView } from '@interfaces/IView';
 
 // --- Styles ---
-import styles from './index.module.scss';
 import { FaUsers, FaUsersSlash } from 'react-icons/fa';
 
 // --- Components ---
@@ -37,9 +36,9 @@ export default function UnfollowersList({
 		setView(view === IView.UNFOLLOWERS ? IView.WHITELIST : IView.UNFOLLOWERS);
 
 	return (
-		<div className={styles.container}>
-			<header>
-				<span className={styles.count_result}>
+		<div className="relative md:w-4/6 w-full h-full md:pb-16 pb-24 mb-44 overflow-hidden">
+			<header className="flex md:flex-row flex-col items-center justify-between gap-2 md:mr-0 mr-4 mb-4">
+				<span className="md:pl-4 pl-0 font-sans text-gray-200">
 					{view === IView.WHITELIST ? (
 						<>
 							<strong>{whitelist.length}</strong> users in the whitelist
@@ -55,10 +54,10 @@ export default function UnfollowersList({
 						</>
 					)}
 				</span>
-				<div className={styles.actions}>
+				<div className="md:w-auto w-full flex items-center gap-4 md:pl-0 pl-4">
 					{view === IView.UNFOLLOWERS ? (
 						<button
-							className={`button ${styles.whitelist}`}
+							className="button md:w-auto w-full md:justify-start justify-center hover:bg-indigo-200 hover:text-indigo-600 hover:border-indigo-600"
 							aria-label="Whitelist"
 							title="Whitelist"
 							onClick={() => handleChangeView()}
@@ -68,7 +67,7 @@ export default function UnfollowersList({
 						</button>
 					) : (
 						<button
-							className={`button ${styles.whitelist}`}
+							className="button md:w-auto w-full md:justify-start justify-center hover:bg-indigo-200 hover:text-indigo-600 hover:border-indigo-600"
 							aria-label="Unfollowers"
 							title="Unfollowers"
 							onClick={() => handleChangeView()}
@@ -78,7 +77,7 @@ export default function UnfollowersList({
 						</button>
 					)}
 					<button
-						className={`button ${styles.unfollow_all}`}
+						className="button hover:bg-red-200 hover:text-red-700 hover:border-red-700 disabled:opacity-60 disabled:pointer-events-none"
 						aria-label="Unfollow All"
 						title="Unfollow All"
 						disabled={
@@ -93,7 +92,11 @@ export default function UnfollowersList({
 					</button>
 				</div>
 			</header>
-			<Reorder.Group className={styles.list} values={users} onReorder={setUsers}>
+			<Reorder.Group
+				className="h-full flex flex-col gap-4 px-4 pb-8 list-none overflow-y-auto scrollbar scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full hover:scrollbar-thumb-gray-500"
+				values={users}
+				onReorder={setUsers}
+			>
 				<AnimatePresence>
 					{(view === IView.UNFOLLOWERS && unfollowers.length - whitelist.length > 0) ||
 					(view === IView.WHITELIST && whitelist.length) ? (
@@ -123,7 +126,9 @@ export default function UnfollowersList({
 								</Reorder.Item>
 							))
 					) : (
-						<span className={styles.data_feedback}>Everything is OK 😉</span>
+						<span className="p-4 bg-green-100 border-2 border-green-200 rounded-2xl text-center text-gray-800 text-xl font-sans font-normal">
+							Everything is OK 😉
+						</span>
 					)}
 				</AnimatePresence>
 			</Reorder.Group>

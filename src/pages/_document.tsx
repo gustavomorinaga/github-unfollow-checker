@@ -6,11 +6,6 @@ import NextDocument, {
 	DocumentContext,
 } from 'next/document';
 
-// --- Partytown ---
-import { Partytown } from '@builder.io/partytown/react';
-
-const isProduction = process.env.NODE_ENV === 'production';
-
 export default class Document extends NextDocument {
 	static async getInitialProps(ctx: DocumentContext) {
 		return NextDocument.getInitialProps(ctx);
@@ -33,8 +28,6 @@ export default class Document extends NextDocument {
 					/>
 
 					<meta name="theme-color" content="#3730A3" />
-
-					<Partytown debug={!isProduction} forward={['dataLayer.push']} />
 				</Head>
 				<body>
 					<Main />

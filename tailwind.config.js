@@ -1,8 +1,9 @@
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
 /** @type {import('tailwindcss').Config} */
-const tailwindConfig = {
+const config = {
 	important: true,
-	content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-	plugins: [require('tailwind-scrollbar')({ nocompatible: true })],
+	content: ['src/components/**/*.{js,ts,jsx,tsx}', 'src/pages/**/*.{js,ts,jsx,tsx}' ],
 	theme: {
 		minWidth: {
 			0: '0',
@@ -13,13 +14,10 @@ const tailwindConfig = {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter'],
+				sans: ['Inter', ...fontFamily.sans],
 			},
-			backgroundImage: theme => ({
-				wave: `url('/assets/svgs/wave.svg')`,
-			}),
 		},
 	},
 };
 
-module.exports = tailwindConfig;
+export default config;
