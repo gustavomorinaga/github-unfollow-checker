@@ -15,7 +15,7 @@
 		}
 	},
 	"scripts": {
-		"dev": "next dev",
+		"dev": "next dev --turbopack",
 		"start": "next start",
 		"build": "pnpm run partytown && next build",
 		"partytown": "partytown copylib public/~partytown",
@@ -42,7 +42,7 @@
 		"axios": "1.6.0",
 		"cssnano": "5.1.14",
 		"framer-motion": "7.6.19",
-		"next": "14.2.24",
+		"next": "15.2.1",
 		"next-auth": "4.24.5",
 		"next-compose-plugins": "2.2.1",
 		"next-images": "1.8.4",
@@ -50,8 +50,8 @@
 		"next-seo": "5.15.0",
 		"postcss-import": "15.1.0",
 		"postcss-nesting": "10.2.0",
-		"react": "18.2.0",
-		"react-dom": "18.2.0",
+		"react": "19.0.0",
+		"react-dom": "19.0.0",
 		"react-icons": "4.7.1",
 		"sass": "1.56.2",
 		"sharp": "0.32.6",
@@ -60,14 +60,14 @@
 	"devDependencies": {
 		"@commitlint/cli": "17.3.0",
 		"@commitlint/config-conventional": "17.3.0",
-		"@next/eslint-plugin-next": "13.0.6",
+		"@next/eslint-plugin-next": "15.2.1",
 		"@types/node": "18.11.13",
-		"@types/react": "18.0.26",
+		"@types/react": "19.0.10",
 		"@typescript-eslint/eslint-plugin": "5.46.0",
 		"@typescript-eslint/parser": "5.46.0",
 		"autoprefixer": "10.4.13",
 		"eslint": "8.29.0",
-		"eslint-config-next": "14.2.24",
+		"eslint-config-next": "15.2.1",
 		"eslint-config-prettier": "8.5.0",
 		"eslint-plugin-prettier": "4.2.1",
 		"husky": "8.0.2",
@@ -83,6 +83,9 @@
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"sharp"
-		]
+		],
+		"overrides": {
+			"@types/react": "19.0.10"
+		}
 	}
 }

@@ -1,6 +1,8 @@
 // --- Styles ---
 import styles from './index.module.scss';
 
+import type { JSX } from 'react';
+
 export default function Footer(): JSX.Element {
 	return (
 		<footer className={styles.footer}>

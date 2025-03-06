@@ -4,6 +4,8 @@ import { signIn } from 'next-auth/react';
 import styles from './index.module.scss';
 import { FaGithub } from 'react-icons/fa';
 
+import type { JSX } from 'react';
+
 export default function Welcome(): JSX.Element {
 	return (
 		<div className={styles.container}>

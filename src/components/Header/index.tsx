@@ -4,6 +4,8 @@ import styles from './index.module.scss';
 // --- Components ---
 import Account from '@components/Account';
 
+import type { JSX } from 'react';
+
 export default function Header({ account }): JSX.Element {
 	return (
 		<header className={styles.header}>

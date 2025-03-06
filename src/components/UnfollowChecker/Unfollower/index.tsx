@@ -6,6 +6,8 @@ import { IView } from '@interfaces/IView';
 import styles from './index.module.scss';
 import { FaUserMinus, FaUserPlus, FaUserSlash } from 'react-icons/fa';
 
+import type { JSX } from 'react';
+
 export default function Unfollower({
 	unfollower,
 	view,
