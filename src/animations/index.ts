@@ -1,3 +1,1 @@
-import slideFade from './slideFade';
-
-export { slideFade };
+export * from './slideFade';

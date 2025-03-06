@@ -3,27 +3,22 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 // --- Services ---
 import { api, BASE_URL } from '@services/api';
 
-export default async function followersHandler(
-	req: NextApiRequest,
-	res: NextApiResponse
-) {
+export default async function followersHandler(req: NextApiRequest, res: NextApiResponse) {
 	const {
 		method,
 		headers,
 		query: { login },
-		body: { unfollowers },
+		body: { unfollowers }
 	} = req;
 
 	const accessToken = headers['x-access-token'];
 	if (!accessToken)
-		return res
-			.status(401)
-			.send({ error: 'User unauthorized or undefined access token!' });
+		return res.status(401).send({ error: 'User unauthorized or undefined access token!' });
 
 	const requestConfig = {
 		headers: {
-			Authorization: `token ${accessToken}`,
-		},
+			Authorization: `token ${accessToken}`
+		}
 	};
 
 	if (method === 'DELETE') {

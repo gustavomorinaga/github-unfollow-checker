@@ -16,14 +16,14 @@ export const authOptions: AuthOptions = {
 			clientId: process.env.GITHUB_CLIENT_ID,
 			clientSecret: process.env.GITHUB_CLIENT_SECRET,
 			httpOptions: {
-				timeout: 30000, // 30 seconds
+				timeout: 30000 // 30 seconds
 			},
 			authorization: {
 				params: {
-					scope: 'user:follow', // to allow unfollow option
-				},
-			},
-		}),
+					scope: 'user:follow' // to allow unfollow option
+				}
+			}
+		})
 	],
 	callbacks: {
 		async jwt({ token, account, profile }) {
@@ -40,12 +40,12 @@ export const authOptions: AuthOptions = {
 			const user = {
 				...session.user,
 				login: token.login,
-				html_url: token.html_url,
+				html_url: token.html_url
 			};
 
 			return { ...session, user, accessToken: token.accessToken } as ISession;
-		},
-	},
+		}
+	}
 };
 
 export default NextAuth(authOptions);

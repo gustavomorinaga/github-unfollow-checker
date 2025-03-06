@@ -4,8 +4,8 @@ export const BASE_URL = 'https://api.github.com';
 
 export const api = axios.create({
 	headers: {
-		accept: 'application/vnd.github+json',
-	},
+		accept: 'application/vnd.github+json'
+	}
 });
 
 export const fetcher = async <Data = any>(
@@ -15,5 +15,4 @@ export const fetcher = async <Data = any>(
 		headers?: any;
 		body?: any;
 	}
-): Promise<Data> =>
-	await api(url, { ...opts, data: opts.body }).then<Data>(res => res.data);
+): Promise<Data> => await api(url, { ...opts, data: opts.body }).then<Data>((res) => res.data);

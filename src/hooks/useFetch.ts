@@ -9,7 +9,7 @@ export function useFetch<Data = any, Error = any>(
 ) {
 	const { data, error, mutate, isValidating } = useSWR<Data, Error>(
 		url,
-		async url => {
+		async (url) => {
 			const response = await fetcher(`${url}`, { headers: opts.headers });
 
 			return response;
@@ -19,7 +19,7 @@ export function useFetch<Data = any, Error = any>(
 			refreshInterval: 60000,
 			revalidateIfStale: false,
 			revalidateOnReconnect: true,
-			revalidateOnFocus: false,
+			revalidateOnFocus: false
 		}
 	);
 

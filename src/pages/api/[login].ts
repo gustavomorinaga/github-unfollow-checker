@@ -8,26 +8,21 @@ import { api, BASE_URL } from '@services/api';
 
 const USERS_PER_PAGE = 100;
 
-export default async function followersHandler(
-	req: NextApiRequest,
-	res: NextApiResponse
-) {
+export default async function followersHandler(req: NextApiRequest, res: NextApiResponse) {
 	const {
 		method,
 		headers,
-		query: { login },
+		query: { login }
 	} = req;
 
 	const accessToken = headers['x-access-token'];
 	if (!accessToken)
-		return res
-			.status(401)
-			.send({ error: 'User unauthorized or undefined access token!' });
+		return res.status(401).send({ error: 'User unauthorized or undefined access token!' });
 
 	const requestConfig = {
 		headers: {
-			Authorization: `token ${accessToken}`,
-		},
+			Authorization: `token ${accessToken}`
+		}
 	};
 
 	if (method === 'GET') {
@@ -63,14 +58,14 @@ export default async function followersHandler(
 				followingPage++;
 			} while (tempFollowingCount <= USERS_PER_PAGE && tempFollowingCount > 0);
 
-			const diffUsers = following.filter(follower =>
-				followers.every(follow => !follow.login.includes(follower.login))
+			const diffUsers = following.filter((follower) =>
+				followers.every((follow) => !follow.login.includes(follower.login))
 			);
 
 			const diff = diffUsers.map(({ login, html_url, avatar_url }) => ({
 				login,
 				html_url,
-				avatar_url,
+				avatar_url
 			}));
 
 			diff.sort((a, b) => a.login.localeCompare(b.login));

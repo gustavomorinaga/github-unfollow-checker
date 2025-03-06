@@ -19,28 +19,21 @@ export async function getServerSideProps() {
 
 	return {
 		props: {
-			whitelist,
-		},
+			whitelist
+		}
 	};
 }
 
-const HomePage: NextPage<{ whitelist?: string[] }> = props => {
+const HomePage: NextPage<{ whitelist?: string[] }> = (props) => {
 	const { data: session, status } = useSession();
 	const [whitelist, setWhitelist] = useState(props.whitelist);
 
-	const handleSetWhitelist = ({
-		unfollower,
-		remove,
-	}: {
-		unfollower: string;
-		remove?: boolean;
-	}) =>
+	const handleSetWhitelist = ({ unfollower, remove }: { unfollower: string; remove?: boolean }) =>
 		remove
 			? setWhitelist(whitelist.filter((login: string) => login !== unfollower))
 			: setWhitelist([...whitelist, unfollower]);
 
-	// if (status === 'loading') return <Loader />;
-	if (true) return <Loader />;
+	if (status === 'loading') return <Loader />;
 
 	return (
 		<>

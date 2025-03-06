@@ -20,7 +20,7 @@ export default function UnfollowersList({
 	handleUnfollowUser,
 	handleUnfollowAllUsers,
 	handleAddUserToWhitelist,
-	handleRemoveUserFromWhitelist,
+	handleRemoveUserFromWhitelist
 }: {
 	unfollowers: IUnfollower[];
 	whitelist: string[];
@@ -36,9 +36,9 @@ export default function UnfollowersList({
 		setView(view === IView.UNFOLLOWERS ? IView.WHITELIST : IView.UNFOLLOWERS);
 
 	return (
-		<div className="relative md:w-4/6 w-full h-full md:pb-16 pb-24 mb-44 overflow-hidden">
-			<header className="flex md:flex-row flex-col items-center justify-between gap-2 md:mr-0 mr-4 mb-4">
-				<span className="md:pl-4 pl-0 font-sans text-gray-200">
+		<div className='relative mb-44 h-full w-full overflow-hidden pb-24 md:w-4/6 md:pb-16'>
+			<header className='mr-4 mb-4 flex flex-col items-center justify-between gap-2 md:mr-0 md:flex-row'>
+				<span className='pl-0 font-sans text-gray-200 md:pl-4'>
 					{view === IView.WHITELIST ? (
 						<>
 							<strong>{whitelist.length}</strong> users in the whitelist
@@ -54,12 +54,12 @@ export default function UnfollowersList({
 						</>
 					)}
 				</span>
-				<div className="md:w-auto w-full flex items-center gap-4 md:pl-0 pl-4">
+				<div className='flex w-full items-center gap-4 pl-4 md:w-auto md:pl-0'>
 					{view === IView.UNFOLLOWERS ? (
 						<button
-							className="button md:w-auto w-full md:justify-start justify-center hover:bg-indigo-200 hover:text-indigo-600 hover:border-indigo-600"
-							aria-label="Whitelist"
-							title="Whitelist"
+							className='button w-full justify-center hover:border-indigo-600 hover:bg-indigo-200 hover:text-indigo-600 md:w-auto md:justify-start'
+							aria-label='Whitelist'
+							title='Whitelist'
 							onClick={() => handleChangeView()}
 						>
 							<FaUsers />
@@ -67,9 +67,9 @@ export default function UnfollowersList({
 						</button>
 					) : (
 						<button
-							className="button md:w-auto w-full md:justify-start justify-center hover:bg-indigo-200 hover:text-indigo-600 hover:border-indigo-600"
-							aria-label="Unfollowers"
-							title="Unfollowers"
+							className='button w-full justify-center hover:border-indigo-600 hover:bg-indigo-200 hover:text-indigo-600 md:w-auto md:justify-start'
+							aria-label='Unfollowers'
+							title='Unfollowers'
 							onClick={() => handleChangeView()}
 						>
 							<FaUsers />
@@ -77,12 +77,11 @@ export default function UnfollowersList({
 						</button>
 					)}
 					<button
-						className="button hover:bg-red-200 hover:text-red-700 hover:border-red-700 disabled:opacity-60 disabled:pointer-events-none"
-						aria-label="Unfollow All"
-						title="Unfollow All"
+						className='button hover:border-red-700 hover:bg-red-200 hover:text-red-700 disabled:pointer-events-none disabled:opacity-60'
+						aria-label='Unfollow All'
+						title='Unfollow All'
 						disabled={
-							(view === IView.UNFOLLOWERS &&
-								unfollowers.length - whitelist.length <= 0) ||
+							(view === IView.UNFOLLOWERS && unfollowers.length - whitelist.length <= 0) ||
 							(view === IView.WHITELIST && whitelist.length <= 0)
 						}
 						onClick={() => handleUnfollowAllUsers(view)}
@@ -93,7 +92,7 @@ export default function UnfollowersList({
 				</div>
 			</header>
 			<Reorder.Group
-				className="h-full flex flex-col gap-4 px-4 pb-8 list-none overflow-y-auto scrollbar scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full hover:scrollbar-thumb-gray-500"
+				className='scrollbar scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full hover:scrollbar-thumb-gray-500 flex h-full list-none flex-col gap-4 overflow-y-auto px-4 pb-8'
 				values={users}
 				onReorder={setUsers}
 			>
@@ -111,9 +110,9 @@ export default function UnfollowersList({
 									value={unfollower.login}
 									key={unfollower.login}
 									variants={slideFade(index * 0.1)}
-									initial="initial"
-									animate="animate"
-									exit="exit"
+									initial='initial'
+									animate='animate'
+									exit='exit'
 									drag={false}
 								>
 									<Unfollower
@@ -126,7 +125,7 @@ export default function UnfollowersList({
 								</Reorder.Item>
 							))
 					) : (
-						<span className="p-4 bg-green-100 border-2 border-green-200 rounded-2xl text-center text-gray-800 text-xl font-sans font-normal">
+						<span className='rounded-2xl border-2 border-green-200 bg-green-100 p-4 text-center font-sans text-xl font-normal text-gray-800'>
 							Everything is OK 😉
 						</span>
 					)}

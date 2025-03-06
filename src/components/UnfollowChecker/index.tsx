@@ -24,10 +24,10 @@ interface IUnfollowCheckerProps {
 export default function UnfollowChecker({
 	session,
 	whitelist,
-	handleSetWhitelist,
+	handleSetWhitelist
 }: IUnfollowCheckerProps): JSX.Element {
 	let { data, error, mutate } = useFetch<IUnfollower[]>(`/api/${session.user.login}`, {
-		headers: { 'x-access-token': session.accessToken },
+		headers: { 'x-access-token': session.accessToken }
 	});
 
 	const existUserInWhitelist = useCallback(
@@ -65,10 +65,9 @@ export default function UnfollowChecker({
 
 	const handleUnfollowUser = useCallback(
 		async (unfollower: string, view: IView) => {
-			const isUserUnfollowed = await api.delete(
-				`/api/${session.user.login}/${unfollower}`,
-				{ headers: { 'x-access-token': session.accessToken } }
-			);
+			const isUserUnfollowed = await api.delete(`/api/${session.user.login}/${unfollower}`, {
+				headers: { 'x-access-token': session.accessToken }
+			});
 
 			if (!isUserUnfollowed) return;
 
@@ -84,19 +83,14 @@ export default function UnfollowChecker({
 	const handleUnfollowAllUsers = async (view: IView) => {
 		const filteredUsers = data
 			.map(({ login }) => login)
-			.filter(login =>
-				view === IView.UNFOLLOWERS
-					? !whitelist.includes(login)
-					: whitelist.includes(login)
+			.filter((login) =>
+				view === IView.UNFOLLOWERS ? !whitelist.includes(login) : whitelist.includes(login)
 			);
 
-		const isAllUsersUnfollowed = await api.delete(
-			`/api/${session.user.login}/unfollowAll`,
-			{
-				headers: { 'x-access-token': session.accessToken },
-				data: { unfollowers: filteredUsers },
-			}
-		);
+		const isAllUsersUnfollowed = await api.delete(`/api/${session.user.login}/unfollowAll`, {
+			headers: { 'x-access-token': session.accessToken },
+			data: { unfollowers: filteredUsers }
+		});
 
 		if (!isAllUsersUnfollowed) return;
 
