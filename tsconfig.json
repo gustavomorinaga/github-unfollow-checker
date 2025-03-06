@@ -1,8 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "ESNext",
-		"lib": ["dom", "dom.iterable", "ESNext"],
-		"types": ["node"],
+		"target": "ES5",
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": false,
@@ -14,7 +13,6 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
-		"baseUrl": ".",
 		"paths": {
 			"@docs/*": ["./docs/*"],
 			"@icons/*": ["./public/assets/icons/*"],
@@ -27,9 +25,7 @@
 			"@pages/*": ["./src/pages/*"],
 			"@services/*": ["./src/services/*"],
 			"@styles/*": ["./src/styles/*"]
-		},
-		"typeRoots": ["./types"],
-		"incremental": true
+		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]

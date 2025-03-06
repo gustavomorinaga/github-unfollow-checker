@@ -1,32 +1,41 @@
 {
-	"name": "reactsetup",
+	"name": "github-unfollow-checker",
 	"version": "2.0.2",
 	"private": true,
-	"author": "Gustavo Matheus <gustavo.morinaga27@gmail.com>",
+	"type": "module",
 	"description": "Tool to check who doesn't follow you back on GitHub",
-	"lint-staged": {
-		"src/**/*.+(js|jsx|ts|tsx|json|md)": [
-			"pnpm run lint:fix"
-		]
+	"author": {
+		"name": "Gustavo Morinaga",
+		"email": "me@gustavomorinaga.dev",
+		"url": "https://gustavomorinaga.dev"
 	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/gustavomorinaga/github-unfollow-checker"
 	},
+	"engines": {
+		"pnpm": ">=10",
+		"node": ">=22"
+	},
+	"packageManager": "pnpm@10.5.2",
 	"scripts": {
 		"dev": "next dev",
 		"start": "next start",
 		"build": "next build",
 		"lint": "next lint",
-		"lint:fix": "eslint src --fix && pnpm run format",
+		"lint:fix": "next lint --fix",
+		"format": "prettier --write .",
+		"format:staged": "pretty-quick --staged",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"type-check": "tsc --noEmit",
-		"format": "prettier --write src",
+		"clean": "del-cli ./**/node_modules/ ./**/.next/ ./**/.vercel/",
+		"clean:cache": "del-cli ./**/.next/",
+		"clean:modules": "del-cli ./**/node_modules/",
+		"clean:vercel": "del-cli ./**/.vercel/",
 		"up": "pnpm up --interactive",
 		"up-latest": "pnpm up --latest",
-		"release": "standard-version",
+		"release": "commit-and-tag-version",
 		"release-as-major": "pnpm run release --release-as major",
 		"release-as-minor": "pnpm run release --release-as minor",
 		"release-as-patch": "pnpm run release --release-as patch",
@@ -34,11 +43,11 @@
 		"pull": "git rebase origin main -i",
 		"pre-commit": "pnpm run lint",
 		"postbuild": "next-sitemap --config next-sitemap.config.js",
-		"prepare": "husky install"
+		"prepare": "husky",
+		"preinstall": "npx only-allow pnpm"
 	},
 	"dependencies": {
-		"axios": "1.6.0",
-		"cssnano": "5.1.14",
+		"axios": "1.8.1",
 		"framer-motion": "7.6.19",
 		"next": "15.2.1",
 		"next-auth": "4.24.5",
@@ -49,41 +58,37 @@
 		"react": "19.0.0",
 		"react-dom": "19.0.0",
 		"react-icons": "4.7.1",
-		"sass": "1.56.2",
-		"sharp": "0.32.6",
 		"swr": "2.0.0"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "17.3.0",
-		"@commitlint/config-conventional": "17.3.0",
+		"@commitlint/cli": "19.7.1",
+		"@commitlint/config-conventional": "19.7.1",
 		"@eslint/eslintrc": "3.3.0",
 		"@eslint/js": "9.21.0",
 		"@next/eslint-plugin-next": "15.2.1",
 		"@tailwindcss/postcss": "^4.0.10",
-		"@types/node": "18.11.13",
+		"@types/node": "22.13.9",
 		"@types/react": "19.0.10",
-		"@typescript-eslint/eslint-plugin": "5.46.0",
-		"@typescript-eslint/parser": "5.46.0",
+		"@typescript-eslint/eslint-plugin": "8.26.0",
+		"@typescript-eslint/parser": "8.26.0",
+		"commit-and-tag-version": "12.5.0",
+		"del-cli": "6.0.0",
 		"eslint": "9.21.0",
 		"eslint-config-next": "15.2.1",
 		"eslint-config-prettier": "10.0.2",
 		"eslint-plugin-prettier": "5.2.3",
-		"globals": "16.0.0",
-		"husky": "8.0.2",
-		"lint-staged": "13.1.0",
+		"husky": "9.1.7",
+		"lint-staged": "15.4.3",
 		"next-sitemap": "3.1.32",
-		"postcss": "8.4.31",
+		"postcss": "8.5.3",
 		"prettier": "3.5.3",
 		"prettier-plugin-tailwindcss": "0.6.11",
-		"standard-version": "9.5.0",
+		"pretty-quick": "4.1.1",
 		"tailwind-scrollbar": "4.0.1",
 		"tailwindcss": "4.0.10",
-		"typescript": "4.9.5"
+		"typescript": "5.8.2"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": [
-			"sharp"
-		],
 		"overrides": {
 			"@types/react": "19.0.10"
 		}

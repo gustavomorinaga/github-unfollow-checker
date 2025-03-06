@@ -2,7 +2,7 @@ import type { Variants } from 'framer-motion';
 
 type TSlideFade = (delay: number) => Variants;
 
-export const slideFade: TSlideFade = (delay = 0) => {
+const slideFade: TSlideFade = (delay = 0) => {
 	return {
 		initial: {
 			y: 10,
@@ -25,3 +25,5 @@ export const slideFade: TSlideFade = (delay = 0) => {
 		}
 	};
 };
+
+export default slideFade;
