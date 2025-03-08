@@ -5,6 +5,7 @@
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": false,
+		"strictNullChecks": true,
 		"forceConsistentCasingInFileNames": true,
 		"noEmit": true,
 		"esModuleInterop": true,
@@ -13,21 +14,12 @@
 		"resolveJsonModule": true,
 		"incremental": true,
 		"isolatedModules": true,
+		"skipDefaultLibCheck": true,
 		"jsx": "preserve",
+		"plugins": [{ "name": "next" }],
 		"paths": {
-			"@docs/*": ["./docs/*"],
-			"@icons/*": ["./public/assets/icons/*"],
-			"@images/*": ["./public/assets/images/*"],
-			"@svgs/*": ["./public/assets/svgs/*"],
-			"@animations/*": ["./src/animations/*"],
-			"@components/*": ["./src/components/*"],
-			"@hooks/*": ["./src/hooks/*"],
-			"@interfaces/*": ["./src/interfaces/*"],
-			"@pages/*": ["./src/pages/*"],
-			"@services/*": ["./src/services/*"],
-			"@styles/*": ["./src/styles/*"]
+			"$*": ["./src/*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-	"exclude": ["node_modules"]
+	"include": [".next/types/**/*.ts", "next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]
 }

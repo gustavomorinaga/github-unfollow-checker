@@ -15,4 +15,4 @@ export const fetcher = async <Data = any>(
 		headers?: any;
 		body?: any;
 	}
-): Promise<Data> => await api(url, { ...opts, data: opts.body }).then<Data>((res) => res.data);
+): Promise<Data> => await api(url, { ...opts, data: opts?.body }).then<Data>((res) => res.data);
