@@ -22,7 +22,7 @@
 <br>
 <p align="center">
   <a href="https://vercel.com" target="_blank" rel="noopener">
-    <img src="./public/assets/svgs/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
+    <img src="./public/assets/images/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
   </a>
   <br>
   <br>

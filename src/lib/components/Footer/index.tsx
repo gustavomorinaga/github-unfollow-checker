@@ -18,7 +18,7 @@ export default function Footer(): JSX.Element {
 			<a className='max-w-max' href='http://vercel.com' target='_blank' rel='noopener noreferrer'>
 				<picture className='relative block h-8 w-28'>
 					<img
-						src='/assets/svgs/powered-by-vercel.svg'
+						src='/assets/images/powered-by-vercel.svg'
 						alt='Powered By Vercel'
 						width={212}
 						height={44}

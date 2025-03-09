@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
 import '$lib/styles/global.scss';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
 	applicationName: 'GitHub Unfollow Checker',
@@ -45,11 +45,7 @@ export const metadata: Metadata = {
 	}
 };
 
-type TRootLayoutProps = Readonly<{
-	children: React.ReactNode;
-}>;
-
-export default function RootLayout({ children }: TRootLayoutProps) {
+export default function RootLayout({ children }: React.PropsWithChildren) {
 	return (
 		<html lang='en'>
 			<head>

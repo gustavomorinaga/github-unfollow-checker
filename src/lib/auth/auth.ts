@@ -30,7 +30,11 @@ declare module 'next-auth/jwt' {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	providers: [GitHub],
+	pages: {
+		signIn: '/login'
+	},
 	callbacks: {
+		authorized: async ({ auth }) => Boolean(auth),
 		jwt: async ({ account, profile, token }) => {
 			if (!account?.access_token) return token;
 			if (!profile) return token;

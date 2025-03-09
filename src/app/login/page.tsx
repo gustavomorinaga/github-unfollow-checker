@@ -1,32 +1,17 @@
-import { signIn } from '$lib/auth';
-import { FaGithub } from 'react-icons/fa';
+import { LoginForm } from '$lib/features/auth/components/login-form';
 
 export default function LoginPage() {
-	const handleSignIn = async () => {
-		'use server';
-		return signIn();
-	};
-
 	return (
-		<div className='relative flex h-full w-full flex-col items-center justify-center gap-4 text-center'>
-			<div className='-mt-32 flex h-full w-full flex-col items-center justify-center gap-4 px-4 text-center md:-mt-0'>
-				<h1 className='my-0 font-sans text-4xl leading-tight font-extrabold text-gray-100 md:text-5xl'>
+		<div className='bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10'>
+			<div className='flex w-full max-w-sm flex-col gap-6'>
+				<a href='/' className='flex items-center gap-2 self-center font-medium'>
+					<div className='flex size-6 items-center justify-center rounded-md'>
+						<img src='/assets/images/icon.svg' alt='GitHub Unfollow Checker' />
+					</div>
 					GitHub Unfollow Checker
-				</h1>
+				</a>
 
-				<p className='my-0 font-sans text-lg text-gray-300'>
-					A simple tool to check the users that doesn&apos;t follow you back 🧐
-				</p>
-
-				<form action={handleSignIn}>
-					<button
-						className='flex cursor-pointer items-center justify-center gap-2 rounded-3xl bg-green-300 px-6 py-4 font-sans text-xl text-gray-800 shadow-xl transition-colors ease-in-out hover:bg-green-400'
-						aria-label='Sign In'
-					>
-						<FaGithub />
-						Sign In
-					</button>
-				</form>
+				<LoginForm />
 			</div>
 		</div>
 	);
