@@ -5,9 +5,9 @@ const compat = new FlatCompat({
 });
 
 /** @type {import('eslint').Linter.Config} */
-export default [
+const config = [
 	...compat.config({
-		extends: ['next', 'next/typescript', 'plugin:prettier/recommended'],
+		extends: ['next/core-web-vitals', 'next/typescript', 'prettier'],
 		plugins: ['prettier']
 	}),
 	{
@@ -40,3 +40,5 @@ export default [
 		}
 	}
 ];
+
+export default config;

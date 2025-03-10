@@ -1,9 +1,14 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
+import tailwindcssAnimate from 'tailwindcss-animate';
 
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
 	darkMode: ['class'],
-	content: ['app/**/*.{ts,tsx}', 'components/**/*.{ts,tsx}'],
+	content: [
+		'src/app/**/*.{ts,tsx}',
+		'src/lib/components/**/*.{ts,tsx}',
+		'src/lib/features/**/*.{ts,tsx}'
+	],
 	theme: {
 		extend: {
 			fontFamily: {
@@ -82,5 +87,7 @@ export default {
 			}
 		}
 	},
-	plugins: [require('tailwindcss-animate')]
+	plugins: [tailwindcssAnimate]
 };
+
+export default config;
