@@ -1,7 +1,14 @@
 import { signIn } from '$lib/auth';
 import { GitHub } from '$lib/components/icons/github';
-import { Button } from '$lib/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
+import { ShimmerButton } from '$lib/components/magicui/shimmer-button';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle
+} from '$lib/components/ui/card';
 import { cn } from '$lib/utils/ui';
 
 /**
@@ -34,19 +41,21 @@ export async function LoginForm({ className, ...props }: React.ComponentPropsWit
 					<form action={handleSignIn}>
 						<div className='grid gap-6'>
 							<div className='flex flex-col gap-4'>
-								<Button type='submit' className='w-full'>
-									<GitHub className='size-5 shrink-0' />
+								<ShimmerButton type='submit' className='w-full'>
+									<GitHub className='mr-3 size-5 shrink-0' />
 									Login with GitHub
-								</Button>
+								</ShimmerButton>
 							</div>
 						</div>
 					</form>
 				</CardContent>
+				<CardFooter>
+					<p className='text-muted-foreground [&_a]:hover:text-primary text-center text-xs text-balance [&_a]:underline [&_a]:underline-offset-4'>
+						By clicking continue, you agree to our <a href='#'>Terms of Service</a> and{' '}
+						<a href='#'>Privacy Policy</a>.
+					</p>
+				</CardFooter>
 			</Card>
-			<div className='text-muted-foreground [&_a]:hover:text-primary text-center text-xs text-balance [&_a]:underline [&_a]:underline-offset-4'>
-				By clicking continue, you agree to our <a href='#'>Terms of Service</a> and{' '}
-				<a href='#'>Privacy Policy</a>.
-			</div>
 		</div>
 	);
 }

@@ -48,15 +48,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: React.PropsWithChildren) {
 	return (
 		<html lang='en'>
-			<head>
-				<link rel='preconnect' href='https://fonts.googleapis.com' />
-				<link rel='preconnect' href='https://fonts.gstatic.com' />
-				<link
-					href='https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;800&display=swap'
-					rel='stylesheet'
-				/>
-			</head>
-
 			<body>
 				<main>{children}</main>
 			</body>
