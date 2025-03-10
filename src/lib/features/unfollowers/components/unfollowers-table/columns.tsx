@@ -1,6 +1,7 @@
 'use client';
 
 import { Avatar, AvatarImage } from '$lib/components/ui/avatar';
+import { Badge } from '$lib/components/ui/badge';
 import { Button } from '$lib/components/ui/button';
 import { Checkbox } from '$lib/components/ui/checkbox';
 import { Tooltip, TooltipContent, TooltipTrigger } from '$lib/components/ui/tooltip';
@@ -33,14 +34,19 @@ const columns: Array<ColumnDef<TUser>> = [
 	},
 	{
 		accessorKey: 'avatar_url',
-		size: 16,
-		header: 'Avatar',
+		size: 20,
+		header: () => <span>Avatar</span>,
 		cell: ({ row }) => {
 			const { avatar_url: image, login: username, html_url: profileURL } = row.original;
 
 			return (
-				<a href={profileURL} target='_blank' rel='noopener noreferrer' className='contents'>
-					<Avatar>
+				<a
+					href={profileURL}
+					target='_blank'
+					rel='noopener noreferrer'
+					className='hover:[&>span]:outline-primary contents'
+				>
+					<Avatar className='outline transition-colors'>
 						<AvatarImage src={image} alt={`${username} avatar`} loading='lazy' />
 					</Avatar>
 				</a>
@@ -49,24 +55,34 @@ const columns: Array<ColumnDef<TUser>> = [
 	},
 	{
 		accessorKey: 'login',
-		size: 0,
-		header: 'Username',
+		header: () => <span>Username</span>,
 		cell: ({ row }) => {
-			const { login: username, html_url: profileURL } = row.original;
+			const { login: username, html_url: profileURL, type } = row.original;
 
 			return (
-				<Button variant='link' aria-label={username} asChild className='w-full justify-start px-0'>
-					<a href={profileURL} target='_blank' rel='noopener noreferrer'>
-						<span className='select-none'>{username}</span>
-					</a>
-				</Button>
+				<div className='flex items-center gap-2'>
+					<Badge variant='outline' className='select-none'>
+						{type}
+					</Badge>
+
+					<Button
+						variant='link'
+						aria-label={`@${username}`}
+						asChild
+						className='w-full justify-start px-0'
+					>
+						<a href={profileURL} target='_blank' rel='noopener noreferrer'>
+							<span className='select-none'>@{username}</span>
+						</a>
+					</Button>
+				</div>
 			);
 		}
 	},
 	{
 		id: 'actions',
-		size: 52,
-		header: 'Actions',
+		size: 44,
+		header: () => <span>Actions</span>,
 		cell: ({ row }) => {
 			const { login: username, html_url: profileURL } = row.original;
 

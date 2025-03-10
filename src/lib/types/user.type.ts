@@ -17,7 +17,7 @@ export type TUser = {
 	repos_url: string;
 	events_url: string;
 	received_events_url: string;
-	type: string;
+	type: 'User' | 'Organization';
 	site_admin: boolean;
 	starred_at: string;
 	user_view_type: string;
