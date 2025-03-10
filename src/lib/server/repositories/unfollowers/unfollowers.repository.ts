@@ -1,6 +1,6 @@
 import { GITHUB_API_URL } from '$lib/server/constants/github';
 import type { TUser } from '$lib/types';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 
 async function fetchAllPages(url: URL, headers: RequestInit) {
 	let results: Array<TUser> = [];
