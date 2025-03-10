@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table';
 
 import {
@@ -22,10 +24,13 @@ export function DataTable<TData, TValue>({
 	columns,
 	data
 }: DataTableProps<TData, TValue>) {
+	const [rowSelection, setRowSelection] = React.useState({});
 	const table = useReactTable({
 		data,
 		columns,
-		getCoreRowModel: getCoreRowModel()
+		getCoreRowModel: getCoreRowModel(),
+		onRowSelectionChange: setRowSelection,
+		state: { rowSelection }
 	});
 
 	return (
@@ -38,6 +43,7 @@ export function DataTable<TData, TValue>({
 								return (
 									<TableHead
 										key={header.id}
+										colSpan={header.colSpan}
 										style={{
 											maxWidth: header.column.columnDef.size || undefined,
 											minWidth: header.column.columnDef.size || undefined

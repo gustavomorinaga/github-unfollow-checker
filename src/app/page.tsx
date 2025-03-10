@@ -1,4 +1,5 @@
 import { auth } from '$lib/auth';
+import { TooltipProvider } from '$lib/components/ui/tooltip';
 import { UnfollowersDataTable } from '$lib/features/unfollowers/components/unfollowers-table';
 import type { TUser } from '$lib/types';
 import { headers } from 'next/headers';
@@ -18,8 +19,10 @@ export default async function HomePage() {
 	const data = await getData();
 
 	return (
-		<section className='container mx-auto md:max-w-3xl'>
-			<UnfollowersDataTable data={data} />
-		</section>
+		<TooltipProvider>
+			<section className='container mx-auto md:max-w-3xl'>
+				<UnfollowersDataTable data={data} />
+			</section>
+		</TooltipProvider>
 	);
 }
