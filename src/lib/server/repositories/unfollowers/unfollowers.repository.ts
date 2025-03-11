@@ -5,7 +5,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 async function fetchAllPages(url: URL, headers: RequestInit) {
 	let results: Array<TUser> = [];
 	let page = 1;
-	let per_page = 100;
+	const per_page = 100;
 	let hasMore = true;
 
 	while (hasMore) {
