@@ -9,6 +9,9 @@ import type { TUser } from '$lib/types';
 import type { ColumnDef } from '@tanstack/react-table';
 import { ExternalLink, UserRoundPlus, UserRoundX } from 'lucide-react';
 
+/**
+ * Defines the columns for the Unfollowers Table.
+ */
 const columns: Array<ColumnDef<TUser>> = [
 	{
 		id: 'select',

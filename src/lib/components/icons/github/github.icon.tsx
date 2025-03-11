@@ -1,5 +1,12 @@
 import { cn } from '$lib/utils/ui';
 
+/**
+ * A React functional component that renders the GitHub logo as an SVG.
+ *
+ * @param props - The properties passed to the component.
+ * @param [props.className] - An optional class name to apply to the SVG element.
+ * @returns The SVG representation of the GitHub logo.
+ */
 export function GitHub({ className, ...props }: React.ComponentProps<'svg'>) {
 	return (
 		<svg

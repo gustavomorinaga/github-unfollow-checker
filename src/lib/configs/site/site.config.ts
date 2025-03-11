@@ -1,18 +1,32 @@
 import type { Metadata } from 'next';
 
 export type TRepoMetadata = {
-	email: string;
-	owner: string;
+	owner: {
+		email: string;
+		name: string;
+		username: string;
+	};
 	repo: string;
 };
 
+/**
+ * Metadata information about the repository owner and the repository itself.
+ */
 export const repoMetadata: TRepoMetadata = {
-	email: 'me@gustavomorinaga.dev',
-	owner: 'gustavomorinaga',
+	owner: {
+		email: 'me@gustavomorinaga.dev',
+		name: 'Gustavo Morinaga',
+		username: 'gustavomorinaga'
+	},
 	repo: 'github-unfollow-checker'
 };
 
-export const siteMetadata: Metadata = {
+export type TSiteMetadata = Metadata & { other: Metadata['other'] & { 'theme-color': string } };
+
+/**
+ * Metadata information about the site.
+ */
+export const siteMetadata: TSiteMetadata = {
 	applicationName: 'GitHub Unfollow Checker',
 	title: 'GitHub Unfollow Checker',
 	description: "A simple tool to check the users that doesn't follow you back 🧐",
@@ -31,7 +45,7 @@ export const siteMetadata: Metadata = {
 			rel: 'icon',
 			sizes: 'any',
 			type: 'image/svg+xml',
-			url: '/assets/icons/icon.svg'
+			url: '/assets/images/logo.svg'
 		},
 		{
 			rel: 'apple-touch-icon',

@@ -4,7 +4,8 @@ import createMDX from '@next/mdx';
 const config = {
 	reactStrictMode: true,
 	images: { domains: ['avatars.githubusercontent.com'] },
-	pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx']
+	pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+	experimental: { typedRoutes: true }
 };
 
 const withMDX = createMDX();

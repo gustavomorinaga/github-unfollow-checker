@@ -1,5 +1,14 @@
 import { cn } from '$lib/utils/ui';
 
+/**
+ * The `ProseLayout` component applies a set of predefined prose styles to its children.
+ *
+ * @param props - The props for the div element.
+ * @param props.className - Additional class names to apply to the div element.
+ * @param props.children - The content to be rendered inside the div element.
+ *
+ * @returns The rendered div element with applied prose styles.
+ */
 export function ProseLayout({ className, children, ...props }: React.ComponentProps<'div'>) {
 	return (
 		<div

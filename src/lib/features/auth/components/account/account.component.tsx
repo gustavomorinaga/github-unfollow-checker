@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from '$lib/auth';
+import { auth, handleSignIn, handleSignOut } from '$lib/auth';
 import { Avatar, AvatarImage } from '$lib/components/ui/avatar';
 import { Button } from '$lib/components/ui/button';
 import {
@@ -11,18 +11,16 @@ import {
 } from '$lib/components/ui/dropdown-menu';
 import { LogOut } from 'lucide-react';
 
+/**
+ * The `Account` component handles user authentication and displays the user's account information.
+ *
+ * If the user is not authenticated, it renders a login button.
+ * If the user is authenticated, it renders a dropdown menu with the user's avatar and account details.
+ *
+ * @returns The rendered component.
+ */
 export async function Account() {
 	const session = await auth();
-
-	const handleSignIn = async () => {
-		'use server';
-		return signIn('github', { redirectTo: '/' });
-	};
-
-	const handleSignOut = async () => {
-		'use server';
-		return signOut({ redirectTo: '/login' });
-	};
 
 	if (!session)
 		return (

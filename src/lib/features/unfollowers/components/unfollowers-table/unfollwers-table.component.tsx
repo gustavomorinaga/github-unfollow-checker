@@ -6,11 +6,20 @@ import { UnfollowersToolbar as Toolbar } from '$lib/features/unfollowers/compone
 import { columns, type TUser } from './columns';
 import { cn } from '$lib/utils/ui';
 
+/**
+ * The `UnfollowersDataTable` component renders a data table of unfollowers.
+ *
+ * @param className - Additional CSS classes to apply to the component.
+ * @param data - Array of user data to display in the table.
+ * @param props - Additional props to pass to the component.
+ *
+ * @returns The rendered UnfollowersDataTable component.
+ */
 export function UnfollowersDataTable({
 	className,
 	data,
 	...props
-}: React.HTMLAttributes<HTMLDivElement> & { data: Array<TUser> }) {
+}: React.ComponentProps<'div'> & { data: Array<TUser> }) {
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
 	return (
