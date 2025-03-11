@@ -1,0 +1,47 @@
+import type { Metadata } from 'next';
+
+export const siteMetadata: Metadata = {
+	applicationName: 'GitHub Unfollow Checker',
+	title: 'GitHub Unfollow Checker',
+	description: "A simple tool to check the users that doesn't follow you back 🧐",
+	keywords: ['GitHub', 'Unfollow', 'Checker', 'Followers', 'Following', 'Users'],
+	assets: '/assets',
+	manifest: '/site.webmanifest',
+	robots: { index: true, follow: true },
+	icons: [
+		{
+			rel: 'favicon',
+			sizes: '16x16',
+			url: '/favicon.ico'
+		},
+		{
+			rel: 'icon',
+			sizes: 'any',
+			type: 'image/svg+xml',
+			url: '/assets/icons/icon.svg'
+		},
+		{
+			rel: 'apple-touch-icon',
+			sizes: '180x180',
+			url: '/assets/icons/apple-touch-icon.png'
+		}
+	],
+	openGraph: {
+		siteName: 'GitHub Unfollow Checker',
+		title: 'GitHub Unfollow Checker',
+		description: "A simple tool to check the users that doesn't follow you back 🧐",
+		url: 'https://github-unfollow-checker.vercel.app',
+		type: 'website',
+		images: [
+			{
+				url: 'https://github-unfollow-checker.vercel.app/assets/logo.png',
+				width: 283,
+				height: 283,
+				alt: 'GitHub Unfollow Checker Banner Image'
+			}
+		]
+	},
+	other: {
+		'theme-color': '#3730A3'
+	}
+};

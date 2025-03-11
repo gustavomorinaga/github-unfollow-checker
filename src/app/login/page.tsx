@@ -1,11 +1,13 @@
+import { LogoText } from '$lib/components/icons/logo-text';
 import { FlickeringGrid } from '$lib/components/magicui/flickering-grid';
 import { LoginForm } from '$lib/features/auth/components/login-form';
+import Link from 'next/link';
 
 export default function LoginPage() {
 	return (
-		<div className='bg-muted relative flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10'>
+		<div className='relative flex size-full flex-1 flex-col items-center justify-center gap-6 overflow-hidden p-6 md:p-10'>
 			<FlickeringGrid
-				squareSize={4}
+				squareSize={16}
 				gridGap={6}
 				color='#3730a3'
 				maxOpacity={0.5}
@@ -16,15 +18,9 @@ export default function LoginPage() {
 			/>
 
 			<div className='z-10 flex w-full max-w-sm flex-col gap-6'>
-				<a
-					href='/'
-					className='bg-card text-card-foreground flex items-center gap-2 self-center rounded-xl border p-2 font-medium shadow-sm'
-				>
-					<div className='flex size-6 items-center justify-center rounded-md'>
-						<img src='/assets/images/icon.svg' alt='GitHub Unfollow Checker' />
-					</div>
-					GitHub Unfollow Checker
-				</a>
+				<Link href='/' className='contents'>
+					<LogoText className='bg-card text-card-foreground self-center rounded-xl border px-4 py-2 shadow-sm' />
+				</Link>
 
 				<LoginForm />
 			</div>

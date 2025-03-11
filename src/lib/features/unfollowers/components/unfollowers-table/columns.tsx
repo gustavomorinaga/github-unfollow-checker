@@ -12,24 +12,29 @@ import { ExternalLink, UserRoundPlus, UserRoundX } from 'lucide-react';
 const columns: Array<ColumnDef<TUser>> = [
 	{
 		id: 'select',
-		size: 12,
+		size: 16,
 		enableSorting: false,
 		enableHiding: false,
 		header: ({ table }) => (
-			<Checkbox
-				checked={
-					table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')
-				}
-				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-				aria-label='Select all'
-			/>
+			<div className='flex items-center justify-center'>
+				<Checkbox
+					checked={
+						table.getIsAllPageRowsSelected() ||
+						(table.getIsSomePageRowsSelected() && 'indeterminate')
+					}
+					onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+					aria-label='Select all'
+				/>
+			</div>
 		),
 		cell: ({ row }) => (
-			<Checkbox
-				checked={row.getIsSelected()}
-				onCheckedChange={(value) => row.toggleSelected(!!value)}
-				aria-label='Select row'
-			/>
+			<div className='flex items-center justify-center'>
+				<Checkbox
+					checked={row.getIsSelected()}
+					onCheckedChange={(value) => row.toggleSelected(!!value)}
+					aria-label='Select row'
+				/>
+			</div>
 		)
 	},
 	{
@@ -61,7 +66,7 @@ const columns: Array<ColumnDef<TUser>> = [
 
 			return (
 				<div className='flex items-center gap-2'>
-					<Badge variant='outline' className='select-none'>
+					<Badge variant='secondary' className='border-muted-foreground/50 border select-none'>
 						{type}
 					</Badge>
 
@@ -71,8 +76,8 @@ const columns: Array<ColumnDef<TUser>> = [
 						asChild
 						className='w-full justify-start px-0'
 					>
-						<a href={profileURL} target='_blank' rel='noopener noreferrer'>
-							<span className='select-none'>@{username}</span>
+						<a href={profileURL} target='_blank' rel='noopener noreferrer' className='contents'>
+							<span className='truncate select-none'>@{username}</span>
 						</a>
 					</Button>
 				</div>

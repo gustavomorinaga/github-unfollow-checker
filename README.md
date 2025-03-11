@@ -10,7 +10,7 @@
 
 <p align="center">
   <br>
-  <img src="./docs/banner.jpg" alt="Logotipo do Projeto" />
+  <img src="/public/assets/images/banner.jpg" alt="Logotipo do Projeto" />
   <br>
 </p>
 <p align="center">
@@ -22,7 +22,7 @@
 <br>
 <p align="center">
   <a href="https://vercel.com" target="_blank" rel="noopener">
-    <img src="./public/assets/images/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
+    <img src="/public/assets/images/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
   </a>
   <br>
   <br>
@@ -81,7 +81,7 @@ This app features all the latest tools and good practices in web development!
 1. Clone this repository into your machine and enter in the created folder:
 
    ```bash
-   $ git clone https://github.com/gmatthewsfeuer/github-unfollow-checker.git
+   $ git clone https://github.com/gustavomorinaga/github-unfollow-checker.git
    $ cd github-unfollow-checker
    ```
 
@@ -112,4 +112,4 @@ This app features all the latest tools and good practices in web development!
 
 ### License
 
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) page for details.
+This project is licensed under the MIT License - see the [LICENSE](/LICENSE) page for details.
