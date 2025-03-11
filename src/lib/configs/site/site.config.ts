@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
 
-export type TRepoMetadata = { owner: string; repo: string };
+export type TRepoMetadata = {
+	email: string;
+	owner: string;
+	repo: string;
+};
 
 export const repoMetadata: TRepoMetadata = {
+	email: 'me@gustavomorinaga.dev',
 	owner: 'gustavomorinaga',
 	repo: 'github-unfollow-checker'
 };
