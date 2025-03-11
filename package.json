@@ -14,7 +14,7 @@
 		"url": "https://github.com/gustavomorinaga/github-unfollow-checker"
 	},
 	"engines": {
-		"pnpm": ">=10",
+		"pnpm": ">=9",
 		"node": ">=22"
 	},
 	"packageManager": "pnpm@10.5.2",
