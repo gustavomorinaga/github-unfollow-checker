@@ -1,10 +1,18 @@
 import type { Metadata } from 'next';
 
+export type TRepoMetadata = { owner: string; repo: string };
+
+export const repoMetadata: TRepoMetadata = {
+	owner: 'gustavomorinaga',
+	repo: 'github-unfollow-checker'
+};
+
 export const siteMetadata: Metadata = {
 	applicationName: 'GitHub Unfollow Checker',
 	title: 'GitHub Unfollow Checker',
 	description: "A simple tool to check the users that doesn't follow you back 🧐",
 	keywords: ['GitHub', 'Unfollow', 'Checker', 'Followers', 'Following', 'Users'],
+	authors: [{ name: 'Gustavo Morinaga', url: 'https://gustavomorinaga.dev' }],
 	assets: '/assets',
 	manifest: '/site.webmanifest',
 	robots: { index: true, follow: true },
@@ -27,11 +35,11 @@ export const siteMetadata: Metadata = {
 		}
 	],
 	openGraph: {
+		type: 'website',
 		siteName: 'GitHub Unfollow Checker',
 		title: 'GitHub Unfollow Checker',
 		description: "A simple tool to check the users that doesn't follow you back 🧐",
 		url: 'https://github-unfollow-checker.vercel.app',
-		type: 'website',
 		images: [
 			{
 				url: 'https://github-unfollow-checker.vercel.app/assets/logo.png',

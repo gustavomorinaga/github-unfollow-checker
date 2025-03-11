@@ -51,7 +51,7 @@ const columns: Array<ColumnDef<TUser>> = [
 					rel='noopener noreferrer'
 					className='hover:[&>span]:outline-primary contents'
 				>
-					<Avatar className='outline transition-colors'>
+					<Avatar className='outline-border outline transition-colors'>
 						<AvatarImage src={image} alt={`${username} avatar`} loading='lazy' />
 					</Avatar>
 				</a>
@@ -136,7 +136,7 @@ const columns: Array<ColumnDef<TUser>> = [
 								<span className='sr-only select-none'>Unfollow</span>
 							</Button>
 						</TooltipTrigger>
-						<TooltipContent>
+						<TooltipContent className='bg-destructive text-destructive-foreground [&_svg]:fill-destructive [&_svg]:bg-destructive'>
 							<p>Unfollow</p>
 						</TooltipContent>
 					</Tooltip>
