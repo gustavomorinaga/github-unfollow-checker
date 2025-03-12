@@ -1,5 +1,4 @@
 import { auth, handleSignIn, handleSignOut } from '$lib/auth';
-import { Avatar, AvatarImage } from '$lib/components/ui/avatar';
 import { Button } from '$lib/components/ui/button';
 import {
 	DropdownMenu,
@@ -9,6 +8,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '$lib/components/ui/dropdown-menu';
+import { Avatar } from '$lib/features/auth/components/avatar';
 import { LogOut } from 'lucide-react';
 
 /**
@@ -37,9 +37,7 @@ export async function Account() {
 					variant='ghost'
 					className='data-[state="open"]:ring-primary overflow-hidden rounded-full ring ring-transparent'
 				>
-					<Avatar>
-						<AvatarImage src={session.user.image} alt={`${session.user.login} avatar`} />
-					</Avatar>
+					<Avatar />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end' className='w-72'>
@@ -52,15 +50,13 @@ export async function Account() {
 					>
 						<div className='flex gap-2'>
 							<div className='flex'>
-								<Avatar className='group-hover:ring-primary size-10 group-hover:ring-2'>
-									<AvatarImage src={session.user.image} alt={`${session.user.login} avatar`} />
-								</Avatar>
+								<Avatar className='group-hover:ring-primary size-10 group-hover:ring-2' />
 							</div>
 
 							<div className='flex flex-col'>
 								<span className='line-clamp-1 text-sm font-medium'>{session.user.name}</span>
 								<div className='flex items-center gap-2'>
-									<span className='text-muted-foreground line-clamp-1 text-xs group-hover:underline'>
+									<span className='text-muted-foreground line-clamp-1 text-xs underline-offset-2 group-hover:underline'>
 										@{session.user.login}
 									</span>
 								</div>

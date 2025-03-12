@@ -29,7 +29,7 @@ export function Footer({ className, ...props }: React.HTMLAttributes<HTMLElement
 					posted here is public and owned by its respective authors.
 				</p>
 
-				<div className='text-muted-foreground flex items-center justify-center gap-2'>
+				<div className='text-muted-foreground flex items-center justify-center gap-2 [&>div]:select-none'>
 					<Link href='/legal/terms' className='contents'>
 						<Button variant='link' className='px-1'>
 							Terms of Use

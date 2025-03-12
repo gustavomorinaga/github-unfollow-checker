@@ -10,8 +10,8 @@ import {
 	CardTitle
 } from '$lib/components/ui/card';
 import { siteMetadata } from '$lib/configs/site';
+import { LegalAgreement } from '$lib/features/auth/components/legal-agreement';
 import { cn } from '$lib/utils/ui';
-import Link from 'next/link';
 
 /**
  * The `LoginForm` component that renders a login form for GitHub authentication.
@@ -27,29 +27,24 @@ export async function LoginForm({ className, ...props }: React.ComponentPropsWit
 			<Card>
 				<CardHeader className='text-center'>
 					<CardTitle className='text-xl'>Welcome back</CardTitle>
-					<CardDescription>Login with your GitHub account</CardDescription>
+					<CardDescription>
+						Login with your GitHub account to access the full experience.
+					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<form action={handleSignIn}>
-						<div className='grid gap-6'>
-							<div className='flex flex-col gap-4'>
-								<ShimmerButton
-									type='submit'
-									background={siteMetadata.other['theme-color']}
-									className='w-full'
-								>
-									<GitHub className='mr-3 size-5 shrink-0' />
-									Login with GitHub
-								</ShimmerButton>
-							</div>
-						</div>
+					<form action={handleSignIn} className='contents'>
+						<ShimmerButton
+							type='submit'
+							background={siteMetadata.other['theme-color']}
+							className='w-full'
+						>
+							<GitHub className='mr-3 size-5 shrink-0' />
+							<span className='select-none'>Login with GitHub</span>
+						</ShimmerButton>
 					</form>
 				</CardContent>
 				<CardFooter>
-					<p className='text-muted-foreground [&_a]:hover:text-primary text-center text-xs text-balance [&_a]:underline [&_a]:underline-offset-4'>
-						By clicking continue, you agree to our <Link href='/legal/terms'>Terms of Service</Link>{' '}
-						and <Link href='/legal/privacy-policy'>Privacy Policy</Link>.
-					</p>
+					<LegalAgreement className='text-muted-foreground text-center text-balance' />
 				</CardFooter>
 			</Card>
 		</div>
