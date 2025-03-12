@@ -1,16 +1,17 @@
 'use client';
 
 import { Button } from '$lib/components/ui/button';
-import type { RowSelectionState } from '$lib/components/ui/data-table';
+import { TUser } from '$lib/types';
 import { cn } from '$lib/utils/ui';
 import { RotateCw } from 'lucide-react';
 import React from 'react';
 
 export type TUnfollowersToolbarProps = React.ComponentProps<'header'> & {
 	pending?: boolean;
-	rowSelection?: RowSelectionState;
+	selectedRecords?: Array<TUser>;
 	totalRecords?: number;
-	onRefresh?: (formData: FormData) => void;
+	onAddToWhitelist?: () => void;
+	onRefresh?: () => void;
 };
 
 /**
@@ -25,14 +26,12 @@ export type TUnfollowersToolbarProps = React.ComponentProps<'header'> & {
 export function UnfollowersToolbar({
 	className,
 	pending = false,
-	rowSelection,
+	selectedRecords,
 	totalRecords,
+	onAddToWhitelist,
 	onRefresh
 }: TUnfollowersToolbarProps) {
-	const totalSelectedRows = React.useMemo(() => {
-		return (rowSelection && Object.values(rowSelection).filter(Boolean).length) || 0;
-	}, [rowSelection]);
-
+	const totalSelectedRows = React.useMemo(() => selectedRecords?.length || 0, [selectedRecords]);
 	const hasSelectedRows = React.useMemo(() => totalSelectedRows > 0, [totalSelectedRows]);
 
 	return (
@@ -53,7 +52,7 @@ export function UnfollowersToolbar({
 			</div>
 
 			<div className='flex items-center gap-2'>
-				<Button size='sm' variant='outline' disabled={!hasSelectedRows}>
+				<Button size='sm' variant='outline' disabled={!hasSelectedRows} onClick={onAddToWhitelist}>
 					Whitelist selected
 				</Button>
 
