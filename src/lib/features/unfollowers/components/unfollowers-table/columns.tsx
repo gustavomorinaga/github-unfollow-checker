@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, AvatarImage } from '$lib/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '$lib/components/ui/avatar';
 import { Badge } from '$lib/components/ui/badge';
 import { Button } from '$lib/components/ui/button';
 import { Checkbox } from '$lib/components/ui/checkbox';
@@ -56,6 +56,7 @@ const columns: Array<ColumnDef<TUser>> = [
 				>
 					<Avatar className='outline-border outline transition-colors'>
 						<AvatarImage src={image} alt={`${username} avatar`} loading='lazy' />
+						<AvatarFallback className='uppercase'>{username.at(0)}</AvatarFallback>
 					</Avatar>
 				</a>
 			);

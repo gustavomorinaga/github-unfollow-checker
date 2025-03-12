@@ -5,6 +5,18 @@ import { ContinueSessionForm } from '$lib/features/auth/components/continue-sess
 import { LoginForm } from '$lib/features/auth/components/login-form';
 import Link from 'next/link';
 
+/**
+ * The `LoginView` component is an asynchronous function that renders the login view for the application.
+ * It checks for an existing authentication session and conditionally renders either the `ContinueSessionForm`
+ * or the `LoginForm` based on the session status.
+ *
+ * @returns A promise that resolves to a JSX element representing the login view.
+ *
+ * The component structure includes:
+ * - A `FlickeringGrid` component for visual effects in the background.
+ * - A `Link` component wrapping the `LogoText` component, which serves as a navigational link to the home page.
+ * - A conditional rendering of either `ContinueSessionForm` or `LoginForm` based on the presence of an authentication session.
+ */
 export async function LoginView() {
 	const session = await auth();
 
