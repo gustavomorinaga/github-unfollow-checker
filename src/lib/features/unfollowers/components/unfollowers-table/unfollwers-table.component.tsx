@@ -26,7 +26,12 @@ export function UnfollowersDataTable({
 
 	return (
 		<div className={cn('flex flex-col gap-2', className)} {...props}>
-			<Toolbar pending={pending} rowSelection={rowSelection} onRefresh={formAction} />
+			<Toolbar
+				pending={pending}
+				rowSelection={rowSelection}
+				totalRecords={state?.data?.length}
+				onRefresh={formAction}
+			/>
 
 			<DataTable
 				columns={columns}
