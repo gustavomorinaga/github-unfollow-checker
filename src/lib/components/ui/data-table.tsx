@@ -21,6 +21,7 @@ import { cn } from '$lib/utils/ui';
 interface DataTableProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	feedback?: React.ReactNode;
 	rowSelection?: RowSelectionState;
 	setRowSelection?: (rowSelection: RowSelectionState) => void;
 }
@@ -29,6 +30,7 @@ function DataTable<TData, TValue>({
 	className,
 	columns,
 	data,
+	feedback = 'No results.',
 	rowSelection,
 	setRowSelection
 }: DataTableProps<TData, TValue>) {
@@ -85,7 +87,7 @@ function DataTable<TData, TValue>({
 					) : (
 						<TableRow>
 							<TableCell colSpan={columns.length} className='h-24 text-center'>
-								No results.
+								{feedback}
 							</TableCell>
 						</TableRow>
 					)}
