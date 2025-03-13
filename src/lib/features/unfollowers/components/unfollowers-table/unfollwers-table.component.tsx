@@ -3,12 +3,12 @@
 import React from 'react';
 
 import { DataTable, type RowSelectionState } from '$lib/components/ui/data-table';
+import { Spinner } from '$lib/components/ui/spinner';
 import { UnfollowersToolbar as Toolbar } from '$lib/features/unfollowers/components/unfollowers-toolbar';
 import { useWhitelist } from '$lib/features/whitelist/hooks';
 import { cn } from '$lib/utils/ui';
 
 import { columns, type TUser } from './columns';
-import { Spinner } from '$lib/components/ui/spinner';
 
 /**
  * The `UnfollowersDataTable` component renders a data table of unfollowers.

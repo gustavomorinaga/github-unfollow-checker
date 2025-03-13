@@ -4,6 +4,7 @@ import React from 'react';
 
 import { Button } from '$lib/components/ui/button';
 import { TUser } from '$lib/types';
+import { abbreviateNumber } from '$lib/utils/formatters';
 import { cn } from '$lib/utils/ui';
 
 import { RotateCw } from 'lucide-react';
@@ -29,12 +30,17 @@ export function UnfollowersToolbar({
 	className,
 	pending = false,
 	selectedRecords,
-	totalRecords,
+	totalRecords = 0,
 	onAddToWhitelist,
 	onRefresh
 }: TUnfollowersToolbarProps) {
 	const totalSelectedRows = React.useMemo(() => selectedRecords?.length || 0, [selectedRecords]);
 	const hasSelectedRows = React.useMemo(() => totalSelectedRows > 0, [totalSelectedRows]);
+	const formattedTotalRecords = React.useMemo(() => abbreviateNumber(totalRecords), [totalRecords]);
+	const formattedTotalSelectedRows = React.useMemo(
+		() => abbreviateNumber(totalSelectedRows),
+		[totalSelectedRows]
+	);
 
 	return (
 		<header className={cn('flex flex-1 items-center justify-between', className)}>
@@ -42,12 +48,12 @@ export function UnfollowersToolbar({
 				<div className='text-muted-foreground sr-only flex min-w-20 items-center justify-end gap-1 text-sm md:not-sr-only [&_span]:tabular-nums'>
 					{hasSelectedRows && (
 						<>
-							<span>{totalSelectedRows}</span>
+							<span>{formattedTotalSelectedRows}</span>
 							<div className='select-none'>/</div>
 						</>
 					)}
 					<div className='contents'>
-						<span>{totalRecords}</span>
+						<span>{formattedTotalRecords}</span>
 						<p>{hasSelectedRows ? 'selected' : 'unfollowers'}</p>
 					</div>
 				</div>
