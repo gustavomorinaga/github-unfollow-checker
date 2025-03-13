@@ -1,13 +1,14 @@
 'use client';
 
+import type { ColumnDef } from '@tanstack/react-table';
+
+import { ExternalLink, UserRoundPlus, UserRoundX } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '$lib/components/ui/avatar';
 import { Badge } from '$lib/components/ui/badge';
 import { Button } from '$lib/components/ui/button';
 import { Checkbox } from '$lib/components/ui/checkbox';
-import { Tooltip, TooltipContent, TooltipTrigger } from '$lib/components/ui/tooltip';
 import type { TUser } from '$lib/types';
-import type { ColumnDef } from '@tanstack/react-table';
-import { ExternalLink, UserRoundPlus, UserRoundX } from 'lucide-react';
 
 /**
  * Defines the columns for the Unfollowers Table.
@@ -97,53 +98,32 @@ const columns: Array<ColumnDef<TUser>> = [
 
 			return (
 				<div className='flex items-center justify-end gap-2'>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button size='icon' variant='outline' aria-label='View profile' asChild>
-								<a href={profileURL} target='_blank' rel='noopener noreferrer'>
-									<ExternalLink />
-									<span className='sr-only select-none'>View profile</span>
-								</a>
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>View profile</p>
-						</TooltipContent>
-					</Tooltip>
+					<Button size='icon' variant='outline' aria-label='View profile' asChild>
+						<a href={profileURL} target='_blank' rel='noopener noreferrer'>
+							<ExternalLink />
+							<span className='sr-only select-none'>View profile</span>
+						</a>
+					</Button>
 
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button
-								size='icon'
-								variant='outline'
-								aria-label='Add to whitelist'
-								onClick={() => console.log(`Add ${username} to whitelist`)}
-							>
-								<UserRoundPlus />
-								<span className='sr-only select-none'>Add to whitelist</span>
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Add to whitelist</p>
-						</TooltipContent>
-					</Tooltip>
+					<Button
+						size='icon'
+						variant='outline'
+						aria-label='Add to whitelist'
+						onClick={() => console.log(`Add ${username} to whitelist`)}
+					>
+						<UserRoundPlus />
+						<span className='sr-only select-none'>Add to whitelist</span>
+					</Button>
 
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button
-								size='icon'
-								variant='destructive'
-								aria-label='Unfollow'
-								onClick={() => console.log(`Unfollow ${username}`)}
-							>
-								<UserRoundX />
-								<span className='sr-only select-none'>Unfollow</span>
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent className='bg-destructive text-destructive-foreground [&_svg]:fill-destructive [&_svg]:bg-destructive'>
-							<p>Unfollow</p>
-						</TooltipContent>
-					</Tooltip>
+					<Button
+						size='icon'
+						variant='destructive'
+						aria-label='Unfollow'
+						onClick={() => console.log(`Unfollow ${username}`)}
+					>
+						<UserRoundX />
+						<span className='sr-only select-none'>Unfollow</span>
+					</Button>
 				</div>
 			);
 		}

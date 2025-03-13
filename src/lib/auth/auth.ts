@@ -1,5 +1,6 @@
 import NextAuth, { type DefaultSession } from 'next-auth';
 import 'next-auth/jwt';
+
 import { GitHub } from './providers';
 
 declare module 'next-auth' {

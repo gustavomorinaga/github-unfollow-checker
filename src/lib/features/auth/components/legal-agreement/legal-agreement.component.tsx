@@ -1,5 +1,6 @@
-import { cn } from '$lib/utils/ui';
 import Link from 'next/link';
+
+import { cn } from '$lib/utils/ui';
 
 export function LegalAgreement({ className }: React.ComponentProps<'p'>) {
 	return (

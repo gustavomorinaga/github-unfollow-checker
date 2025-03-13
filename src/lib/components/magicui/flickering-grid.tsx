@@ -1,7 +1,8 @@
 'use client';
 
+import React from 'react';
+
 import { cn } from '$lib/utils/ui';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface FlickeringGridProps extends React.HTMLAttributes<HTMLDivElement> {
 	squareSize?: number;
@@ -25,12 +26,12 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 	maxOpacity = 0.3,
 	...props
 }) => {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const containerRef = useRef<HTMLDivElement>(null);
-	const [isInView, setIsInView] = useState(false);
-	const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
+	const canvasRef = React.useRef<HTMLCanvasElement>(null);
+	const containerRef = React.useRef<HTMLDivElement>(null);
+	const [isInView, setIsInView] = React.useState(false);
+	const [canvasSize, setCanvasSize] = React.useState({ width: 0, height: 0 });
 
-	const memoizedColor = useMemo(() => {
+	const memoizedColor = React.useMemo(() => {
 		const toRGBA = (color: string) => {
 			if (typeof window === 'undefined') {
 				return `rgba(0, 0, 0,`;
@@ -47,7 +48,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 		return toRGBA(color);
 	}, [color]);
 
-	const setupCanvas = useCallback(
+	const setupCanvas = React.useCallback(
 		(canvas: HTMLCanvasElement, width: number, height: number) => {
 			const dpr = window.devicePixelRatio || 1;
 			canvas.width = width * dpr;
@@ -67,7 +68,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 		[squareSize, gridGap, maxOpacity]
 	);
 
-	const updateSquares = useCallback(
+	const updateSquares = React.useCallback(
 		(squares: Float32Array, deltaTime: number) => {
 			for (let i = 0; i < squares.length; i++) {
 				if (Math.random() < flickerChance * deltaTime) {
@@ -78,7 +79,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 		[flickerChance, maxOpacity]
 	);
 
-	const drawGrid = useCallback(
+	const drawGrid = React.useCallback(
 		(
 			ctx: CanvasRenderingContext2D,
 			width: number,
@@ -108,7 +109,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 		[memoizedColor, squareSize, gridGap]
 	);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		const canvas = canvasRef.current;
 		const container = containerRef.current;
 		if (!canvas || !container) return;

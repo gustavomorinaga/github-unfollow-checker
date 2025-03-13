@@ -1,10 +1,12 @@
 'use client';
 
+import React from 'react';
+
 import { Button } from '$lib/components/ui/button';
 import { TUser } from '$lib/types';
 import { cn } from '$lib/utils/ui';
+
 import { RotateCw } from 'lucide-react';
-import React from 'react';
 
 export type TUnfollowersToolbarProps = React.ComponentProps<'header'> & {
 	pending?: boolean;
@@ -51,7 +53,7 @@ export function UnfollowersToolbar({
 				</div>
 			</div>
 
-			<div className='flex items-center gap-2'>
+			<div data-slot='toolbar-actions' className='flex items-center gap-2'>
 				<Button size='sm' variant='outline' disabled={!hasSelectedRows} onClick={onAddToWhitelist}>
 					Whitelist selected
 				</Button>

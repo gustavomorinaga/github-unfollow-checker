@@ -1,10 +1,12 @@
 'use client';
 
+import React from 'react';
+
 import { DataTable, type RowSelectionState } from '$lib/components/ui/data-table';
 import { UnfollowersToolbar as Toolbar } from '$lib/features/unfollowers/components/unfollowers-toolbar';
 import { useWhitelist } from '$lib/features/whitelist/hooks';
 import { cn } from '$lib/utils/ui';
-import React from 'react';
+
 import { columns, type TUser } from './columns';
 
 /**
@@ -16,7 +18,7 @@ import { columns, type TUser } from './columns';
  *
  * @returns The rendered UnfollowersDataTable component.
  */
-export function UnfollowersDataTable({
+function UnfollowersDataTable({
 	className,
 	data = [],
 	pending = false,
@@ -68,3 +70,7 @@ export function UnfollowersDataTable({
 		</div>
 	);
 }
+
+const MemoizedUnfollowersDataTable = React.memo(UnfollowersDataTable);
+
+export { MemoizedUnfollowersDataTable as UnfollowersDataTable };

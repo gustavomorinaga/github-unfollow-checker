@@ -1,7 +1,8 @@
 'use client';
 
-import type { TUser } from '$lib/types';
 import React from 'react';
+
+import type { TUser } from '$lib/types';
 
 /**
  * Custom hook to manage a whitelist of users stored in localStorage.

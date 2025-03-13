@@ -1,8 +1,9 @@
+import Link from 'next/link';
+
 import { LogoText } from '$lib/components/icons/logo-text';
 import { Button } from '$lib/components/ui/button';
 import { repoMetadata, siteMetadata } from '$lib/configs/site';
 import { cn } from '$lib/utils/ui';
-import Link from 'next/link';
 
 /**
  * The `Footer` component renders a footer element with specified class names and additional props.

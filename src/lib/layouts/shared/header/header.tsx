@@ -1,9 +1,10 @@
+import Link from 'next/link';
+
 import { LogoText } from '$lib/components/icons/logo-text';
 import { ModeToggle } from '$lib/components/theme';
 import { Account } from '$lib/features/auth/components/account';
 import { GitHubRepo } from '$lib/features/social/github-repo';
 import { cn } from '$lib/utils/ui';
-import Link from 'next/link';
 
 /**
  * The `Header` component renders a header element with specified class names and additional props.

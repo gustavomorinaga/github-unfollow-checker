@@ -1,8 +1,8 @@
-import React, { CSSProperties, ComponentPropsWithoutRef } from 'react';
+import React from 'react';
 
 import { cn } from '$lib/utils/ui';
 
-export interface ShimmerButtonProps extends ComponentPropsWithoutRef<'button'> {
+export interface ShimmerButtonProps extends React.ComponentPropsWithoutRef<'button'> {
 	shimmerColor?: string;
 	shimmerSize?: string;
 	borderRadius?: string;
@@ -36,7 +36,7 @@ export const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonPr
 						'--speed': shimmerDuration,
 						'--cut': shimmerSize,
 						'--bg': background
-					} as CSSProperties
+					} as React.CSSProperties
 				}
 				className={cn(
 					'group relative z-0 flex cursor-pointer items-center justify-center overflow-hidden [border-radius:var(--radius)] border border-white/10 px-6 py-3 whitespace-nowrap text-white [background:var(--bg)]',

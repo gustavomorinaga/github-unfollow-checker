@@ -9,6 +9,7 @@ import {
 	DropdownMenuTrigger
 } from '$lib/components/ui/dropdown-menu';
 import { Avatar } from '$lib/features/auth/components/avatar';
+
 import { LogOut } from 'lucide-react';
 
 /**

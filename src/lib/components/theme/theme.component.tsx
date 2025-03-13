@@ -2,6 +2,8 @@
 
 import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
 
+import { Moon, Sun } from 'lucide-react';
+
 import { Button } from '$lib/components/ui/button';
 import {
 	DropdownMenu,
@@ -9,8 +11,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger
 } from '$lib/components/ui/dropdown-menu';
-
-import { Moon, Sun } from 'lucide-react';
 
 export function ThemeProvider({
 	children,

@@ -1,9 +1,10 @@
+import Link from 'next/link';
+
 import { auth } from '$lib/auth';
 import { LogoText } from '$lib/components/icons/logo-text';
 import { FlickeringGrid } from '$lib/components/magicui/flickering-grid';
 import { ContinueSessionForm } from '$lib/features/auth/components/continue-session-form';
 import { LoginForm } from '$lib/features/auth/components/login-form';
-import Link from 'next/link';
 
 /**
  * The `LoginView` component is an asynchronous function that renders the login view for the application.

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { auth } from '$lib/auth';
 import { ShimmerButton } from '$lib/components/magicui/shimmer-button';
 import {
@@ -12,7 +14,6 @@ import { siteMetadata } from '$lib/configs/site';
 import { Avatar } from '$lib/features/auth/components/avatar';
 import { LegalAgreement } from '$lib/features/auth/components/legal-agreement';
 import { cn } from '$lib/utils/ui';
-import Link from 'next/link';
 
 /**
  * The `ContinueSessionForm` component renders a form to continue the session if a valid session exists.
