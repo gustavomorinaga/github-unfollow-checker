@@ -8,6 +8,7 @@ import { useWhitelist } from '$lib/features/whitelist/hooks';
 import { cn } from '$lib/utils/ui';
 
 import { columns, type TUser } from './columns';
+import { Spinner } from '$lib/components/ui/spinner';
 
 /**
  * The `UnfollowersDataTable` component renders a data table of unfollowers.
@@ -42,6 +43,15 @@ function UnfollowersDataTable({
 		return Object.keys(rowSelection).map((key) => dataWithoutWhitelisted[key]);
 	}, [rowSelection, dataWithoutWhitelisted]);
 
+	const memoizedFeedback = React.useMemo(() => {
+		return (
+			<div className='flex size-full items-center justify-center gap-2'>
+				{pending && <Spinner />}
+				{pending ? 'Loading unfollowers...' : 'No unfollowers found. Very nice! ✨'}
+			</div>
+		);
+	}, [pending]);
+
 	function handleAddToWhitelist() {
 		if (!selectedRecords.length) return;
 		const selectedUserIDs = selectedRecords.map((user) => user.id);
@@ -62,7 +72,7 @@ function UnfollowersDataTable({
 			<DataTable
 				columns={columns}
 				data={dataWithoutWhitelisted}
-				feedback={pending ? 'Loading unfollowers...' : 'No unfollowers found. Very nice! ✨'}
+				feedback={memoizedFeedback}
 				rowSelection={rowSelection}
 				setRowSelection={setRowSelection}
 				className='[&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only'
