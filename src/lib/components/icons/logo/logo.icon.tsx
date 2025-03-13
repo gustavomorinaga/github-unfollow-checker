@@ -1,13 +1,13 @@
 import { cn } from '$lib/utils/ui';
 
+type TLogoProps = React.ComponentProps<'svg'>;
+
 /**
  * Renders the Logo component as an SVG element.
  *
- * @param props - The properties passed to the component.
- * @param [props.className] - Optional class name for the SVG element.
  * @returns The rendered SVG element representing the logo.
  */
-export function Logo({ className, ...props }: React.ComponentProps<'svg'>) {
+export function Logo({ className, ...props }: TLogoProps) {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'

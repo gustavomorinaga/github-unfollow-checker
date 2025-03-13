@@ -11,16 +11,29 @@ import { sleep } from '$lib/utils/sleep';
 const SLEEP_DURATION = 1_000;
 const CACHE_KEY = 'unfollowers';
 
+type TUseUnfollowersHook = () => {
+	/**
+	 * The list of unfollowers, or null if not yet fetched.
+	 */
+	data: Array<TUser> | null;
+	/**
+	 * An error message if the fetch operation failed, or null if no error.
+	 */
+	error: Error | null;
+	/**
+	 * A boolean indicating whether the fetch operation is in progress.
+	 */
+	pending: boolean;
+	/**
+	 * A function to manually trigger a refresh of the unfollowers list.
+	 */
+	refresh: () => void;
+};
+
 /**
  * Custom hook to fetch and manage the list of unfollowers for the authenticated user.
- *
- * @returns An object containing:
- * - `unfollowers`: The list of unfollowers, or null if not yet fetched.
- * - `error`: An error message if the fetch operation failed, or null if no error.
- * - `pending`: A boolean indicating whether the fetch operation is in progress.
- * - `refresh`: A function to manually trigger a refresh of the unfollowers list.
  */
-export function useUnfollowers() {
+export const useUnfollowers: TUseUnfollowersHook = () => {
 	const { data: session } = useSession({ required: true });
 
 	const [unfollowers, setUnfollowers] = React.useState<TUser[] | null>(null);
@@ -29,8 +42,6 @@ export function useUnfollowers() {
 
 	const fetchUnfollowers = React.useCallback(
 		async ({ refresh = false } = {}) => {
-			setPending(true);
-
 			const isAccessTokenMissing = !session?.accessToken;
 			const isUserNotAuthenticated = !session?.user;
 			if (isAccessTokenMissing && isUserNotAuthenticated) {
@@ -47,6 +58,8 @@ export function useUnfollowers() {
 					return;
 				}
 			}
+
+			setPending(true);
 
 			const apiURL = new URL(`/api/${session.user.login}/unfollowers`, location.origin);
 
@@ -78,4 +91,4 @@ export function useUnfollowers() {
 		pending,
 		refresh: () => fetchUnfollowers({ refresh: true })
 	};
-}
+};

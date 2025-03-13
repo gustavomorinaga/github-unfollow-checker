@@ -11,12 +11,13 @@ const shortNumberFormatter = new Intl.NumberFormat('en-US', {
 	compactDisplay: 'short'
 });
 
+type TAbbreviateNumber = (value: number) => string;
+
 /**
  * Abbreviates a given number using a short number formatter.
  *
  * @param value - The number to be abbreviated.
+ *
  * @returns The abbreviated number as a string.
  */
-export function abbreviateNumber(value: number) {
-	return shortNumberFormatter.format(value);
-}
+export const abbreviateNumber: TAbbreviateNumber = (value) => shortNumberFormatter.format(value);

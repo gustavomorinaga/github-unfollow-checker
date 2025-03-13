@@ -5,15 +5,14 @@ import { Button } from '$lib/components/ui/button';
 import { repoMetadata, siteMetadata } from '$lib/configs/site';
 import { cn } from '$lib/utils/ui';
 
+type TFooterProps = React.ComponentProps<'footer'>;
+
 /**
  * The `Footer` component renders a footer element with specified class names and additional props.
  *
- * @param props - The props object.
- * @param props.className - Additional class names to apply to the footer element.
- *
  * @returns The rendered footer element with the specified content and props.
  */
-export function Footer({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
+export function Footer({ className, ...props }: TFooterProps) {
 	const {
 		owner: { email }
 	} = repoMetadata;

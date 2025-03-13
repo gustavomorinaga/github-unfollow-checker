@@ -10,14 +10,25 @@ import { cn } from '$lib/utils/ui';
 
 import { columns, type TUser } from './columns';
 
+type TUnfollowersDataTableProps = React.ComponentProps<'div'> & {
+	/**
+	 * Array of user data to display in the table.
+	 */
+	data?: Array<TUser>;
+	/**
+	 * Whether the table is in a pending state.
+	 */
+	pending?: boolean;
+	/**
+	 * Callback to refresh the unfollowers.
+	 */
+	onRefresh: () => void;
+};
+
 /**
  * The `UnfollowersDataTable` component renders a data table of unfollowers.
  *
- * @param className - Additional CSS classes to apply to the component.
- * @param data - Array of user data to display in the table.
- * @param props - Additional props to pass to the component.
- *
- * @returns The rendered UnfollowersDataTable component.
+ * @returns The rendered `UnfollowersDataTable` component.
  */
 function UnfollowersDataTable({
 	className,
@@ -25,11 +36,7 @@ function UnfollowersDataTable({
 	pending = false,
 	onRefresh,
 	...props
-}: React.ComponentProps<'div'> & {
-	data?: Array<TUser>;
-	pending?: boolean;
-	onRefresh: () => void;
-}) {
+}: TUnfollowersDataTableProps) {
 	const { whitelist, addToWhitelist } = useWhitelist();
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
@@ -71,7 +78,7 @@ function UnfollowersDataTable({
 
 			<DataTable
 				columns={columns}
-				data={dataWithoutWhitelisted}
+				data={pending ? [] : dataWithoutWhitelisted}
 				feedback={memoizedFeedback}
 				rowSelection={rowSelection}
 				setRowSelection={setRowSelection}

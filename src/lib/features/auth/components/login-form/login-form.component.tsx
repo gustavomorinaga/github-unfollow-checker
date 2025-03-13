@@ -13,15 +13,14 @@ import { siteMetadata } from '$lib/configs/site';
 import { LegalAgreement } from '$lib/features/auth/components/legal-agreement';
 import { cn } from '$lib/utils/ui';
 
+type TLoginFormProps = React.ComponentPropsWithoutRef<'div'>;
+
 /**
  * The `LoginForm` component that renders a login form for GitHub authentication.
  *
- * @param props - The props for the component.
- * @param [props.className] - Additional class names to apply to the root div element.
- *
  * @returns The rendered login form component.
  */
-export async function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+export async function LoginForm({ className, ...props }: TLoginFormProps) {
 	return (
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
 			<Card>
@@ -34,6 +33,7 @@ export async function LoginForm({ className, ...props }: React.ComponentPropsWit
 				<CardContent>
 					<form action={handleSignIn} className='contents'>
 						<ShimmerButton
+							name='github'
 							type='submit'
 							background={siteMetadata.other['theme-color']}
 							className='w-full'

@@ -1,20 +1,18 @@
 import { ThemeProvider } from '$lib/components/theme';
 import { Content } from '$lib/layouts/shared/content';
-import { Footer } from '$lib/layouts/shared/footer';
-import { Header } from '$lib/layouts/shared/header';
 import { Wrapper } from '$lib/layouts/shared/wrapper';
+
+import { Footer } from './footer';
+import { Header } from './header';
+
+type TAppLayoutProps = React.PropsWithChildren;
 
 /**
  * The `AppLayout` component provides the main layout structure for the application.
- * It includes a `ThemeProvider` for managing themes, a `TooltipProvider` for tooltips,
- * and a `Wrapper` that contains the `Header`, `Content`, and `Footer` components.
- *
- * @param props - The properties passed to the component.
- * @param props.children - The child components to be rendered within the layout.
  *
  * @returns The rendered AppLayout component.
  */
-export function AppLayout({ children }: React.PropsWithChildren) {
+export function AppLayout({ children }: TAppLayoutProps) {
 	return (
 		<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
 			<Wrapper>

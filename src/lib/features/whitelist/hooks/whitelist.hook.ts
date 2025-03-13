@@ -4,28 +4,29 @@ import React from 'react';
 
 import type { TUser } from '$lib/types';
 
+type TUseWhitelist = () => {
+	/**
+	 * The current whitelist array.
+	 */
+	whitelist: Array<TUser['id']>;
+	/**
+	 * Function to add a user to the whitelist.
+	 */
+	addToWhitelist: (idOrIDs: TUser['id'] | Array<TUser['id']>) => void;
+	/**
+	 * Function to remove a user from the whitelist by username.
+	 */
+	removeFromWhitelist: (idOrIDs: TUser['id'] | Array<TUser['id']>) => void;
+	/**
+	 * Function to clear the entire whitelist.
+	 */
+	clearWhitelist: () => void;
+};
+
 /**
  * Custom hook to manage a whitelist of users stored in localStorage.
- *
- * @returns An object containing the whitelist array and functions to manipulate it:
- * - `whitelist`: The current whitelist array.
- * - `addToWhitelist`: Function to add a user to the whitelist.
- * - `removeFromWhitelist`: Function to remove a user from the whitelist by username.
- * - `clearWhitelist`: Function to clear the entire whitelist.
- *
- * @example
- * const { whitelist, addToWhitelist, removeFromWhitelist, clearWhitelist } = useWhitelist();
- *
- * // Add a user to the whitelist
- * addToWhitelist({ login: 'username', ... });
- *
- * // Remove a user from the whitelist
- * removeFromWhitelist('username');
- *
- * // Clear the whitelist
- * clearWhitelist();
  */
-export function useWhitelist() {
+export const useWhitelist: TUseWhitelist = () => {
 	const [whitelist, setWhitelist] = React.useState<Array<TUser['id']>>(() => {
 		const storedWhitelist =
 			typeof localStorage !== 'undefined' ? localStorage.getItem('whitelist') : null;
@@ -72,10 +73,5 @@ export function useWhitelist() {
 		localStorage.removeItem('whitelist');
 	}, []);
 
-	return {
-		whitelist,
-		addToWhitelist,
-		removeFromWhitelist,
-		clearWhitelist
-	};
-}
+	return { whitelist, addToWhitelist, removeFromWhitelist, clearWhitelist };
+};

@@ -2,15 +2,14 @@ import { auth } from '$lib/auth';
 import { AvatarFallback, AvatarImage, Avatar as AvatarRoot } from '$lib/components/ui/avatar';
 import { cn } from '$lib/utils/ui';
 
+type TAvatarProps = React.ComponentProps<typeof AvatarRoot>;
+
 /**
  * The `Avatar` component displays the user's avatar image.
  *
- * @param props - The component props.
- * @param props.className - Additional class names for styling the AvatarRoot component.
- *
- * @returns The Avatar component or null if no user session is found.
+ * @returns The `Avatar` component or null if no user session is found.
  */
-export async function Avatar({ className }: React.ComponentProps<typeof AvatarRoot>) {
+export async function Avatar({ className }: TAvatarProps) {
 	const session = await auth();
 
 	if (!session || !session.user) return null;

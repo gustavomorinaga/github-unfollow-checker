@@ -15,18 +15,14 @@ import { Avatar } from '$lib/features/auth/components/avatar';
 import { LegalAgreement } from '$lib/features/auth/components/legal-agreement';
 import { cn } from '$lib/utils/ui';
 
+type TContinueSessionFormProps = React.ComponentPropsWithoutRef<'div'>;
+
 /**
  * The `ContinueSessionForm` component renders a form to continue the session if a valid session exists.
  *
- * @param props - The props for the component.
- * @param props.className - Additional class names to apply to the component.
- *
  * @returns The rendered component or null if no session exists.
  */
-export async function ContinueSessionForm({
-	className,
-	...props
-}: React.ComponentPropsWithoutRef<'div'>) {
+export async function ContinueSessionForm({ className, ...props }: TContinueSessionFormProps) {
 	const session = await auth();
 
 	if (!session) return null;
@@ -41,7 +37,7 @@ export async function ContinueSessionForm({
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<Link href='/' className='contents'>
+					<Link href='/dashboard' className='contents'>
 						<ShimmerButton background={siteMetadata.other['theme-color']} className='w-full'>
 							<Avatar className='mr-3 size-6 shrink-0 ring ring-white' />
 							<span className='truncate select-none'>

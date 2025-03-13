@@ -9,7 +9,7 @@ import { WhitelistUserButton } from '$lib/features/whitelist/components/whitelis
 import type { TUser } from '$lib/types';
 
 /**
- * Defines the columns for the Unfollowers Table.
+ * Defines the columns for the Whitelist Table.
  */
 const columns: Array<ColumnDef<TUser>> = [
 	...baseColumns,
@@ -21,7 +21,7 @@ const columns: Array<ColumnDef<TUser>> = [
 			return (
 				<div className='flex items-center justify-end gap-2'>
 					<ViewProfileButton user={user} />
-					<WhitelistUserButton user={user} action='add' />
+					<WhitelistUserButton user={user} action='remove' />
 					<UnfollowUserButton user={user} />
 				</div>
 			);

@@ -3,15 +3,14 @@ import { Button } from '$lib/components/ui/button';
 import { repoMetadata } from '$lib/configs/site';
 import { cn } from '$lib/utils/ui';
 
+type TGitHubRepoButtonProps = React.ComponentPropsWithoutRef<'a'>;
+
 /**
  * The `GitHubRepo` component renders a link to a GitHub repository.
  *
- * @param props - The props for the anchor element.
- * @param props.className - Additional class names for styling.
- *
  * @returns A link element that opens the GitHub repository in a new tab.
  */
-export function GitHubRepo({ className, ...props }: React.ComponentPropsWithoutRef<'a'>) {
+export function GitHubRepoButton({ className, ...props }: TGitHubRepoButtonProps) {
 	const {
 		owner: { username },
 		repo
