@@ -3,17 +3,14 @@
 import React from 'react';
 
 import { Button } from '$lib/components/ui/button';
-import { TUser } from '$lib/types';
+import { useData } from '$lib/contexts/data';
 import { abbreviateNumber } from '$lib/utils/formatters';
 import { cn } from '$lib/utils/ui';
+import { TUser } from '$lib/types';
 
 import { RotateCw } from 'lucide-react';
 
 export type TUnfollowersToolbarProps = React.ComponentProps<'header'> & {
-	/**
-	 * Whether the toolbar is in a pending state.
-	 */
-	pending?: boolean;
 	/**
 	 * The selected records in the table.
 	 */
@@ -27,9 +24,9 @@ export type TUnfollowersToolbarProps = React.ComponentProps<'header'> & {
 	 */
 	onAddToWhitelist?: () => void;
 	/**
-	 * Callback to refresh the unfollowers.
+	 * Callback to unfollow selected records.
 	 */
-	onRefresh?: () => void;
+	onUnfollow?: () => void;
 };
 
 /**
@@ -39,14 +36,15 @@ export type TUnfollowersToolbarProps = React.ComponentProps<'header'> & {
  */
 export function UnfollowersToolbar({
 	className,
-	pending = false,
-	selectedRecords,
+	selectedRecords = [],
 	totalRecords = 0,
 	onAddToWhitelist,
-	onRefresh,
+	onUnfollow,
 	...props
 }: TUnfollowersToolbarProps) {
-	const totalSelectedRows = React.useMemo(() => selectedRecords?.length || 0, [selectedRecords]);
+	const { pending, refresh } = useData();
+
+	const totalSelectedRows = React.useMemo(() => selectedRecords.length, [selectedRecords]);
 	const hasSelectedRows = React.useMemo(() => totalSelectedRows > 0, [totalSelectedRows]);
 	const formattedTotalRecords = React.useMemo(() => abbreviateNumber(totalRecords), [totalRecords]);
 	const formattedTotalSelectedRows = React.useMemo(
@@ -76,12 +74,12 @@ export function UnfollowersToolbar({
 					Whitelist selected
 				</Button>
 
-				<Button size='sm' variant='destructive' disabled={!hasSelectedRows}>
+				<Button size='sm' variant='destructive' disabled={!hasSelectedRows} onClick={onUnfollow}>
 					Unfollow selected
 				</Button>
 
 				<div className='contents'>
-					<Button size='icon' variant='ghost' disabled={pending} onClick={onRefresh}>
+					<Button size='icon' variant='ghost' disabled={pending} onClick={refresh}>
 						<RotateCw />
 					</Button>
 				</div>

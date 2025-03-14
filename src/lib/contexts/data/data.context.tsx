@@ -5,23 +5,28 @@ import React from 'react';
 import { useSession } from 'next-auth/react';
 
 import type { TDataResponse } from '$lib/server/repositories/data';
+import type { TUser } from '$lib/types';
 import { catchError } from '$lib/utils/errors';
 import { sleep } from '$lib/utils/sleep';
 
-const INITIAL_DATA: TDataResponse = {
+type TData = TDataResponse & { whitelist: Array<TUser> };
+
+const INITIAL_DATA: TData = {
 	followers: [],
 	following: [],
 	notMutuals: [],
-	unfollowers: []
+	unfollowers: [],
+	whitelist: []
 };
 const SLEEP_DURATION = 700;
 const CACHE_KEY = 'data';
+const WHITELIST_KEY = 'whitelist';
 
 type TDataContext = {
 	/**
 	 * The data response from the server.
 	 */
-	data: TDataResponse;
+	data: TData;
 	/**
 	 * An error message if the fetch operation failed, or null if no error.
 	 */
@@ -31,9 +36,29 @@ type TDataContext = {
 	 */
 	pending: boolean;
 	/**
+	 * An array of user IDs that are whitelisted.
+	 */
+	whitelistIDs: Array<TUser['id']>;
+	/**
 	 * A function to manually trigger a refresh of the data response.
 	 */
 	refresh: () => void;
+	/**
+	 * Function to unfollow a user by ID.
+	 */
+	unfollow: (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => void;
+	/**
+	 * Function to add a user to the whitelist.
+	 */
+	addToWhitelist: (idOrIDs: TUser['id'] | Array<TUser['id']>) => void;
+	/**
+	 * Function to remove a user from the whitelist by ID.
+	 */
+	removeFromWhitelist: (idOrIDs: TUser['id'] | Array<TUser['id']>) => void;
+	/**
+	 * Function to clear the entire whitelist.
+	 */
+	clearWhitelist: () => void;
 };
 
 const DataContext = React.createContext<TDataContext | undefined>(undefined);
@@ -54,6 +79,12 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 	const [data, setData] = React.useState<TDataResponse>(INITIAL_DATA);
 	const [error, setError] = React.useState<Error | null>(null);
 	const [pending, setPending] = React.useState<boolean>(true);
+	const [whitelistIDs, setWhitelistIDs] = React.useState<Array<TUser['id']>>(() => {
+		const storedWhitelist =
+			typeof localStorage !== 'undefined' ? localStorage.getItem(WHITELIST_KEY) : null;
+		if (storedWhitelist) return JSON.parse(storedWhitelist);
+		return [];
+	});
 
 	const fetchData = React.useCallback(
 		async ({ refresh = false } = {}) => {
@@ -76,7 +107,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 			setPending(true);
 
-			const apiURL = new URL(`/api/${session.user.login}/data`, location.origin);
+			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
 
 			const fetcher = fetch(apiURL, {
 				headers: { Authorization: `Bearer ${session.accessToken}` }
@@ -95,15 +126,101 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		[session?.accessToken, session?.user]
 	);
 
+	const unfollow = React.useCallback(
+		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
+			const isAccessTokenMissing = !session?.accessToken;
+			const isUserNotAuthenticated = !session?.user;
+			if (isAccessTokenMissing && isUserNotAuthenticated) {
+				setError(new Error('User not authenticated'));
+				return;
+			}
+
+			const usernames = Array.isArray(usernameOrUsernames)
+				? usernameOrUsernames
+				: [usernameOrUsernames];
+
+			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
+			const fetcher = fetch(apiURL, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${session.accessToken}`
+				},
+				body: JSON.stringify({ usernames })
+			}).then<TDataResponse>((res) => res.json());
+
+			const [fetchError] = await catchError(fetcher);
+			if (!fetchError) {
+				for (const username of usernames) {
+					setData(({ followers, following, notMutuals, unfollowers }) => {
+						return {
+							followers: followers.filter((user) => user.login !== username),
+							following: following.filter((user) => user.login !== username),
+							notMutuals: notMutuals.filter((user) => user.login !== username),
+							unfollowers: unfollowers.filter((user) => user.login !== username)
+						};
+					});
+				}
+			}
+		},
+		[session?.accessToken, session?.user]
+	);
+
+	const addToWhitelist = React.useCallback((idOrIDs: TUser['id'] | Array<TUser['id']>) => {
+		setWhitelistIDs((prevWhitelist) => {
+			const usersToAdd = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
+			const newWhitelist = [...new Set([...prevWhitelist, ...usersToAdd])];
+			localStorage.setItem(WHITELIST_KEY, JSON.stringify(newWhitelist));
+			return newWhitelist;
+		});
+	}, []);
+
+	const removeFromWhitelist = React.useCallback((idOrIDs: TUser['id'] | Array<TUser['id']>) => {
+		setWhitelistIDs((prevWhitelist) => {
+			const idsToRemove = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
+			const newWhitelist = prevWhitelist.filter((item) => !idsToRemove.includes(item));
+			localStorage.setItem(WHITELIST_KEY, JSON.stringify(newWhitelist));
+			return newWhitelist;
+		});
+	}, []);
+
+	const clearWhitelist = React.useCallback(() => {
+		setWhitelistIDs([]);
+		localStorage.removeItem(WHITELIST_KEY);
+	}, []);
+
 	React.useEffect(() => {
 		fetchData();
 	}, [fetchData]);
 
+	React.useEffect(() => {
+		function handleStorageEvent(event: StorageEvent) {
+			const isWhitelistKey = event.key === WHITELIST_KEY;
+			if (isWhitelistKey) setWhitelistIDs(JSON.parse(event.newValue || '[]'));
+		}
+
+		window.addEventListener('storage', handleStorageEvent);
+
+		return () => {
+			window.removeEventListener('storage', handleStorageEvent);
+		};
+	}, []);
+
+	const whitelist = React.useMemo(() => {
+		if (!data.following.length) return [];
+		return data.following.filter((user) => whitelistIDs.includes(user.id));
+	}, [data.following, whitelistIDs]);
+
 	const value: TDataContext = {
-		data,
+		data: { ...data, whitelist },
 		error,
 		pending,
-		refresh: () => fetchData({ refresh: true })
+		whitelistIDs,
+		refresh: () => fetchData({ refresh: true }),
+		unfollow,
+		addToWhitelist,
+		removeFromWhitelist,
+		clearWhitelist
 	};
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

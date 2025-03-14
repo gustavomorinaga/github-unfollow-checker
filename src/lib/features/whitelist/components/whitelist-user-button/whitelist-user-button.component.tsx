@@ -1,5 +1,5 @@
 import { Button } from '$lib/components/ui/button';
-import { useWhitelist } from '$lib/features/whitelist/hooks';
+import { useData } from '$lib/contexts/data';
 import type { TUser } from '$lib/types';
 
 import { UserRoundMinus, UserRoundPlus } from 'lucide-react';
@@ -17,7 +17,7 @@ type TActionButtonMap = Record<NonNullable<TWhitelistToolbarProps['action']>, Re
  * @returns The rendered button component.
  */
 export function WhitelistUserButton({ user, action = 'add', ...props }: TWhitelistToolbarProps) {
-	const { addToWhitelist, removeFromWhitelist } = useWhitelist();
+	const { addToWhitelist, removeFromWhitelist } = useData();
 
 	const actionButtonMap: TActionButtonMap = {
 		add: (

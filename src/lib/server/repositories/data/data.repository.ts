@@ -64,5 +64,34 @@ export const dataHandler = {
 		const response: TDataResponse = { followers, following, notMutuals, unfollowers };
 
 		return NextResponse.json(response);
+	},
+	POST: async (request: NextRequest) => {
+		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
+		if (!accessToken) {
+			return NextResponse.json(
+				{ error: 'Unauthorized' },
+				{ status: 401, headers: { 'Content-Type': 'application/json' } }
+			);
+		}
+
+		const { usernames: usernamesToUnfollow }: { usernames: Array<TUser['login']> } =
+			await request.json();
+
+		const sharedRequestHeaders: RequestInit = {
+			method: 'DELETE',
+			headers: {
+				Authorization: `token ${accessToken}`,
+				accept: 'application/vnd.github+json'
+			}
+		};
+
+		const unfollowPromises = usernamesToUnfollow.map((username) => {
+			const url = new URL(`${GITHUB_API_URL}/user/following/${username}`);
+			return fetch(url, sharedRequestHeaders);
+		});
+
+		await Promise.all(unfollowPromises);
+
+		return NextResponse.json({ success: true });
 	}
 };

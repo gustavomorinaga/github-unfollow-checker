@@ -3,16 +3,13 @@
 import React from 'react';
 
 import { Button } from '$lib/components/ui/button';
+import { useData } from '$lib/contexts/data';
 import { TUser } from '$lib/types';
 import { cn } from '$lib/utils/ui';
 
 import { RotateCw } from 'lucide-react';
 
 export type TWhitelistToolbarProps = React.ComponentProps<'header'> & {
-	/**
-	 * Whether the toolbar is in a pending state.
-	 */
-	pending?: boolean;
 	/**
 	 * The selected records in the whitelist.
 	 */
@@ -26,9 +23,9 @@ export type TWhitelistToolbarProps = React.ComponentProps<'header'> & {
 	 */
 	onRemoveFromWhitelist?: () => void;
 	/**
-	 * The callback to refresh the whitelist.
+	 * Callback to unfollow selected records.
 	 */
-	onRefresh?: () => void;
+	onUnfollow?: () => void;
 };
 
 /**
@@ -38,14 +35,15 @@ export type TWhitelistToolbarProps = React.ComponentProps<'header'> & {
  */
 export function WhitelistToolbar({
 	className,
-	pending = false,
-	selectedRecords,
-	totalRecords,
+	selectedRecords = [],
+	totalRecords = 0,
 	onRemoveFromWhitelist,
-	onRefresh,
+	onUnfollow,
 	...props
 }: TWhitelistToolbarProps) {
-	const totalSelectedRows = React.useMemo(() => selectedRecords?.length || 0, [selectedRecords]);
+	const { pending, refresh } = useData();
+
+	const totalSelectedRows = React.useMemo(() => selectedRecords.length, [selectedRecords]);
 	const hasSelectedRows = React.useMemo(() => totalSelectedRows > 0, [totalSelectedRows]);
 
 	return (
@@ -75,12 +73,12 @@ export function WhitelistToolbar({
 					Remove selected
 				</Button>
 
-				<Button size='sm' variant='destructive' disabled={!hasSelectedRows}>
+				<Button size='sm' variant='destructive' disabled={!hasSelectedRows} onClick={onUnfollow}>
 					Unfollow selected
 				</Button>
 
 				<div className='contents'>
-					<Button size='icon' variant='ghost' disabled={pending} onClick={onRefresh}>
+					<Button size='icon' variant='ghost' disabled={pending} onClick={refresh}>
 						<RotateCw />
 					</Button>
 				</div>

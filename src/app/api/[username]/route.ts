@@ -1,3 +1,3 @@
 import { dataHandler } from '$lib/server/repositories/data';
 
-export const { GET } = dataHandler;
+export const { GET, POST } = dataHandler;

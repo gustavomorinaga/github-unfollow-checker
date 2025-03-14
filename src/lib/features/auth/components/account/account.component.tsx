@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { auth, handleSignIn, handleSignOut } from '$lib/auth';
 import { Button } from '$lib/components/ui/button';
 import {
@@ -10,7 +12,7 @@ import {
 } from '$lib/components/ui/dropdown-menu';
 import { Avatar } from '$lib/features/auth/components/avatar';
 
-import { LogOut } from 'lucide-react';
+import { Boxes, LogOut } from 'lucide-react';
 
 /**
  * The `Account` component handles user authentication and displays the user's account information.
@@ -65,6 +67,13 @@ export async function Account() {
 						</div>
 					</a>
 				</DropdownMenuLabel>
+				<DropdownMenuSeparator />
+				<DropdownMenuItem asChild>
+					<Link href='/dashboard'>
+						<Boxes />
+						<span className='select-none'>Dashboard</span>
+					</Link>
+				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem aria-label='Sign Out' onClick={handleSignOut}>
 					<LogOut />

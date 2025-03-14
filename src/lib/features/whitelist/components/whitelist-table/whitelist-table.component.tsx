@@ -3,54 +3,30 @@
 import Link from 'next/link';
 import React from 'react';
 
+import { Button } from '$lib/components/ui/button';
 import { DataTable, type RowSelectionState } from '$lib/components/ui/data-table';
 import { Spinner } from '$lib/components/ui/spinner';
+import { useData } from '$lib/contexts/data';
 import { WhitelistToolbar as Toolbar } from '$lib/features/whitelist/components/whitelist-toolbar';
-import { useWhitelist } from '$lib/features/whitelist/hooks';
 import { cn } from '$lib/utils/ui';
 
-import { Button } from '$lib/components/ui/button';
-import { columns, type TUser } from './columns';
+import { columns } from './columns';
 
-type TWhitelistDataTableProps = React.ComponentProps<'div'> & {
-	/**
-	 * Array of user data to display in the table.
-	 */
-	data?: Array<TUser>;
-	/**
-	 * Whether the table is in a pending state.
-	 */
-	pending?: boolean;
-	/**
-	 * Callback to refresh the whitelist.
-	 */
-	onRefresh: () => void;
-};
+type TWhitelistDataTableProps = React.ComponentProps<'div'>;
 
 /**
  * The `WhitelistDataTable` component renders a data table for managing the whitelist.
  *
  * @returns The rendered `WhitelistDataTable` component.
  */
-function WhitelistDataTable({
-	className,
-	data = [],
-	pending = false,
-	onRefresh,
-	...props
-}: TWhitelistDataTableProps) {
-	const { whitelist, removeFromWhitelist } = useWhitelist();
+function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
+	const { data, pending, removeFromWhitelist, unfollow } = useData();
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 
-	const onlyWhitelistedData = React.useMemo(() => {
-		if (!data.length) return [];
-		return data.filter((user) => whitelist.includes(user.id));
-	}, [data, whitelist]);
-
 	const selectedRecords = React.useMemo(() => {
-		if (!onlyWhitelistedData.length) return [];
-		return Object.keys(rowSelection).map((key) => onlyWhitelistedData[key]);
-	}, [rowSelection, onlyWhitelistedData]);
+		if (!data.whitelist.length) return [];
+		return Object.keys(rowSelection).map((key) => data.whitelist[key]);
+	}, [data.whitelist, rowSelection]);
 
 	const memoizedFeedback = React.useMemo(() => {
 		return (
@@ -82,19 +58,25 @@ function WhitelistDataTable({
 		setRowSelection({});
 	}
 
+	function handleUnfollow() {
+		if (!selectedRecords.length) return;
+		const selectedUsernames = selectedRecords.map((user) => user.login);
+		unfollow(selectedUsernames);
+		setRowSelection({});
+	}
+
 	return (
 		<div className={cn('flex flex-col gap-2', className)} {...props}>
 			<Toolbar
-				pending={pending}
 				selectedRecords={selectedRecords}
-				totalRecords={onlyWhitelistedData.length}
+				totalRecords={data.whitelist.length}
 				onRemoveFromWhitelist={handleRemoveFromWhitelist}
-				onRefresh={onRefresh}
+				onUnfollow={handleUnfollow}
 			/>
 
 			<DataTable
 				columns={columns}
-				data={pending ? [] : onlyWhitelistedData}
+				data={pending ? [] : data.whitelist}
 				feedback={memoizedFeedback}
 				rowSelection={rowSelection}
 				setRowSelection={setRowSelection}
