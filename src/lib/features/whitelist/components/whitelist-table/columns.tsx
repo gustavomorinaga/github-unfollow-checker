@@ -15,7 +15,7 @@ const columns: Array<ColumnDef<TUser>> = [
 	...baseColumns,
 	{
 		id: 'actions',
-		size: 44,
+		size: 48,
 		header: () => <span>Actions</span>,
 		cell: ({ row: { original: user } }) => {
 			return (

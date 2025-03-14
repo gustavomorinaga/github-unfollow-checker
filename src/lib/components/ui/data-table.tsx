@@ -54,8 +54,7 @@ function DataTable<TData, TValue>({
 										key={header.id}
 										colSpan={header.colSpan}
 										style={{
-											maxWidth: header.column.columnDef.size || undefined,
-											minWidth: header.column.columnDef.size || undefined
+											width: header.column.columnDef.size || undefined
 										}}
 									>
 										{header.isPlaceholder
@@ -75,8 +74,7 @@ function DataTable<TData, TValue>({
 									<TableCell
 										key={cell.id}
 										style={{
-											maxWidth: cell.column.columnDef.size || undefined,
-											minWidth: cell.column.columnDef.size || undefined
+											width: cell.column.columnDef.size || undefined
 										}}
 									>
 										{flexRender(cell.column.columnDef.cell, cell.getContext())}

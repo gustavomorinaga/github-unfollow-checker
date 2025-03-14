@@ -8,7 +8,7 @@ import type { TUser } from '$lib/types';
 import { catchError } from '$lib/utils/errors';
 import { sleep } from '$lib/utils/sleep';
 
-const SLEEP_DURATION = 1_000;
+const SLEEP_DURATION = 700;
 const CACHE_KEY = 'unfollowers';
 
 type TUseUnfollowersHook = () => {

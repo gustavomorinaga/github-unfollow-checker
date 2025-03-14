@@ -15,11 +15,11 @@ const columns: Array<ColumnDef<TUser>> = [
 	...baseColumns,
 	{
 		id: 'actions',
-		size: 44,
+		size: 48,
 		header: () => <span>Actions</span>,
 		cell: ({ row: { original: user } }) => {
 			return (
-				<div className='flex items-center justify-end gap-2'>
+				<div className='w- flex shrink-0 items-center justify-end gap-2'>
 					<ViewProfileButton user={user} />
 					<WhitelistUserButton user={user} action='add' />
 					<UnfollowUserButton user={user} />

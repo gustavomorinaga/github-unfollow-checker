@@ -98,7 +98,7 @@ function WhitelistDataTable({
 				feedback={memoizedFeedback}
 				rowSelection={rowSelection}
 				setRowSelection={setRowSelection}
-				className='[&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only'
+				className='rounded-none border-x-0 border-y md:rounded-md md:border-x [&_table]:table-fixed [&_tbody_td_span[data-slot="badge"]]:invisible md:[&_tbody_td_span[data-slot="badge"]]:visible [&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only'
 			/>
 		</div>
 	);
