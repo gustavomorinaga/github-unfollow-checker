@@ -23,7 +23,14 @@ async function fetchAllPages(url: URL, headers: RequestInit) {
 	return results;
 }
 
-export const unfollowersHandler = {
+export type TDataResponse = {
+	followers: Array<TUser>;
+	following: Array<TUser>;
+	notMutuals: Array<TUser>;
+	unfollowers: Array<TUser>;
+};
+
+export const dataHandler = {
 	GET: async (request: NextRequest, { params }: { params: Promise<{ username: string }> }) => {
 		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
 		if (!accessToken) {
@@ -45,14 +52,17 @@ export const unfollowersHandler = {
 			}
 		};
 
-		const [fetchedFollowers, fetchedFollowing] = await Promise.all([
+		const [followers, following] = await Promise.all([
 			fetchAllPages(followersURL, sharedRequestHeaders),
 			fetchAllPages(followingURL, sharedRequestHeaders)
 		]);
 
-		const followersSet = new Set(fetchedFollowers.map((follower) => follower.login));
-		const unfollowers = fetchedFollowing.filter((following) => !followersSet.has(following.login));
+		const followersSet = new Set(followers.map((follower) => follower.login));
+		const notMutuals = followers.filter((follower) => !followersSet.has(follower.login));
+		const unfollowers = following.filter((following) => !followersSet.has(following.login));
 
-		return NextResponse.json(unfollowers);
+		const response: TDataResponse = { followers, following, notMutuals, unfollowers };
+
+		return NextResponse.json(response);
 	}
 };
