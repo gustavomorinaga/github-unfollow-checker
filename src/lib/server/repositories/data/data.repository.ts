@@ -58,14 +58,45 @@ export const dataHandler = {
 		]);
 
 		const followersSet = new Set(followers.map((follower) => follower.login));
-		const notMutuals = followers.filter((follower) => !followersSet.has(follower.login));
+		const followingSet = new Set(following.map((following) => following.login));
+
+		const notMutuals = followers.filter((follower) => !followingSet.has(follower.login));
 		const unfollowers = following.filter((following) => !followersSet.has(following.login));
 
 		const response: TDataResponse = { followers, following, notMutuals, unfollowers };
 
 		return NextResponse.json(response);
 	},
-	POST: async (request: NextRequest) => {
+	PUT: async (request: NextRequest) => {
+		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
+		if (!accessToken) {
+			return NextResponse.json(
+				{ error: 'Unauthorized' },
+				{ status: 401, headers: { 'Content-Type': 'application/json' } }
+			);
+		}
+
+		const { usernames: usernamesToFollow }: { usernames: Array<TUser['login']> } =
+			await request.json();
+
+		const sharedRequestHeaders: RequestInit = {
+			method: 'PUT',
+			headers: {
+				Authorization: `token ${accessToken}`,
+				accept: 'application/vnd.github+json'
+			}
+		};
+
+		const followPromises = usernamesToFollow.map((username) => {
+			const url = new URL(`${GITHUB_API_URL}/user/following/${username}`);
+			return fetch(url, sharedRequestHeaders);
+		});
+
+		await Promise.all(followPromises);
+
+		return NextResponse.json({ success: true });
+	},
+	DELETE: async (request: NextRequest) => {
 		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
 		if (!accessToken) {
 			return NextResponse.json(

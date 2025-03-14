@@ -10,38 +10,38 @@ import { cn } from '$lib/utils/ui';
 
 import { RotateCw } from 'lucide-react';
 
-export type TWhitelistToolbarProps = React.ComponentProps<'header'> & {
+export type TNotMutualsToolbarProps = React.ComponentProps<'header'> & {
 	/**
-	 * The selected records in the whitelist.
+	 * The selected records in the table.
 	 */
 	selectedRecords?: Array<TUser>;
 	/**
-	 * The total number of records in the whitelist.
+	 * The total number of records in the table.
 	 */
 	totalRecords?: number;
 	/**
-	 * The callback to remove selected records from the whitelist.
+	 * The callback to add selected records to the whitelist.
 	 */
-	onRemoveFromWhitelist?: () => void;
+	onAddToWhitelist?: () => void;
 	/**
-	 * Callback to unfollow selected records.
+	 * Callback to follow selected records.
 	 */
-	onUnfollow?: () => void;
+	onFollow?: () => void;
 };
 
 /**
- * The `WhitelistToolbar` component renders a toolbar for managing the whitelist.
+ * The `NotMutualsToolbar` component renders a toolbar for managing the not mutuals list.
  *
  * @returns The rendered toolbar component.
  */
-export function WhitelistToolbar({
+export function NotMutualsToolbar({
 	className,
 	selectedRecords = [],
 	totalRecords = 0,
-	onRemoveFromWhitelist,
-	onUnfollow,
+	onAddToWhitelist,
+	onFollow,
 	...props
-}: TWhitelistToolbarProps) {
+}: TNotMutualsToolbarProps) {
 	const { pending, refresh } = useData();
 
 	const totalSelectedRows = React.useMemo(() => selectedRecords.length, [selectedRecords]);
@@ -64,23 +64,18 @@ export function WhitelistToolbar({
 					)}
 					<div className='contents'>
 						<span>{formattedTotalRecords}</span>
-						<p>{hasSelectedRows ? 'selected' : 'whitelisted'}</p>
+						<p>{hasSelectedRows ? 'selected' : 'not mutuals'}</p>
 					</div>
 				</div>
 			</div>
 
 			<div data-slot='toolbar-actions' className='flex items-center gap-2'>
-				<Button
-					size='sm'
-					variant='outline'
-					disabled={!hasSelectedRows}
-					onClick={onRemoveFromWhitelist}
-				>
-					Remove selected
+				<Button size='sm' variant='outline' disabled={!hasSelectedRows} onClick={onAddToWhitelist}>
+					Whitelist selected
 				</Button>
 
-				<Button size='sm' variant='destructive' disabled={!hasSelectedRows} onClick={onUnfollow}>
-					Unfollow selected
+				<Button size='sm' disabled={!hasSelectedRows} onClick={onFollow}>
+					Follow selected
 				</Button>
 
 				<div className='contents'>

@@ -44,7 +44,11 @@ type TDataContext = {
 	 */
 	refresh: () => void;
 	/**
-	 * Function to unfollow a user by ID.
+	 * Function to follow a user by username.
+	 */
+	follow: (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => void;
+	/**
+	 * Function to unfollow a user by username.
 	 */
 	unfollow: (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => void;
 	/**
@@ -126,6 +130,46 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		[session?.accessToken, session?.user]
 	);
 
+	const follow = React.useCallback(
+		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
+			const isAccessTokenMissing = !session?.accessToken;
+			const isUserNotAuthenticated = !session?.user;
+			if (isAccessTokenMissing && isUserNotAuthenticated) {
+				setError(new Error('User not authenticated'));
+				return;
+			}
+
+			const usernames = Array.isArray(usernameOrUsernames)
+				? usernameOrUsernames
+				: [usernameOrUsernames];
+
+			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
+			const fetcher = fetch(apiURL, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${session.accessToken}`
+				},
+				body: JSON.stringify({ usernames })
+			}).then<TDataResponse>((res) => res.json());
+
+			const [fetchError] = await catchError(fetcher);
+			if (!fetchError) {
+				for (const username of usernames) {
+					setData(({ followers, following, notMutuals, unfollowers }) => {
+						return {
+							followers: followers.filter((user) => user.login !== username),
+							following: following.filter((user) => user.login !== username),
+							notMutuals: notMutuals.filter((user) => user.login !== username),
+							unfollowers: unfollowers.filter((user) => user.login !== username)
+						};
+					});
+				}
+			}
+		},
+		[session?.accessToken, session?.user]
+	);
+
 	const unfollow = React.useCallback(
 		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
 			const isAccessTokenMissing = !session?.accessToken;
@@ -141,7 +185,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
 			const fetcher = fetch(apiURL, {
-				method: 'POST',
+				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${session.accessToken}`
@@ -217,6 +261,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		pending,
 		whitelistIDs,
 		refresh: () => fetchData({ refresh: true }),
+		follow,
 		unfollow,
 		addToWhitelist,
 		removeFromWhitelist,

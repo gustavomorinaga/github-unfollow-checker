@@ -1,1 +1,1 @@
-export * from './unfollow-use-button.component';
+export * from './unfollow-user-button.component';
