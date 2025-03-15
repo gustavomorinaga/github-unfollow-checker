@@ -18,6 +18,7 @@ const INITIAL_DATA: TData = {
 	unfollowers: [],
 	whitelist: []
 };
+const INITIAL_WHITELIST: Array<TUser['id']> = [];
 const SLEEP_DURATION = 700;
 const CACHE_KEY = 'data';
 const WHITELIST_KEY = 'whitelist';
@@ -78,57 +79,60 @@ const DataContext = React.createContext<TDataContext | undefined>(undefined);
  * - If the user is not authenticated, it sets an error state.
  */
 export function DataProvider({ children }: React.PropsWithChildren) {
+	const isLocalStorageAvailable = typeof localStorage !== 'undefined';
+
 	const { data: session } = useSession({ required: true });
 
-	const [data, setData] = React.useState<TDataResponse>(INITIAL_DATA);
+	const alreadyRequested = React.useRef(false);
+
+	const [data, setData] = React.useState<TDataResponse>(() => {
+		const data = isLocalStorageAvailable ? localStorage.getItem(CACHE_KEY) : null;
+		if (data) return JSON.parse(data);
+		if (isLocalStorageAvailable) localStorage.setItem(CACHE_KEY, JSON.stringify(INITIAL_DATA));
+		return INITIAL_DATA;
+	});
 	const [error, setError] = React.useState<Error | null>(null);
 	const [pending, setPending] = React.useState<boolean>(true);
 	const [whitelistIDs, setWhitelistIDs] = React.useState<Array<TUser['id']>>(() => {
-		const storedWhitelist =
-			typeof localStorage !== 'undefined' ? localStorage.getItem(WHITELIST_KEY) : null;
-		if (storedWhitelist) return JSON.parse(storedWhitelist);
-		return [];
+		const whitelist = isLocalStorageAvailable ? localStorage.getItem(WHITELIST_KEY) : null;
+		if (whitelist) return JSON.parse(whitelist);
+		if (isLocalStorageAvailable)
+			localStorage.setItem(WHITELIST_KEY, JSON.stringify(INITIAL_WHITELIST));
+		return INITIAL_WHITELIST;
 	});
 
-	const fetchData = React.useCallback(
-		async ({ refresh = false } = {}) => {
-			const isAccessTokenMissing = !session?.accessToken;
-			const isUserNotAuthenticated = !session?.user;
-			if (isAccessTokenMissing && isUserNotAuthenticated) {
-				setError(new Error('User not authenticated'));
-				sleep(SLEEP_DURATION).then(() => setPending(false));
-				return;
-			}
+	const fetchData = React.useCallback(async () => {
+		if (alreadyRequested.current) return;
 
-			if (!refresh) {
-				const cachedData = localStorage.getItem(CACHE_KEY);
-				if (cachedData) {
-					setData(JSON.parse(cachedData));
-					sleep(SLEEP_DURATION).then(() => setPending(false));
-					return;
-				}
-			}
+		setPending(true);
 
-			setPending(true);
-
-			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
-
-			const fetcher = fetch(apiURL, {
-				headers: { Authorization: `Bearer ${session.accessToken}` }
-			}).then<TDataResponse>((res) => res.json());
-
-			const [fetchError, data] = await catchError(fetcher);
-
-			if (fetchError) setError(fetchError);
-			else {
-				setData(data);
-				localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-			}
-
+		const isAccessTokenMissing = !session?.accessToken;
+		const isUserNotAuthenticated = !session?.user;
+		if (isAccessTokenMissing && isUserNotAuthenticated) {
+			setError(new Error('User not authenticated'));
 			sleep(SLEEP_DURATION).then(() => setPending(false));
-		},
-		[session?.accessToken, session?.user]
-	);
+			return;
+		}
+
+		// * Prevent multiple requests
+		alreadyRequested.current = true;
+
+		const apiURL = new URL(`/api/${session.user.login}`, location.origin);
+
+		const fetcher = fetch(apiURL, {
+			headers: { Authorization: `Bearer ${session.accessToken}` }
+		}).then<TDataResponse>((res) => res.json());
+
+		const [fetchError, data] = await catchError(fetcher);
+
+		if (fetchError) setError(fetchError);
+		else {
+			setData(data);
+			localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+		}
+
+		sleep(SLEEP_DURATION).then(() => setPending(false));
+	}, [session?.accessToken, session?.user]);
 
 	const follow = React.useCallback(
 		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
@@ -260,7 +264,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		error,
 		pending,
 		whitelistIDs,
-		refresh: () => fetchData({ refresh: true }),
+		refresh: fetchData,
 		follow,
 		unfollow,
 		addToWhitelist,
