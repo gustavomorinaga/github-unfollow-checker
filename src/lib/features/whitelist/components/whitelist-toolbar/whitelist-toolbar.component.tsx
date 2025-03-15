@@ -48,7 +48,7 @@ export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleRemoveSelectedUsersFromWhitelist}
 				>
-					Remove selected
+					<span className='select-none'>Remove selected</span>
 				</Button>
 
 				<Button
@@ -57,7 +57,7 @@ export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleUnfollowSelectedUsers}
 				>
-					Unfollow selected
+					<span className='select-none'>Unfollow selected</span>
 				</Button>
 
 				<div className='contents'>

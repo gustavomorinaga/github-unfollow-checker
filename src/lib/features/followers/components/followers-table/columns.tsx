@@ -3,13 +3,13 @@
 import type { ColumnDef } from '@tanstack/react-table';
 
 import { baseColumns } from '$lib/features/shared/components/base-table/base-data-table-columns';
-import { UnfollowUserButton } from '$lib/features/shared/components/unfollow-user-button';
+import { FollowUserButton } from '$lib/features/shared/components/follow-user-button';
 import { ViewUserProfileButton } from '$lib/features/shared/components/view-user-profile-button';
 import { WhitelistUserButton } from '$lib/features/shared/components/whitelist-user-button';
 import type { TUser } from '$lib/types';
 
 /**
- * Defines the columns for the Unfollowers Table.
+ * Defines the columns for the Followers Table.
  */
 const columns: Array<ColumnDef<TUser>> = [
 	...baseColumns,
@@ -22,7 +22,7 @@ const columns: Array<ColumnDef<TUser>> = [
 				<div className='w- flex shrink-0 items-center justify-end gap-2'>
 					<ViewUserProfileButton user={user} />
 					<WhitelistUserButton user={user} action='add' />
-					<UnfollowUserButton user={user} />
+					<FollowUserButton user={user} />
 				</div>
 			);
 		}

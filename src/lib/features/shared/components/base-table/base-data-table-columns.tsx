@@ -68,7 +68,7 @@ const baseColumns: Array<ColumnDef<TUser>> = [
 						asChild
 						className='w-full justify-start px-0'
 					>
-						<a href={profileURL} target='_blank' rel='noopener noreferrer' className='contents'>
+						<a href={profileURL} target='_blank' rel='noopener noreferrer'>
 							<span className='truncate select-none'>@{username}</span>
 						</a>
 					</Button>

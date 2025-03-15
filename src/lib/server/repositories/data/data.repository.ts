@@ -83,16 +83,30 @@ export const dataHandler: TDataHandler = {
 			}
 		};
 
-		const [followers, following] = await Promise.all([
+		const [fetchedFollowers, fetchedFollowing] = await Promise.all([
 			fetchAllPages(followersURL, sharedRequestHeaders),
 			fetchAllPages(followingURL, sharedRequestHeaders)
 		]);
 
-		const followersSet = new Set(followers.map((follower) => follower.login));
-		const followingSet = new Set(following.map((following) => following.login));
+		const followersSet = new Set(fetchedFollowers.map((follower) => follower.login));
+		const followingSet = new Set(fetchedFollowing.map((following) => following.login));
+		const notMutualsSet = new Set([...followersSet].filter((login) => !followingSet.has(login)));
+		const unfollowersSet = new Set([...followingSet].filter((login) => !followersSet.has(login)));
 
-		const notMutuals = followers.filter((follower) => !followingSet.has(follower.login));
-		const unfollowers = following.filter((following) => !followersSet.has(following.login));
+		const followers = fetchedFollowers.map((follower) => ({
+			...follower,
+			followedBy: !notMutualsSet.has(follower.login)
+		}));
+		const following = fetchedFollowing.map((following) => ({
+			...following,
+			followedBy: true
+		}));
+		const notMutuals = fetchedFollowers
+			.filter((follower) => notMutualsSet.has(follower.login))
+			.map((follower) => ({ ...follower, followedBy: false }));
+		const unfollowers = fetchedFollowing
+			.filter((following) => unfollowersSet.has(following.login))
+			.map((following) => ({ ...following, followedBy: true }));
 
 		const response: TDataResponse = { followers, following, notMutuals, unfollowers };
 

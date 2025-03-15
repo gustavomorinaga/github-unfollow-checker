@@ -267,8 +267,34 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 	React.useEffect(() => {
 		function handleStorageEvent(event: StorageEvent) {
-			const isWhitelistKey = event.key === WHITELIST_KEY;
-			if (isWhitelistKey) setWhitelistIDs(JSON.parse(event.newValue || '[]'));
+			if (!event.key) return;
+
+			const parsedEventValue = JSON.parse(event.newValue || '[]');
+
+			const eventMap = {
+				[FOLLOWERS_KEY]: () => {
+					setData((prevData) => ({ ...prevData, followers: parsedEventValue }));
+					localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(parsedEventValue));
+				},
+				[FOLLOWING_KEY]: () => {
+					setData((prevData) => ({ ...prevData, following: parsedEventValue }));
+					localStorage.setItem(FOLLOWING_KEY, JSON.stringify(parsedEventValue));
+				},
+				[NOT_MUTUALS_KEY]: () => {
+					setData((prevData) => ({ ...prevData, notMutuals: parsedEventValue }));
+					localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(parsedEventValue));
+				},
+				[UNFOLLOWERS_KEY]: () => {
+					setData((prevData) => ({ ...prevData, unfollowers: parsedEventValue }));
+					localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(parsedEventValue));
+				},
+				[WHITELIST_KEY]: () => {
+					setWhitelistIDs(parsedEventValue);
+					localStorage.setItem(WHITELIST_KEY, JSON.stringify(parsedEventValue));
+				}
+			};
+
+			return eventMap?.[event.key]?.();
 		}
 
 		window.addEventListener('storage', handleStorageEvent);

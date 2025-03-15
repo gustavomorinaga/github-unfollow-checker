@@ -61,41 +61,45 @@ export function DataTablePagination<TData>({ className, ...props }: DataTablePag
 					</Select>
 				</div>
 				<div className='flex min-w-[100px] shrink-0 items-center justify-center text-sm font-medium'>
-					Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+					Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount() || 1}
 				</div>
 				<div className='flex shrink-0 items-center space-x-2'>
 					<Button
 						variant='outline'
-						className='hidden h-8 w-8 p-0 lg:flex'
-						onClick={() => table.setPageIndex(0)}
+						aria-label='Go to first page'
 						disabled={!table.getCanPreviousPage()}
+						onClick={() => table.setPageIndex(0)}
+						className='hidden h-8 w-8 p-0 lg:flex'
 					>
 						<span className='sr-only'>Go to first page</span>
 						<ChevronsLeft />
 					</Button>
 					<Button
 						variant='outline'
-						className='h-8 w-8 p-0'
-						onClick={() => table.previousPage()}
+						aria-label='Go to previous page'
 						disabled={!table.getCanPreviousPage()}
+						onClick={() => table.previousPage()}
+						className='h-8 w-8 p-0'
 					>
 						<span className='sr-only'>Go to previous page</span>
 						<ChevronLeft />
 					</Button>
 					<Button
 						variant='outline'
-						className='h-8 w-8 p-0'
-						onClick={() => table.nextPage()}
+						aria-label='Go to next page'
 						disabled={!table.getCanNextPage()}
+						onClick={() => table.nextPage()}
+						className='h-8 w-8 p-0'
 					>
 						<span className='sr-only'>Go to next page</span>
 						<ChevronRight />
 					</Button>
 					<Button
 						variant='outline'
-						className='hidden h-8 w-8 p-0 lg:flex'
-						onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+						aria-label='Go to last page'
 						disabled={!table.getCanNextPage()}
+						onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+						className='hidden h-8 w-8 p-0 lg:flex'
 					>
 						<span className='sr-only'>Go to last page</span>
 						<ChevronsRight />

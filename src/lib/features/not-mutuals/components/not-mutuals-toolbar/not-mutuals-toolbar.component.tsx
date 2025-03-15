@@ -48,7 +48,7 @@ export function NotMutualsToolbar(props: TNotMutualsToolbarProps) {
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleWhitelistSelectedUsers}
 				>
-					Whitelist selected
+					<span className='select-none'>Whitelist selected</span>
 				</Button>
 
 				<Button
@@ -56,7 +56,7 @@ export function NotMutualsToolbar(props: TNotMutualsToolbarProps) {
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleFollowSelectedUsers}
 				>
-					Follow selected
+					<span className='select-none'>Follow selected</span>
 				</Button>
 
 				<div className='contents'>

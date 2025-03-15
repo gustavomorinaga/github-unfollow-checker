@@ -55,7 +55,13 @@ export function PreferencesProvider({ children }: React.PropsWithChildren) {
 	);
 
 	React.useEffect(() => {
-		function setCachedPreferences(serializedData: string = '{}') {
+		function setCachedPreferences(serializedData: string | null = '{}') {
+			if (!serializedData || serializedData === '{}') {
+				setPreferences(INITIAL_DATA);
+				localStorage.setItem(CACHE_KEY, JSON.stringify(INITIAL_DATA));
+				return;
+			}
+
 			const parsedData = JSON.parse(serializedData);
 			const isValidPageSize = pageSizeOptions.includes(parsedData.pageSize);
 
@@ -63,7 +69,7 @@ export function PreferencesProvider({ children }: React.PropsWithChildren) {
 		}
 
 		function handleStorageEvent(event: StorageEvent) {
-			if (event.key === CACHE_KEY && event.newValue) setCachedPreferences(event.newValue);
+			if (event.key === CACHE_KEY) setCachedPreferences(event.newValue);
 		}
 
 		window.addEventListener('storage', handleStorageEvent);

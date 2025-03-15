@@ -30,23 +30,17 @@ export function Footer({ className, ...props }: TFooterProps) {
 				</p>
 
 				<div className='text-muted-foreground flex items-center justify-center gap-2 [&>div]:select-none'>
-					<Link href='/legal/terms' className='contents'>
-						<Button variant='link' className='px-1'>
-							Terms of Use
-						</Button>
-					</Link>
+					<Button variant='link' asChild className='px-1'>
+						<Link href='/legal/terms'>Terms of Use</Link>
+					</Button>
 					<div>|</div>
-					<Link href='/legal/privacy-policy' className='contents'>
-						<Button variant='link' className='px-1'>
-							Privacy Policy
-						</Button>
-					</Link>
+					<Button variant='link' asChild className='px-1'>
+						<Link href='/legal/privacy-policy'>Privacy Policy</Link>
+					</Button>
 					<div>|</div>
-					<a href={`mailto:${email}`} className='contents'>
-						<Button variant='link' className='px-1'>
-							Contact
-						</Button>
-					</a>
+					<Button variant='link' asChild className='px-1'>
+						<a href={`mailto:${email}`}>Contact</a>
+					</Button>
 				</div>
 
 				<p className='text-muted-foreground'>

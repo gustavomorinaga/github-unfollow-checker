@@ -38,9 +38,11 @@ export async function Account() {
 				<Button
 					size='icon'
 					variant='ghost'
+					aria-label='Account'
 					className='data-[state="open"]:ring-primary overflow-hidden rounded-full ring ring-transparent'
 				>
 					<Avatar />
+					<span className='sr-only select-none'>Account</span>
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end' className='w-72'>

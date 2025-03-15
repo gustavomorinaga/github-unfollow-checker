@@ -24,24 +24,20 @@ function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
 
 	const memoizedFeedback = React.useMemo(() => {
 		return (
-			<>
-				<div className='flex size-full flex-col items-center justify-center'>
-					<div className='flex items-center gap-2'>
-						{pending && <Spinner />}
-						<span>
-							{pending ? 'Loading whitelist...' : 'No whitelisted users found. Wanna add some? 🤔'}
-						</span>
-					</div>
-
-					{!pending && (
-						<Link href='/dashboard' className='contents'>
-							<Button size='sm' variant='link'>
-								Go to dashboard
-							</Button>
-						</Link>
-					)}
+			<div className='flex size-full flex-col items-center justify-center'>
+				<div className='flex items-center gap-2'>
+					{pending && <Spinner />}
+					<span>
+						{pending ? 'Loading whitelist...' : 'No whitelisted users found. Wanna add some? 🤔'}
+					</span>
 				</div>
-			</>
+
+				{!pending && (
+					<Button size='sm' variant='link' asChild>
+						<Link href='/dashboard'>View unfollowers</Link>
+					</Button>
+				)}
+			</div>
 		);
 	}, [pending]);
 

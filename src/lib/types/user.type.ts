@@ -1,4 +1,4 @@
-export type TUser = {
+export type TBaseUser = {
 	name: string | null;
 	email: string | null;
 	login: string;
@@ -22,3 +22,5 @@ export type TUser = {
 	starred_at: string;
 	user_view_type: string;
 };
+
+export type TUser = TBaseUser & { followedBy: boolean };
