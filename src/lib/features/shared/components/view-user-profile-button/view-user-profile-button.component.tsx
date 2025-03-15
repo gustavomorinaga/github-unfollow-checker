@@ -3,9 +3,9 @@ import type { TUser } from '$lib/types';
 
 import { ExternalLink } from 'lucide-react';
 
-type TViewProfileButtonProps = React.ComponentProps<typeof Button> & {
+type TViewUserProfileButtonProps = React.ComponentProps<typeof Button> & {
 	/**
-	 * The user object to be viewed.
+	 * The user to view the profile of.
 	 */
 	user: TUser;
 };
@@ -15,7 +15,7 @@ type TViewProfileButtonProps = React.ComponentProps<typeof Button> & {
  *
  * @returns The rendered button component.
  */
-export function ViewProfileButton({ user, ...props }: TViewProfileButtonProps) {
+export function ViewUserProfileButton({ user, ...props }: TViewUserProfileButtonProps) {
 	return (
 		<Button size='icon' variant='outline' aria-label='View profile' asChild {...props}>
 			<a href={user.html_url} target='_blank' rel='noopener noreferrer'>

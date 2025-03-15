@@ -2,10 +2,10 @@
 
 import type { ColumnDef } from '@tanstack/react-table';
 
-import { ViewProfileButton } from '$lib/features/shared/components/view-profile-button';
-import { baseColumns } from '$lib/features/shared/components/base-table/base-columns';
-import { UnfollowUserButton } from '$lib/features/unfollowers/components/unfollow-user-button';
-import { WhitelistUserButton } from '$lib/features/whitelist/components/whitelist-user-button';
+import { baseColumns } from '$lib/features/shared/components/base-table/base-data-table-columns';
+import { UnfollowUserButton } from '$lib/features/shared/components/unfollow-user-button';
+import { ViewUserProfileButton } from '$lib/features/shared/components/view-user-profile-button';
+import { WhitelistUserButton } from '$lib/features/shared/components/whitelist-user-button';
 import type { TUser } from '$lib/types';
 
 /**
@@ -20,7 +20,7 @@ const columns: Array<ColumnDef<TUser>> = [
 		cell: ({ row: { original: user } }) => {
 			return (
 				<div className='w- flex shrink-0 items-center justify-end gap-2'>
-					<ViewProfileButton user={user} />
+					<ViewUserProfileButton user={user} />
 					<WhitelistUserButton user={user} action='add' />
 					<UnfollowUserButton user={user} />
 				</div>

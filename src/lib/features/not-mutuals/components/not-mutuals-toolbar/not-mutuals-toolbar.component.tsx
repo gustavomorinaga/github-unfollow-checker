@@ -4,77 +4,58 @@ import React from 'react';
 
 import { Button } from '$lib/components/ui/button';
 import { useData } from '$lib/contexts/data';
-import { TUser } from '$lib/types';
-import { abbreviateNumber } from '$lib/utils/formatters';
-import { cn } from '$lib/utils/ui';
+import { useDataTable } from '$lib/features/shared/components/base-table/base-data-table-context';
+import { BaseDataTableToolbar } from '$lib/features/shared/components/base-table/base-data-table-toolbar';
+import type { TUser } from '$lib/types';
 
 import { RotateCw } from 'lucide-react';
 
-export type TNotMutualsToolbarProps = React.ComponentProps<'header'> & {
-	/**
-	 * The selected records in the table.
-	 */
-	selectedRecords?: Array<TUser>;
-	/**
-	 * The total number of records in the table.
-	 */
-	totalRecords?: number;
-	/**
-	 * The callback to add selected records to the whitelist.
-	 */
-	onAddToWhitelist?: () => void;
-	/**
-	 * Callback to follow selected records.
-	 */
-	onFollow?: () => void;
-};
+export type TNotMutualsToolbarProps = React.ComponentProps<'header'>;
 
 /**
  * The `NotMutualsToolbar` component renders a toolbar for managing the not mutuals list.
  *
  * @returns The rendered toolbar component.
  */
-export function NotMutualsToolbar({
-	className,
-	selectedRecords = [],
-	totalRecords = 0,
-	onAddToWhitelist,
-	onFollow,
-	...props
-}: TNotMutualsToolbarProps) {
-	const { pending, refresh } = useData();
+export function NotMutualsToolbar(props: TNotMutualsToolbarProps) {
+	const { table } = useDataTable<TUser>();
+	const { pending, refresh, addToWhitelist, follow } = useData();
 
-	const totalSelectedRows = React.useMemo(() => selectedRecords.length, [selectedRecords]);
-	const hasSelectedRows = React.useMemo(() => totalSelectedRows > 0, [totalSelectedRows]);
-	const formattedTotalRecords = React.useMemo(() => abbreviateNumber(totalRecords), [totalRecords]);
-	const formattedTotalSelectedRows = React.useMemo(
-		() => abbreviateNumber(totalSelectedRows),
-		[totalSelectedRows]
-	);
+	function handleWhitelistSelectedUsers() {
+		const { rows } = table.getSelectedRowModel();
+		if (!rows.length) return;
+
+		const selectedUserIDs = rows.map((row) => row.original.id);
+		addToWhitelist(selectedUserIDs);
+		table.toggleAllRowsSelected(false);
+	}
+
+	function handleFollowSelectedUsers() {
+		const { rows } = table.getSelectedRowModel();
+		if (!rows.length) return;
+
+		const selectedUsernames = rows.map((user) => user.original.login);
+		follow(selectedUsernames);
+		table.toggleAllRowsSelected(false);
+	}
 
 	return (
-		<header className={cn('flex flex-1 items-center justify-between', className)} {...props}>
-			<div className='flex items-center gap-2'>
-				<div className='text-muted-foreground sr-only flex min-w-20 items-center justify-end gap-1 text-sm md:not-sr-only [&_span]:tabular-nums'>
-					{hasSelectedRows && (
-						<>
-							<span>{formattedTotalSelectedRows}</span>
-							<div className='select-none'>/</div>
-						</>
-					)}
-					<div className='contents'>
-						<span>{formattedTotalRecords}</span>
-						<p>{hasSelectedRows ? 'selected' : 'not mutuals'}</p>
-					</div>
-				</div>
-			</div>
-
+		<BaseDataTableToolbar {...props}>
 			<div data-slot='toolbar-actions' className='flex items-center gap-2'>
-				<Button size='sm' variant='outline' disabled={!hasSelectedRows} onClick={onAddToWhitelist}>
+				<Button
+					size='sm'
+					variant='outline'
+					disabled={!table.getSelectedRowModel().rows.length}
+					onClick={handleWhitelistSelectedUsers}
+				>
 					Whitelist selected
 				</Button>
 
-				<Button size='sm' disabled={!hasSelectedRows} onClick={onFollow}>
+				<Button
+					size='sm'
+					disabled={!table.getSelectedRowModel().rows.length}
+					onClick={handleFollowSelectedUsers}
+				>
 					Follow selected
 				</Button>
 
@@ -84,6 +65,6 @@ export function NotMutualsToolbar({
 					</Button>
 				</div>
 			</div>
-		</header>
+		</BaseDataTableToolbar>
 	);
 }

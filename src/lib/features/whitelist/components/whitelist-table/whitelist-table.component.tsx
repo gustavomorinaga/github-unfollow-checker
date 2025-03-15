@@ -4,9 +4,9 @@ import Link from 'next/link';
 import React from 'react';
 
 import { Button } from '$lib/components/ui/button';
-import { DataTable, type RowSelectionState } from '$lib/components/ui/data-table';
 import { Spinner } from '$lib/components/ui/spinner';
 import { useData } from '$lib/contexts/data';
+import { DataTable } from '$lib/features/shared/components/base-table/base-data-table';
 import { WhitelistToolbar as Toolbar } from '$lib/features/whitelist/components/whitelist-toolbar';
 import { cn } from '$lib/utils/ui';
 
@@ -20,13 +20,7 @@ type TWhitelistDataTableProps = React.ComponentProps<'div'>;
  * @returns The rendered `WhitelistDataTable` component.
  */
 function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
-	const { data, pending, removeFromWhitelist, unfollow } = useData();
-	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
-
-	const selectedRecords = React.useMemo(() => {
-		if (!data.whitelist.length) return [];
-		return Object.keys(rowSelection).map((key) => data.whitelist[key]);
-	}, [data.whitelist, rowSelection]);
+	const { data, pending } = useData();
 
 	const memoizedFeedback = React.useMemo(() => {
 		return (
@@ -51,37 +45,16 @@ function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
 		);
 	}, [pending]);
 
-	function handleRemoveFromWhitelist() {
-		if (!selectedRecords.length) return;
-		const selectedUserIDs = selectedRecords.map((user) => user.id);
-		removeFromWhitelist(selectedUserIDs);
-		setRowSelection({});
-	}
-
-	function handleUnfollow() {
-		if (!selectedRecords.length) return;
-		const selectedUsernames = selectedRecords.map((user) => user.login);
-		unfollow(selectedUsernames);
-		setRowSelection({});
-	}
-
 	return (
 		<div className={cn('flex flex-col gap-2', className)} {...props}>
-			<Toolbar
-				selectedRecords={selectedRecords}
-				totalRecords={data.whitelist.length}
-				onRemoveFromWhitelist={handleRemoveFromWhitelist}
-				onUnfollow={handleUnfollow}
-			/>
-
 			<DataTable
 				columns={columns}
 				data={pending ? [] : data.whitelist}
 				feedback={memoizedFeedback}
-				rowSelection={rowSelection}
-				setRowSelection={setRowSelection}
-				className='rounded-none border-x-0 border-y md:rounded-md md:border-x [&_table]:table-fixed [&_tbody_td_span[data-slot="badge"]]:invisible md:[&_tbody_td_span[data-slot="badge"]]:visible [&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only'
-			/>
+				className='[&_table]:table-fixed [&_tbody_td_span[data-slot="badge"]]:invisible md:[&_tbody_td_span[data-slot="badge"]]:visible [&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only [&>div]:rounded-none [&>div]:border-x-0 [&>div]:border-y md:[&>div]:rounded-md md:[&>div]:border-x'
+			>
+				<Toolbar />
+			</DataTable>
 		</div>
 	);
 }

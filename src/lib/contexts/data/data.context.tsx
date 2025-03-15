@@ -73,9 +73,9 @@ const DataContext = React.createContext<TDataContext | undefined>(undefined);
  * @returns The provider component wrapping its children with data context.
  *
  * @remarks
- * This component uses the `useSession` hook to get the current session data and manages the state
- * for data, error, and pending status. It fetches data from an API and caches it in local storage.
- * If the user is not authenticated, it sets an error state.
+ * - This component uses the `useSession` hook to get the current session data and manages the state
+ * - for data, error, and pending status. It fetches data from an API and caches it in local storage.
+ * - If the user is not authenticated, it sets an error state.
  */
 export function DataProvider({ children }: React.PropsWithChildren) {
 	const { data: session } = useSession({ required: true });

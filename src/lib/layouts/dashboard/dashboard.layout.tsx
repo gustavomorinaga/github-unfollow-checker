@@ -1,14 +1,19 @@
 import { SessionProvider } from 'next-auth/react';
-import { NavBar } from './navbar';
+
 import { DataProvider } from '$lib/contexts/data';
+import { PreferencesProvider } from '$lib/contexts/preferences';
+
+import { NavBar } from './navbar';
 
 export function DashboardLayout({ children }: React.PropsWithChildren) {
 	return (
 		<SessionProvider>
-			<DataProvider>
-				<NavBar className='mt-4' />
-				{children}
-			</DataProvider>
+			<PreferencesProvider>
+				<DataProvider>
+					<NavBar className='mt-4' />
+					{children}
+				</DataProvider>
+			</PreferencesProvider>
 		</SessionProvider>
 	);
 }

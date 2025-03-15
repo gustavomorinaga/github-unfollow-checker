@@ -3,25 +3,11 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { GITHUB_API_URL } from '$lib/server/constants/github';
 import type { TUser } from '$lib/types';
 
-async function fetchAllPages(url: URL, headers: RequestInit) {
-	let results: Array<TUser> = [];
-	let page = 1;
-	const per_page = 100;
-	let hasMore = true;
-
-	while (hasMore) {
-		url.searchParams.set('page', page.toString());
-		url.searchParams.set('per_page', per_page.toString());
-
-		const data = await fetch(url, headers).then<Array<TUser>>((res) => res.json());
-
-		results = results.concat(data);
-		hasMore = data.length === per_page;
-		page++;
-	}
-
-	return results;
-}
+/**
+ * The number of items to fetch per page.
+ * Maximum is 100 according to GitHub API.
+ */
+const ITEMS_PER_PAGE = 100;
 
 export type TDataResponse = {
 	followers: Array<TUser>;
@@ -30,8 +16,53 @@ export type TDataResponse = {
 	unfollowers: Array<TUser>;
 };
 
-export const dataHandler = {
-	GET: async (request: NextRequest, { params }: { params: Promise<{ username: string }> }) => {
+/**
+ * Fetches all pages of data from a paginated API endpoint.
+ *
+ * @returns A promise that resolves to an array of TUser objects containing all the fetched data.
+ */
+async function fetchAllPages(url: URL, headers: RequestInit) {
+	let results: Array<TUser> = [];
+	let page = 1;
+	let hasMore = true;
+
+	while (hasMore) {
+		url.searchParams.set('page', page.toString());
+		url.searchParams.set('per_page', ITEMS_PER_PAGE.toString());
+
+		const data = await fetch(url, headers).then<Array<TUser>>((res) => res.json());
+
+		results = results.concat(data);
+		hasMore = data.length === ITEMS_PER_PAGE;
+		page++;
+	}
+
+	return results;
+}
+
+type TDataHandler = {
+	/**
+	 * Fetches the followers, following, not mutuals, and unfollowers of a user.
+	 */
+	GET: (
+		request: NextRequest,
+		{ params }: { params: Promise<{ username: string }> }
+	) => Promise<NextResponse>;
+	/**
+	 * Follows users.
+	 */
+	PUT: (request: NextRequest) => Promise<NextResponse>;
+	/**
+	 * Unfollows users.
+	 */
+	DELETE: (request: NextRequest) => Promise<NextResponse>;
+};
+
+/**
+ * Handles the data requests.
+ */
+export const dataHandler: TDataHandler = {
+	GET: async (request, { params }) => {
 		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
 		if (!accessToken) {
 			return NextResponse.json(
@@ -67,7 +98,7 @@ export const dataHandler = {
 
 		return NextResponse.json(response);
 	},
-	PUT: async (request: NextRequest) => {
+	PUT: async (request) => {
 		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
 		if (!accessToken) {
 			return NextResponse.json(
@@ -96,7 +127,7 @@ export const dataHandler = {
 
 		return NextResponse.json({ success: true });
 	},
-	DELETE: async (request: NextRequest) => {
+	DELETE: async (request) => {
 		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
 		if (!accessToken) {
 			return NextResponse.json(
