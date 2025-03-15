@@ -46,7 +46,7 @@ export function UnfollowersToolbar(props: TUnfollowersToolbarProps) {
 				disabled={!table.getSelectedRowModel().rows.length}
 				onClick={handleWhitelistSelectedUsers}
 			>
-				Remove selected
+				Whitelist selected
 			</Button>
 
 			<Button

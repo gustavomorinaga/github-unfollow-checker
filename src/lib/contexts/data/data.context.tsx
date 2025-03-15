@@ -19,9 +19,12 @@ const INITIAL_DATA: TData = {
 	whitelist: []
 };
 const INITIAL_WHITELIST: Array<TUser['id']> = [];
-const SLEEP_DURATION = 700;
-const CACHE_KEY = 'data';
+const FOLLOWERS_KEY = 'followers';
+const FOLLOWING_KEY = 'following';
+const NOT_MUTUALS_KEY = 'notMutuals';
+const UNFOLLOWERS_KEY = 'unfollowers';
 const WHITELIST_KEY = 'whitelist';
+const SLEEP_DURATION = 700;
 
 type TDataContext = {
 	/**
@@ -86,10 +89,26 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 	const alreadyRequested = React.useRef(false);
 
 	const [data, setData] = React.useState<TDataResponse>(() => {
-		const data = isLocalStorageAvailable ? localStorage.getItem(CACHE_KEY) : null;
-		if (data) return JSON.parse(data);
-		if (isLocalStorageAvailable) localStorage.setItem(CACHE_KEY, JSON.stringify(INITIAL_DATA));
-		return INITIAL_DATA;
+		const followers = isLocalStorageAvailable ? localStorage.getItem(FOLLOWERS_KEY) : null;
+		const following = isLocalStorageAvailable ? localStorage.getItem(FOLLOWING_KEY) : null;
+		const notMutuals = isLocalStorageAvailable ? localStorage.getItem(NOT_MUTUALS_KEY) : null;
+		const unfollowers = isLocalStorageAvailable ? localStorage.getItem(UNFOLLOWERS_KEY) : null;
+
+		if (isLocalStorageAvailable) {
+			if (!followers) localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(INITIAL_DATA.followers));
+			if (!following) localStorage.setItem(FOLLOWING_KEY, JSON.stringify(INITIAL_DATA.following));
+			if (!notMutuals)
+				localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(INITIAL_DATA.notMutuals));
+			if (!unfollowers)
+				localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(INITIAL_DATA.unfollowers));
+		}
+
+		return {
+			followers: followers ? JSON.parse(followers) : INITIAL_DATA.followers,
+			following: following ? JSON.parse(following) : INITIAL_DATA.following,
+			notMutuals: notMutuals ? JSON.parse(notMutuals) : INITIAL_DATA.notMutuals,
+			unfollowers: unfollowers ? JSON.parse(unfollowers) : INITIAL_DATA.unfollowers
+		};
 	});
 	const [error, setError] = React.useState<Error | null>(null);
 	const [pending, setPending] = React.useState<boolean>(true);
@@ -128,7 +147,12 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		if (fetchError) setError(fetchError);
 		else {
 			setData(data);
-			localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+			setError(null);
+
+			localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(data.followers));
+			localStorage.setItem(FOLLOWING_KEY, JSON.stringify(data.following));
+			localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(data.notMutuals));
+			localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(data.unfollowers));
 		}
 
 		sleep(SLEEP_DURATION).then(() => setPending(false));
@@ -264,7 +288,10 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		error,
 		pending,
 		whitelistIDs,
-		refresh: fetchData,
+		refresh: () => {
+			alreadyRequested.current = false;
+			fetchData();
+		},
 		follow,
 		unfollow,
 		addToWhitelist,
