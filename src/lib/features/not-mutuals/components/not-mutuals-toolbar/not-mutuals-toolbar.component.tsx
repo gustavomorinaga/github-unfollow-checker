@@ -22,7 +22,7 @@ export type TNotMutualsToolbarProps = React.ComponentProps<'header'>;
  */
 export function NotMutualsToolbar(props: TNotMutualsToolbarProps) {
 	const { table } = useDataTable<TUser>();
-	const { pending, refresh, addToWhitelist, follow } = useData();
+	const { pending, refresh, addToWhitelist, follow, unfollow } = useData();
 
 	async function handleWhitelistSelectedUsers() {
 		const { rows } = table.getSelectedRowModel();
@@ -32,6 +32,7 @@ export function NotMutualsToolbar(props: TNotMutualsToolbarProps) {
 		await addToWhitelist(selectedUserIDs);
 
 		table.toggleAllRowsSelected(false);
+
 		toast.success(`Added ${rows.length} user(s) to the whitelist.`);
 	}
 
@@ -43,7 +44,16 @@ export function NotMutualsToolbar(props: TNotMutualsToolbarProps) {
 		await follow(selectedUsernames);
 
 		table.toggleAllRowsSelected(false);
-		toast.success(`Followed ${rows.length} user(s).`);
+
+		toast.success(`Followed ${rows.length} user(s).`, {
+			action: {
+				label: 'Undo',
+				onClick: async () => {
+					await unfollow(selectedUsernames);
+					toast.success(`Unfollowed ${rows.length} user(s).`);
+				}
+			}
+		});
 	}
 
 	async function handleRefresh() {

@@ -22,7 +22,7 @@ export type TWhitelistToolbarProps = React.ComponentProps<'header'>;
  */
 export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 	const { table } = useDataTable<TUser>();
-	const { pending, refresh, removeFromWhitelist, unfollow } = useData();
+	const { pending, refresh, addToWhitelist, removeFromWhitelist, follow, unfollow } = useData();
 
 	async function handleRemoveSelectedUsersFromWhitelist() {
 		const { rows } = table.getSelectedRowModel();
@@ -32,7 +32,16 @@ export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 		await removeFromWhitelist(selectedUserIDs);
 
 		table.toggleAllRowsSelected(false);
-		toast.success(`Removed ${rows.length} user(s) from the whitelist.`);
+
+		toast.success(`Removed ${rows.length} user(s) from the whitelist.`, {
+			action: {
+				label: 'Undo',
+				onClick: async () => {
+					await addToWhitelist(selectedUserIDs);
+					toast.success(`Re-added ${rows.length} user(s) to the whitelist.`);
+				}
+			}
+		});
 	}
 
 	async function handleUnfollowSelectedUsers() {
@@ -43,7 +52,16 @@ export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 		await unfollow(selectedUsernames);
 
 		table.toggleAllRowsSelected(false);
-		toast.success(`Unfollowed ${rows.length} user(s).`);
+
+		toast.success(`Unfollowed ${rows.length} user(s).`, {
+			action: {
+				label: 'Undo',
+				onClick: async () => {
+					await follow(selectedUsernames);
+					toast.success(`Re-followed ${rows.length} user(s).`);
+				}
+			}
+		});
 	}
 
 	async function handleRefresh() {

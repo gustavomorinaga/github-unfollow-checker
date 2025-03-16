@@ -22,7 +22,7 @@ export type TFollowingToolbarProps = React.ComponentProps<'header'>;
  */
 export function FollowingToolbar(props: TFollowingToolbarProps) {
 	const { table } = useDataTable<TUser>();
-	const { pending, refresh, addToWhitelist, unfollow } = useData();
+	const { pending, refresh, addToWhitelist, follow, unfollow } = useData();
 
 	async function handleWhitelistSelectedUsers() {
 		const { rows } = table.getSelectedRowModel();
@@ -32,6 +32,7 @@ export function FollowingToolbar(props: TFollowingToolbarProps) {
 		await addToWhitelist(selectedUserIDs);
 
 		table.toggleAllRowsSelected(false);
+
 		toast.success(`Added ${rows.length} user(s) to the whitelist.`);
 	}
 
@@ -43,7 +44,16 @@ export function FollowingToolbar(props: TFollowingToolbarProps) {
 		await unfollow(selectedUsernames);
 
 		table.toggleAllRowsSelected(false);
-		toast.success(`Unfollowed ${rows.length} user(s).`);
+
+		toast.success(`Unfollowed ${rows.length} user(s).`, {
+			action: {
+				label: 'Undo',
+				onClick: async () => {
+					await follow(selectedUsernames);
+					toast.success(`Re-followed ${rows.length} user(s).`);
+				}
+			}
+		});
 	}
 
 	async function handleRefresh() {

@@ -32,6 +32,7 @@ export function FollowersToolbar(props: TFollowersToolbarProps) {
 		await addToWhitelist(selectedUserIDs);
 
 		table.toggleAllRowsSelected(false);
+
 		toast.success(`Added ${rows.length} user(s) to the whitelist.`);
 	}
 
@@ -45,7 +46,16 @@ export function FollowersToolbar(props: TFollowersToolbarProps) {
 		await follow(selectedUsernames);
 
 		table.toggleAllRowsSelected(false);
-		toast.success(`Followed ${selectedUsernames.length} user(s).`);
+
+		toast.success(`Followed ${selectedUsernames.length} user(s).`, {
+			action: {
+				label: 'Undo',
+				onClick: async () => {
+					await unfollow(selectedUsernames);
+					toast.success(`Unfollowed ${rows.length} user(s).`);
+				}
+			}
+		});
 	}
 
 	async function handleUnfollowSelectedUsers() {
@@ -58,7 +68,16 @@ export function FollowersToolbar(props: TFollowersToolbarProps) {
 		await unfollow(selectedUsernames);
 
 		table.toggleAllRowsSelected(false);
-		toast.success(`Unfollowed ${selectedUsernames.length} user(s).`);
+
+		toast.success(`Unfollowed ${selectedUsernames.length} user(s).`, {
+			action: {
+				label: 'Undo',
+				onClick: async () => {
+					await follow(selectedUsernames);
+					toast.success(`Re-followed ${rows.length} user(s).`);
+				}
+			}
+		});
 	}
 
 	async function handleRefresh() {
