@@ -29,7 +29,9 @@ function UnfollowersDataTable({ className, ...props }: TUnfollowersDataTableProp
 		return (
 			<div className='flex size-full items-center justify-center gap-2'>
 				{pending && <Spinner />}
-				{pending ? 'Loading unfollowers...' : 'No unfollowers found. Very nice! ✨'}
+				<span className='select-none'>
+					{pending ? 'Loading unfollowers...' : 'No unfollowers found. Very nice! ✨'}
+				</span>
 			</div>
 		);
 	}, [pending]);
@@ -38,8 +40,9 @@ function UnfollowersDataTable({ className, ...props }: TUnfollowersDataTableProp
 		<div className={cn('flex flex-col gap-2', className)} {...props}>
 			<DataTable
 				columns={columns}
-				data={pending ? [] : unfollowers}
+				data={unfollowers}
 				feedback={memoizedFeedback}
+				loading={pending}
 				className='[&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only [&>div]:rounded-none [&>div]:border-x-0 [&>div]:border-y md:[&>div]:rounded-md md:[&>div]:border-x'
 			>
 				<Toolbar />

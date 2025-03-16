@@ -38,8 +38,9 @@ function NotMutualsDataTable({ className, ...props }: TNotMutualsDataTableProps)
 		<div className={cn('flex flex-col gap-2', className)} {...props}>
 			<DataTable
 				columns={columns}
-				data={pending ? [] : notMutuals}
+				data={notMutuals}
 				feedback={memoizedFeedback}
+				loading={pending}
 				className='[&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only [&>div]:rounded-none [&>div]:border-x-0 [&>div]:border-y md:[&>div]:rounded-md md:[&>div]:border-x'
 			>
 				<Toolbar />

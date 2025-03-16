@@ -31,6 +31,7 @@ interface DataTableProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElem
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	feedback?: React.ReactNode;
+	loading?: boolean;
 }
 
 /**
@@ -43,7 +44,8 @@ function DataTable<TData, TValue>({
 	children,
 	columns,
 	data,
-	feedback = 'No results.'
+	feedback = 'No results.',
+	loading = false
 }: DataTableProps<TData, TValue>) {
 	const { preferences, pageSizeOptions } = usePreferences();
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
@@ -83,7 +85,7 @@ function DataTable<TData, TValue>({
 							))}
 						</TableHeader>
 						<TableBody>
-							{table.getRowModel().rows?.length ? (
+							{!loading && table.getRowModel().rows?.length ? (
 								table.getRowModel().rows.map((row) => (
 									<TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
 										{row.getVisibleCells().map((cell) => (

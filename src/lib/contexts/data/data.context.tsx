@@ -24,7 +24,7 @@ const FOLLOWING_KEY = 'following';
 const NOT_MUTUALS_KEY = 'notMutuals';
 const UNFOLLOWERS_KEY = 'unfollowers';
 const WHITELIST_KEY = 'whitelist';
-const SLEEP_DURATION = 700;
+const SLEEP_DURATION = 1_000;
 
 type TDataContext = {
 	/**
@@ -88,36 +88,19 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 	const alreadyRequested = React.useRef(false);
 
-	const [data, setData] = React.useState<TDataResponse>(() => {
-		const followers = isLocalStorageAvailable ? localStorage.getItem(FOLLOWERS_KEY) : null;
-		const following = isLocalStorageAvailable ? localStorage.getItem(FOLLOWING_KEY) : null;
-		const notMutuals = isLocalStorageAvailable ? localStorage.getItem(NOT_MUTUALS_KEY) : null;
-		const unfollowers = isLocalStorageAvailable ? localStorage.getItem(UNFOLLOWERS_KEY) : null;
-
-		if (isLocalStorageAvailable) {
-			if (!followers) localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(INITIAL_DATA.followers));
-			if (!following) localStorage.setItem(FOLLOWING_KEY, JSON.stringify(INITIAL_DATA.following));
-			if (!notMutuals)
-				localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(INITIAL_DATA.notMutuals));
-			if (!unfollowers)
-				localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(INITIAL_DATA.unfollowers));
-		}
-
-		return {
-			followers: followers ? JSON.parse(followers) : INITIAL_DATA.followers,
-			following: following ? JSON.parse(following) : INITIAL_DATA.following,
-			notMutuals: notMutuals ? JSON.parse(notMutuals) : INITIAL_DATA.notMutuals,
-			unfollowers: unfollowers ? JSON.parse(unfollowers) : INITIAL_DATA.unfollowers
-		};
-	});
+	const [data, setData] = React.useState<TDataResponse>(INITIAL_DATA);
 	const [error, setError] = React.useState<Error | null>(null);
 	const [pending, setPending] = React.useState<boolean>(true);
 	const [whitelistIDs, setWhitelistIDs] = React.useState<Array<TUser['id']>>(() => {
-		const whitelist = isLocalStorageAvailable ? localStorage.getItem(WHITELIST_KEY) : null;
-		if (whitelist) return JSON.parse(whitelist);
-		if (isLocalStorageAvailable)
+		if (!isLocalStorageAvailable) return INITIAL_WHITELIST;
+
+		const whitelist = localStorage.getItem(WHITELIST_KEY);
+		if (!whitelist) {
 			localStorage.setItem(WHITELIST_KEY, JSON.stringify(INITIAL_WHITELIST));
-		return INITIAL_WHITELIST;
+			return INITIAL_WHITELIST;
+		}
+
+		return JSON.parse(whitelist);
 	});
 
 	const fetchData = React.useCallback(async () => {
@@ -146,13 +129,13 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 		if (fetchError) setError(fetchError);
 		else {
-			setData(data);
-			setError(null);
-
 			localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(data.followers));
 			localStorage.setItem(FOLLOWING_KEY, JSON.stringify(data.following));
 			localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(data.notMutuals));
 			localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(data.unfollowers));
+
+			setData(data);
+			setError(null);
 		}
 
 		sleep(SLEEP_DURATION).then(() => setPending(false));
