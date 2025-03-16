@@ -4,7 +4,7 @@ import React from 'react';
 
 import { Spinner } from '$lib/components/ui/spinner';
 import { useData } from '$lib/contexts/data';
-import { DataTable } from '$lib/features/shared/components/base-table/base-data-table';
+import { DataTable } from '$lib/features/shared/components/base-data-table/base-data-table';
 import { FollowersToolbar as Toolbar } from '$lib/features/followers/components/followers-toolbar';
 import { cn } from '$lib/utils/ui';
 
@@ -40,7 +40,7 @@ function FollowersDataTable({ className, ...props }: TFollowersDataTableProps) {
 				columns={columns}
 				data={pending ? [] : followers}
 				feedback={memoizedFeedback}
-				className='[&_table]:table-fixed [&_tbody_td_span[data-slot="badge"]]:invisible md:[&_tbody_td_span[data-slot="badge"]]:visible [&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only [&>div]:rounded-none [&>div]:border-x-0 [&>div]:border-y md:[&>div]:rounded-md md:[&>div]:border-x'
+				className='[&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only [&>div]:rounded-none [&>div]:border-x-0 [&>div]:border-y md:[&>div]:rounded-md md:[&>div]:border-x'
 			>
 				<Toolbar />
 			</DataTable>

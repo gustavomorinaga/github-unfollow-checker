@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { Button } from '$lib/components/ui/button';
-import { useDataTable } from '$lib/features/shared/components/base-table/base-data-table-context';
+import { useDataTable } from '$lib/features/shared/components/base-data-table/base-data-table-context';
 import { abbreviateNumber } from '$lib/utils/formatters';
 import { cn } from '$lib/utils/ui';
 
