@@ -25,7 +25,7 @@ const MemoizedNavigationMenuLink = React.memo(
 			<NavigationMenuLink
 				className={navigationMenuTriggerStyle({
 					className:
-						'aria-[current="page"]:bg-background bg-muted hover:bg-background/40 focus:bg-background/60 h-8 min-w-28 rounded-sm transition-all duration-150'
+						'aria-[current="page"]:bg-background bg-muted hover:bg-background/40 focus:bg-background/60 h-8 w-full min-w-28 rounded-sm transition-all duration-150'
 				})}
 				{...props}
 			>
@@ -44,7 +44,7 @@ export function NavBar({ className, ...props }: TNavBarProps) {
 			{ href: '/dashboard', title: 'Unfollowers' },
 			{ href: '/dashboard/not-mutuals', title: 'Not Mutuals' },
 			{ href: '/dashboard/followers', title: 'Followers' },
-			// { href: '/dashboard/following', title: 'Following' },
+			{ href: '/dashboard/following', title: 'Following' },
 			{ href: '/dashboard/whitelist', title: 'Whitelist' }
 		];
 
@@ -54,10 +54,16 @@ export function NavBar({ className, ...props }: TNavBarProps) {
 	}, [pathname]);
 
 	return (
-		<NavigationMenu className={cn('bg-muted h-10 flex-0 rounded-md p-1', className)} {...props}>
-			<NavigationMenuList>
+		<NavigationMenu
+			className={cn(
+				'bg-muted h-10 max-w-full flex-0 justify-start overflow-x-auto p-1 md:rounded-md [&>div]:flex [&>div]:flex-1',
+				className
+			)}
+			{...props}
+		>
+			<NavigationMenuList className='justify-stretch'>
 				{memoizedMenuItems.map((item, index) => (
-					<NavigationMenuItem key={index}>
+					<NavigationMenuItem key={index} className='flex-1'>
 						<Link href={item.href} legacyBehavior passHref>
 							<MemoizedNavigationMenuLink {...item} />
 						</Link>

@@ -11,14 +11,14 @@ import type { TUser } from '$lib/types';
 
 import { UserRoundPlus, UserRoundX } from 'lucide-react';
 
-export type TUnfollowersToolbarProps = React.ComponentProps<'header'>;
+export type TFollowingToolbarProps = React.ComponentProps<'header'>;
 
 /**
- * The `UnfollowersToolbar` component renders a toolbar for managing unfollowers.
+ * The `FollowingToolbar` component renders a toolbar for managing followers.
  *
  * @returns The rendered toolbar component.
  */
-export function UnfollowersToolbar(props: TUnfollowersToolbarProps) {
+export function FollowingToolbar(props: TFollowingToolbarProps) {
 	const { table } = useDataTable<TUser>();
 	const { pending, refresh, addToWhitelist, unfollow } = useData();
 

@@ -6,9 +6,10 @@ import { Button } from '$lib/components/ui/button';
 import { useData } from '$lib/contexts/data';
 import { useDataTable } from '$lib/features/shared/components/base-table/base-data-table-context';
 import { BaseDataTableToolbar } from '$lib/features/shared/components/base-table/base-data-table-toolbar';
+import { RefreshButton } from '$lib/features/shared/components/refresh-button';
 import type { TUser } from '$lib/types';
 
-import { RotateCw } from 'lucide-react';
+import { UserRoundMinus, UserRoundX } from 'lucide-react';
 
 export type TWhitelistToolbarProps = React.ComponentProps<'header'>;
 
@@ -45,25 +46,29 @@ export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 				<Button
 					size='sm'
 					variant='outline'
+					aria-label='Remove selected'
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleRemoveSelectedUsersFromWhitelist}
+					className='size-9 p-0 md:w-auto md:px-3'
 				>
-					<span className='select-none'>Remove selected</span>
+					<UserRoundMinus className='block md:hidden' />
+					<span className='sr-only select-none md:not-sr-only'>Remove selected</span>
 				</Button>
 
 				<Button
 					size='sm'
 					variant='destructive'
+					aria-label='Unfollow selected'
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleUnfollowSelectedUsers}
+					className='size-9 p-0 md:w-auto md:px-3'
 				>
-					<span className='select-none'>Unfollow selected</span>
+					<UserRoundX className='block md:hidden' />
+					<span className='sr-only select-none md:not-sr-only'>Unfollow selected</span>
 				</Button>
 
 				<div className='contents'>
-					<Button size='icon' variant='ghost' disabled={pending} onClick={refresh}>
-						<RotateCw />
-					</Button>
+					<RefreshButton disabled={pending} onClick={refresh} />
 				</div>
 			</div>
 		</BaseDataTableToolbar>

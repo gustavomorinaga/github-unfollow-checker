@@ -3,7 +3,7 @@
 import { NotMutualsDataTable } from '$lib/features/not-mutuals/components/not-mutuals-table';
 
 /**
- * The view component for the not mutuals feature.
+ * The view component for the Not Mutuals feature.
  *
  * @returns The rendered view component.
  */

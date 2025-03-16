@@ -9,6 +9,8 @@ import { BaseDataTableToolbar } from '$lib/features/shared/components/base-table
 import { RefreshButton } from '$lib/features/shared/components/refresh-button';
 import type { TUser } from '$lib/types';
 
+import { UserRoundCheck, UserRoundPlus, UserRoundX } from 'lucide-react';
+
 export type TFollowersToolbarProps = React.ComponentProps<'header'>;
 
 /**
@@ -18,7 +20,7 @@ export type TFollowersToolbarProps = React.ComponentProps<'header'>;
  */
 export function FollowersToolbar(props: TFollowersToolbarProps) {
 	const { table } = useDataTable<TUser>();
-	const { pending, refresh, addToWhitelist, unfollow } = useData();
+	const { pending, refresh, addToWhitelist, follow, unfollow } = useData();
 
 	function handleWhitelistSelectedUsers() {
 		const { rows } = table.getSelectedRowModel();
@@ -29,11 +31,26 @@ export function FollowersToolbar(props: TFollowersToolbarProps) {
 		table.toggleAllRowsSelected(false);
 	}
 
+	function handleFollowSelectedUsers() {
+		const { rows } = table.getSelectedRowModel();
+		if (!rows.length) return;
+
+		const selectedUsernames = rows
+			.filter((user) => !user.original.followedBy)
+			.map((user) => user.original.login);
+
+		follow(selectedUsernames);
+		table.toggleAllRowsSelected(false);
+	}
+
 	function handleUnfollowSelectedUsers() {
 		const { rows } = table.getSelectedRowModel();
 		if (!rows.length) return;
 
-		const selectedUsernames = rows.map((user) => user.original.login);
+		const selectedUsernames = rows
+			.filter((user) => user.original.followedBy)
+			.map((user) => user.original.login);
+
 		unfollow(selectedUsernames);
 		table.toggleAllRowsSelected(false);
 	}
@@ -43,19 +60,36 @@ export function FollowersToolbar(props: TFollowersToolbarProps) {
 			<Button
 				size='sm'
 				variant='outline'
+				aria-label='Whitelist selected'
 				disabled={!table.getSelectedRowModel().rows.length}
 				onClick={handleWhitelistSelectedUsers}
+				className='size-9 p-0 md:w-auto md:px-3'
 			>
-				<span className='select-none'>Whitelist selected</span>
+				<UserRoundPlus className='block md:hidden' />
+				<span className='sr-only select-none md:not-sr-only'>Whitelist selected</span>
+			</Button>
+
+			<Button
+				size='sm'
+				aria-label='Follow selected'
+				disabled={!table.getSelectedRowModel().rows.some((user) => !user.original.followedBy)}
+				onClick={handleFollowSelectedUsers}
+				className='size-9 p-0 disabled:sr-only md:w-auto md:px-3'
+			>
+				<UserRoundCheck className='block md:hidden' />
+				<span className='sr-only select-none md:not-sr-only'>Follow selected</span>
 			</Button>
 
 			<Button
 				size='sm'
 				variant='destructive'
-				disabled={!table.getSelectedRowModel().rows.length}
+				aria-label='Unfollow selected'
+				disabled={!table.getSelectedRowModel().rows.some((user) => user.original.followedBy)}
 				onClick={handleUnfollowSelectedUsers}
+				className='size-9 p-0 disabled:sr-only md:w-auto md:px-3'
 			>
-				<span className='select-none'>Unfollow selected</span>
+				<UserRoundX className='block md:hidden' />
+				<span className='sr-only select-none md:not-sr-only'>Unfollow selected</span>
 			</Button>
 
 			<div className='contents'>

@@ -10,7 +10,7 @@ export function DashboardLayout({ children }: React.PropsWithChildren) {
 		<SessionProvider>
 			<PreferencesProvider>
 				<DataProvider>
-					<NavBar className='mt-4' />
+					<NavBar className='md:mt-4' />
 					{children}
 				</DataProvider>
 			</PreferencesProvider>
