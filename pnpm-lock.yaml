@@ -20,7 +20,7 @@ importers:
         specifier: 15.2.1
         version: 15.2.1(@mdx-js/loader@3.1.0(acorn@8.14.1)(webpack@5.98.0))(@mdx-js/react@3.1.0(@types/react@19.0.10)(react@19.0.0))
       '@radix-ui/react-alert-dialog':
-        specifier: ^1.1.6
+        specifier: 1.1.6
         version: 1.1.6(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-avatar':
         specifier: 1.1.3
@@ -79,6 +79,9 @@ importers:
       react-dom:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
+      sonner:
+        specifier: 2.0.1
+        version: 2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       tailwind-merge:
         specifier: 3.0.2
         version: 3.0.2
@@ -7467,6 +7470,15 @@ packages:
       }
     engines: { node: '>=18' }
 
+  sonner@2.0.1:
+    resolution:
+      {
+        integrity: sha512-FRBphaehZ5tLdLcQ8g2WOIRE+Y7BCfWi5Zyd8bCvBjiW8TxxAyoWZIxS661Yz6TGPqFQ4VLzOF89WEYhfynSFQ==
+      }
+    peerDependencies:
+      react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+      react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+
   source-list-map@2.0.1:
     resolution:
       {
@@ -13616,6 +13628,11 @@ snapshots:
     dependencies:
       ansi-styles: 6.2.1
       is-fullwidth-code-point: 5.0.0
+
+  sonner@2.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
 
   source-list-map@2.0.1: {}
 

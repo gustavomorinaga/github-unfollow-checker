@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { Button } from '$lib/components/ui/button';
+import { toast } from '$lib/components/ui/sonner';
 import { useData } from '$lib/contexts/data';
 import { useDataTable } from '$lib/features/shared/components/base-data-table/base-data-table-context';
 import { BaseDataTableToolbar } from '$lib/features/shared/components/base-data-table/base-data-table-toolbar';
@@ -23,29 +24,31 @@ export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 	const { table } = useDataTable<TUser>();
 	const { pending, refresh, removeFromWhitelist, unfollow } = useData();
 
-	function handleRemoveSelectedUsersFromWhitelist() {
+	async function handleRemoveSelectedUsersFromWhitelist() {
 		const { rows } = table.getSelectedRowModel();
 		if (!rows.length) return;
 
 		const selectedUserIDs = rows.map((row) => row.original.id);
-		removeFromWhitelist(selectedUserIDs);
+		await removeFromWhitelist(selectedUserIDs);
 
 		table.toggleAllRowsSelected(false);
+		toast.success(`Removed ${rows.length} user(s) from the whitelist.`);
 	}
 
-	function handleUnfollowSelectedUsers() {
+	async function handleUnfollowSelectedUsers() {
 		const { rows } = table.getSelectedRowModel();
 		if (!rows.length) return;
 
 		const selectedUsernames = rows.map((user) => user.original.login);
-		unfollow(selectedUsernames);
+		await unfollow(selectedUsernames);
 
 		table.toggleAllRowsSelected(false);
+		toast.success(`Unfollowed ${rows.length} user(s).`);
 	}
 
-	function handleRefresh() {
+	async function handleRefresh() {
 		table.toggleAllRowsSelected(false);
-		refresh();
+		return refresh();
 	}
 
 	return (

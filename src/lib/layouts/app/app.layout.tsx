@@ -1,4 +1,5 @@
 import { ThemeProvider } from '$lib/components/theme';
+import { Toaster } from '$lib/components/ui/sonner';
 import { Content } from '$lib/layouts/shared/content';
 import { Wrapper } from '$lib/layouts/shared/wrapper';
 
@@ -20,6 +21,7 @@ export function AppLayout({ children }: TAppLayoutProps) {
 				<Content>{children}</Content>
 				<Footer />
 			</Wrapper>
+			<Toaster />
 		</ThemeProvider>
 	);
 }

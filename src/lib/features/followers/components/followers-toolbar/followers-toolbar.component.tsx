@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { Button } from '$lib/components/ui/button';
+import { toast } from '$lib/components/ui/sonner';
 import { useData } from '$lib/contexts/data';
 import { useDataTable } from '$lib/features/shared/components/base-data-table/base-data-table-context';
 import { BaseDataTableToolbar } from '$lib/features/shared/components/base-data-table/base-data-table-toolbar';
@@ -23,43 +24,46 @@ export function FollowersToolbar(props: TFollowersToolbarProps) {
 	const { table } = useDataTable<TUser>();
 	const { pending, refresh, addToWhitelist, follow, unfollow } = useData();
 
-	function handleWhitelistSelectedUsers() {
+	async function handleWhitelistSelectedUsers() {
 		const { rows } = table.getSelectedRowModel();
 		if (!rows.length) return;
 
 		const selectedUserIDs = rows.map((row) => row.original.id);
-		addToWhitelist(selectedUserIDs);
+		await addToWhitelist(selectedUserIDs);
 
 		table.toggleAllRowsSelected(false);
+		toast.success(`Added ${rows.length} user(s) to the whitelist.`);
 	}
 
-	function handleFollowSelectedUsers() {
+	async function handleFollowSelectedUsers() {
 		const { rows } = table.getSelectedRowModel();
 		if (!rows.length) return;
 
 		const selectedUsernames = rows
 			.filter((user) => !user.original.followedBy)
 			.map((user) => user.original.login);
-		follow(selectedUsernames);
+		await follow(selectedUsernames);
 
 		table.toggleAllRowsSelected(false);
+		toast.success(`Followed ${selectedUsernames.length} user(s).`);
 	}
 
-	function handleUnfollowSelectedUsers() {
+	async function handleUnfollowSelectedUsers() {
 		const { rows } = table.getSelectedRowModel();
 		if (!rows.length) return;
 
 		const selectedUsernames = rows
 			.filter((user) => user.original.followedBy)
 			.map((user) => user.original.login);
-		unfollow(selectedUsernames);
+		await unfollow(selectedUsernames);
 
 		table.toggleAllRowsSelected(false);
+		toast.success(`Unfollowed ${selectedUsernames.length} user(s).`);
 	}
 
-	function handleRefresh() {
+	async function handleRefresh() {
 		table.toggleAllRowsSelected(false);
-		refresh();
+		return refresh();
 	}
 
 	return (

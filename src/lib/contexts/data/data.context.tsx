@@ -46,27 +46,27 @@ type TDataContext = {
 	/**
 	 * A function to manually trigger a refresh of the data response.
 	 */
-	refresh: () => void;
+	refresh: () => Promise<void>;
 	/**
 	 * Function to follow a user by username.
 	 */
-	follow: (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => void;
+	follow: (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => Promise<void>;
 	/**
 	 * Function to unfollow a user by username.
 	 */
-	unfollow: (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => void;
+	unfollow: (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => Promise<void>;
 	/**
 	 * Function to add a user to the whitelist.
 	 */
-	addToWhitelist: (idOrIDs: TUser['id'] | Array<TUser['id']>) => void;
+	addToWhitelist: (idOrIDs: TUser['id'] | Array<TUser['id']>) => Promise<void>;
 	/**
 	 * Function to remove a user from the whitelist by ID.
 	 */
-	removeFromWhitelist: (idOrIDs: TUser['id'] | Array<TUser['id']>) => void;
+	removeFromWhitelist: (idOrIDs: TUser['id'] | Array<TUser['id']>) => Promise<void>;
 	/**
 	 * Function to clear the entire whitelist.
 	 */
-	clearWhitelist: () => void;
+	clearWhitelist: () => Promise<void>;
 };
 
 const DataContext = React.createContext<TDataContext | undefined>(undefined);
@@ -105,11 +105,12 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 	const fetchData = React.useCallback(async () => {
 		if (alreadyRequested.current) return;
+		if (!session) return;
 
 		setPending(true);
 
-		const isAccessTokenMissing = !session?.accessToken;
-		const isUserNotAuthenticated = !session?.user;
+		const isAccessTokenMissing = !session.accessToken;
+		const isUserNotAuthenticated = !session.user;
 		if (isAccessTokenMissing && isUserNotAuthenticated) {
 			setError(new Error('User not authenticated'));
 			sleep(SLEEP_DURATION).then(() => setPending(false));
@@ -125,21 +126,25 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 			headers: { Authorization: `Bearer ${session.accessToken}` }
 		}).then<TDataResponse>((res) => res.json());
 
-		const [fetchError, data] = await catchError(fetcher);
+		const [fetchError, fetchedData] = await catchError(fetcher);
 
 		if (fetchError) setError(fetchError);
 		else {
-			localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(data.followers));
-			localStorage.setItem(FOLLOWING_KEY, JSON.stringify(data.following));
-			localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(data.notMutuals));
-			localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(data.unfollowers));
+			if (fetchedData.followers)
+				localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(fetchedData.followers));
+			if (fetchedData.following)
+				localStorage.setItem(FOLLOWING_KEY, JSON.stringify(fetchedData.following));
+			if (fetchedData.notMutuals)
+				localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(fetchedData.notMutuals));
+			if (fetchedData.unfollowers)
+				localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(fetchedData.unfollowers));
 
-			setData(data);
+			setData(fetchedData);
 			setError(null);
 		}
 
 		sleep(SLEEP_DURATION).then(() => setPending(false));
-	}, [session?.accessToken, session?.user]);
+	}, [session]);
 
 	const follow = React.useCallback(
 		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
@@ -221,7 +226,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		[session?.accessToken, session?.user]
 	);
 
-	const addToWhitelist = React.useCallback((idOrIDs: TUser['id'] | Array<TUser['id']>) => {
+	const addToWhitelist = React.useCallback(async (idOrIDs: TUser['id'] | Array<TUser['id']>) => {
 		setWhitelistIDs((prevWhitelist) => {
 			const usersToAdd = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
 			const newWhitelist = [...new Set([...prevWhitelist, ...usersToAdd])];
@@ -230,16 +235,19 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		});
 	}, []);
 
-	const removeFromWhitelist = React.useCallback((idOrIDs: TUser['id'] | Array<TUser['id']>) => {
-		setWhitelistIDs((prevWhitelist) => {
-			const idsToRemove = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
-			const newWhitelist = prevWhitelist.filter((item) => !idsToRemove.includes(item));
-			localStorage.setItem(WHITELIST_KEY, JSON.stringify(newWhitelist));
-			return newWhitelist;
-		});
-	}, []);
+	const removeFromWhitelist = React.useCallback(
+		async (idOrIDs: TUser['id'] | Array<TUser['id']>) => {
+			setWhitelistIDs((prevWhitelist) => {
+				const idsToRemove = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
+				const newWhitelist = prevWhitelist.filter((item) => !idsToRemove.includes(item));
+				localStorage.setItem(WHITELIST_KEY, JSON.stringify(newWhitelist));
+				return newWhitelist;
+			});
+		},
+		[]
+	);
 
-	const clearWhitelist = React.useCallback(() => {
+	const clearWhitelist = React.useCallback(async () => {
 		setWhitelistIDs([]);
 		localStorage.removeItem(WHITELIST_KEY);
 	}, []);
@@ -297,9 +305,9 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		error,
 		pending,
 		whitelistIDs,
-		refresh: () => {
+		refresh: async () => {
 			alreadyRequested.current = false;
-			fetchData();
+			return fetchData();
 		},
 		follow,
 		unfollow,

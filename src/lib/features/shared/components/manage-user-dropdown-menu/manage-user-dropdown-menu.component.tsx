@@ -22,9 +22,9 @@ import {
 type TManageUserDropdownMenuProps = React.ComponentProps<typeof DropdownMenu> & { user: TUser };
 
 /**
- * A button component that follows or unfollows a user.
+ * Dropdown menu for managing a user.
  *
- * @returns The rendered button component.
+ * @returns The rendered dropdown menu.
  */
 export function ManageUserDropdownMenu({ user, ...props }: TManageUserDropdownMenuProps) {
 	const { whitelistIDs, addToWhitelist, removeFromWhitelist, follow, unfollow } = useData();
