@@ -61,7 +61,7 @@ const baseColumnsMap = {
 						className='group w-32 flex-1 justify-start p-0 md:w-full md:min-w-64'
 					>
 						<a href={profileURL} target='_blank' rel='noopener noreferrer'>
-							<Avatar className='group-hover:outline-primary outline-border outline transition-colors'>
+							<Avatar className='group-hover:ring-primary ring-border ring transition-shadow'>
 								<AvatarImage src={image} alt={`${username} avatar`} loading='lazy' />
 								<AvatarFallback className='uppercase'>{username.at(0)}</AvatarFallback>
 							</Avatar>

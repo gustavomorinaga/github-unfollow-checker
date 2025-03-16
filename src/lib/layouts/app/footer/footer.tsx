@@ -29,16 +29,20 @@ export function Footer({ className, ...props }: TFooterProps) {
 					posted here is public and owned by its respective authors.
 				</p>
 
-				<div className='text-muted-foreground flex items-center justify-center gap-2 [&>div]:select-none'>
-					<Button variant='link' asChild className='px-1'>
+				<div className='text-muted-foreground flex items-center justify-center gap-2 [&>a]:px-1 [&>div]:select-none'>
+					<Button variant='link' asChild>
+						<Link href='/'>Home</Link>
+					</Button>
+					<div>|</div>
+					<Button variant='link' asChild>
 						<Link href='/legal/terms'>Terms of Use</Link>
 					</Button>
 					<div>|</div>
-					<Button variant='link' asChild className='px-1'>
+					<Button variant='link' asChild>
 						<Link href='/legal/privacy-policy'>Privacy Policy</Link>
 					</Button>
 					<div>|</div>
-					<Button variant='link' asChild className='px-1'>
+					<Button variant='link' asChild>
 						<a href={`mailto:${email}`}>Contact</a>
 					</Button>
 				</div>
