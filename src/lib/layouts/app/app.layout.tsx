@@ -21,7 +21,7 @@ export function AppLayout({ children }: TAppLayoutProps) {
 				<Content>{children}</Content>
 				<Footer />
 			</Wrapper>
-			<Toaster />
+			<Toaster richColors />
 		</ThemeProvider>
 	);
 }
