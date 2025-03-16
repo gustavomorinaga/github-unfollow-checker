@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { generateRandomValue } from '$lib/utils/random';
 import { cn } from '$lib/utils/ui';
 
 interface FlickeringGridProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -60,7 +61,7 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 
 			const squares = new Float32Array(cols * rows);
 			for (let i = 0; i < squares.length; i++) {
-				squares[i] = Math.random() * maxOpacity;
+				squares[i] = generateRandomValue() * maxOpacity;
 			}
 
 			return { cols, rows, squares, dpr };
@@ -71,8 +72,8 @@ export const FlickeringGrid: React.FC<FlickeringGridProps> = ({
 	const updateSquares = React.useCallback(
 		(squares: Float32Array, deltaTime: number) => {
 			for (let i = 0; i < squares.length; i++) {
-				if (Math.random() < flickerChance * deltaTime) {
-					squares[i] = Math.random() * maxOpacity;
+				if (generateRandomValue() < flickerChance * deltaTime) {
+					squares[i] = generateRandomValue() * maxOpacity;
 				}
 			}
 		},
