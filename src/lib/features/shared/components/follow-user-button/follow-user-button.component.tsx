@@ -20,7 +20,13 @@ export function FollowUserButton({ user, ...props }: TFollowUserButtonProps) {
 
 	const actionButtonMap: TActionButtonMap = {
 		follow: (
-			<Button size='icon' aria-label='Follow' onClick={() => follow(user.login)} {...props}>
+			<Button
+				size='icon'
+				aria-label='Follow'
+				title='Follow'
+				onClick={() => follow(user.login)}
+				{...props}
+			>
 				<UserRoundCheck />
 				<span className='sr-only select-none'>Follow</span>
 			</Button>
@@ -30,6 +36,7 @@ export function FollowUserButton({ user, ...props }: TFollowUserButtonProps) {
 				size='icon'
 				variant='destructive'
 				aria-label='Unfollow'
+				title='Unfollow'
 				onClick={() => unfollow(user.login)}
 				{...props}
 			>

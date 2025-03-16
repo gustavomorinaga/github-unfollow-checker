@@ -47,6 +47,7 @@ export function NotMutualsToolbar(props: TNotMutualsToolbarProps) {
 					size='sm'
 					variant='outline'
 					aria-label='Whitelist selected'
+					title='Whitelist selected'
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleWhitelistSelectedUsers}
 					className='size-9 p-0 md:w-auto md:px-3'
@@ -58,6 +59,7 @@ export function NotMutualsToolbar(props: TNotMutualsToolbarProps) {
 				<Button
 					size='sm'
 					aria-label='Follow selected'
+					title='Follow selected'
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleFollowSelectedUsers}
 					className='size-9 p-0 md:w-auto md:px-3'

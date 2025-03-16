@@ -9,9 +9,9 @@ type TRefreshButtonProps = React.ComponentProps<typeof Button>;
  *
  * @returns The rendered refresh button component.
  */
-export function RefreshButton({ ...props }: TRefreshButtonProps) {
+export function RefreshButton(props: TRefreshButtonProps) {
 	return (
-		<Button size='icon' variant='ghost' aria-label='Refresh' {...props}>
+		<Button size='icon' variant='ghost' aria-label='Refresh' title='Refresh' {...props}>
 			<RotateCw />
 			<span className='sr-only select-none'>Refresh</span>
 		</Button>

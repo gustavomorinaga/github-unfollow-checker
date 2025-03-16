@@ -25,6 +25,7 @@ export function WhitelistUserButton({ user, action = 'add', ...props }: TWhiteli
 				size='icon'
 				variant='outline'
 				aria-label='Add to whitelist'
+				title='Add to whitelist'
 				onClick={() => addToWhitelist(user.id)}
 				{...props}
 			>
@@ -37,6 +38,7 @@ export function WhitelistUserButton({ user, action = 'add', ...props }: TWhiteli
 				size='icon'
 				variant='outline'
 				aria-label='Remove from whitelist'
+				title='Remove from whitelist'
 				onClick={() => removeFromWhitelist(user.id)}
 				{...props}
 			>

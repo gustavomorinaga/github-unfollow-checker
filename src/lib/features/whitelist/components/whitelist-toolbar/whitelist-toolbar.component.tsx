@@ -47,6 +47,7 @@ export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 					size='sm'
 					variant='outline'
 					aria-label='Remove selected'
+					title='Remove selected'
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleRemoveSelectedUsersFromWhitelist}
 					className='size-9 p-0 md:w-auto md:px-3'
@@ -59,6 +60,7 @@ export function WhitelistToolbar(props: TWhitelistToolbarProps) {
 					size='sm'
 					variant='destructive'
 					aria-label='Unfollow selected'
+					title='Unfollow selected'
 					disabled={!table.getSelectedRowModel().rows.length}
 					onClick={handleUnfollowSelectedUsers}
 					className='size-9 p-0 md:w-auto md:px-3'

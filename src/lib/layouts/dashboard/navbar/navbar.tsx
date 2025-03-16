@@ -25,7 +25,7 @@ const MemoizedNavigationMenuLink = React.memo(
 			<NavigationMenuLink
 				className={navigationMenuTriggerStyle({
 					className:
-						'aria-[current="page"]:bg-background bg-muted hover:bg-background/40 focus:bg-background/60 h-8 w-full min-w-28 rounded-sm transition-all duration-150'
+						'aria-[current="page"]:bg-background bg-muted hover:bg-background/40 focus:bg-background/60 h-8 w-full min-w-28 rounded-sm transition-all duration-150 aria-[current="page"]:shadow-sm dark:aria-[current="page"]:shadow-none'
 				})}
 				{...props}
 			>

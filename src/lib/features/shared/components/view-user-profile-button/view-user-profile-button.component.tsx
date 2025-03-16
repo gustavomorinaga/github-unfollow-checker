@@ -17,7 +17,14 @@ type TViewUserProfileButtonProps = React.ComponentProps<typeof Button> & {
  */
 export function ViewUserProfileButton({ user, ...props }: TViewUserProfileButtonProps) {
 	return (
-		<Button size='icon' variant='outline' aria-label='View profile' asChild {...props}>
+		<Button
+			size='icon'
+			variant='outline'
+			aria-label='View profile'
+			title='View profile'
+			asChild
+			{...props}
+		>
 			<a href={user.html_url} target='_blank' rel='noopener noreferrer'>
 				<ExternalLink />
 				<span className='sr-only select-none'>View profile</span>

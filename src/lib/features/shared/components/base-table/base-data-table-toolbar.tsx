@@ -31,10 +31,8 @@ export function BaseDataTableToolbar({
 					onClick={() => table.toggleAllRowsSelected(table.getIsSomeRowsSelected())}
 					className='disabled:invisible'
 				>
-					<span className='select-none'>
-						{table.getIsAllRowsSelected() ? 'Unselect all' : 'Select all'}{' '}
-						{abbreviateNumber(table.getRowCount())}
-					</span>
+					{table.getIsAllRowsSelected() ? 'Unselect all' : 'Select all'}{' '}
+					{abbreviateNumber(table.getRowCount())}
 				</Button>
 			</div>
 
