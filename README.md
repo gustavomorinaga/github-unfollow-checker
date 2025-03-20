@@ -1,115 +1,110 @@
-<!-- markdownlint-disable MD010 -->
-<!-- markdownlint-disable MD014 -->
-<!-- markdownlint-disable MD026 -->
-<!-- markdownlint-disable MD033 -->
-<!-- markdownlint-disable MD041 -->
-
-<h1 align="center">
-  GitHub Unfollow Checker
-</h1>
-
 <p align="center">
-  <br>
-  <img src="/public/assets/images/banner.jpg" alt="Logotipo do Projeto" />
-  <br>
-</p>
-<p align="center">
-  A simple tool to check the users that doesn't follow you back 🧐
+ <img align="center" src="/public/assets/images/logo.png" alt="GitHub Unfollow Checker Logo" height="96" />
+ <h1 align="center">GitHub Unfollow Checker</h1>
 </p>
 
----
+A simple tool to check the users that doesn't follow you back 🧐
 
-<br>
-<p align="center">
-  <a href="https://vercel.com" target="_blank" rel="noopener">
-    <img src="/public/assets/images/powered-by-vercel.svg" width="175" alt="Powered by Vercel" />
-  </a>
-  <br>
-  <br>
-  <a href="https://opensource.org/licenses/MIT">
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License MIT">
-  </a>
-  <br>
-  <br>
-  <a href="https://forthebadge.com">
-    <img src="https://forthebadge.com/images/badges/powered-by-coffee.svg" alt="Powered By Coffee" />
-    <img src="https://forthebadge.com/images/badges/made-with-typescript.svg" alt="Made with TypeScript" />
-    <img src="https://forthebadge.com/images/badges/built-with-love.svg" alt="Made with TypeScript" />
-  </a>
+<p align="left">
+ <a href="https://nextjs.org" title="Open Next.js Website">
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Made with Next.js" />
+ </a>
+ <a href="https://www.typescriptlang.org/docs" title="Open TypeScript Website">
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="Made with TypeScript" />
+ </a>
+ <a href="https://tailwindcss.com" title="Open Tailwind CSS Website">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Made with Tailwind CSS" />
+ </a>
 </p>
 
-<!-- Desktop/Mobile GIF Demo Section
-<div align="center">
-  <img src="#" alt="Demo Desktop" width="600px" height="300px">
-  <img src="#" alt="Demo Mobile" height="300px">
-</div>
+## 📖 Introduction
 
----
-
--->
-
-## 🚀 [Demo](https://github-unfollow-checker.vercel.app)
-
-## ❔ About
-
-This project allow you to check and unfollow the users that doesn't follow you back in the GitHub.
+This tool allows you to check and unfollow the users that don't follow you back on GitHub.
 
 One of the schemes that some social media users use to earn more followers is to follow the person and then stop following later on. And it looks like this scheme is being used here on GitHub as well.
 
-To find those users who use such a scheme, this project will help you with that!
+To find those users who use such a scheme, this tool will help you with that!
 
-## 🌟 Features
+## ✨ Features
 
-This app features all the latest tools and good practices in web development!
+- **Authentication**: Authenticate with your GitHub account.
+- **Unfollowers**: Check the users that don't follow you back.
+- **Not Mutuals**: Check the users that you don't follow back.
+- **Followers**: Check the users that follow you.
+- **Following**: Check the users that you follow.
+- **Whitelist**: Add users to the whitelist to avoid unfollowing them.
+- **Manage Users**: Follow, unfollow, and add users to the whitelist.
+- **Search Users**: Search for users by username.
+- **Dark Mode**: Toggle between light and dark mode.
+- **Responsive Design**: Works on all devices.
+- **PWA Support**: Install the app on your device.
 
-- ⚛️ [Next.js](https://nextjs.org/) – A complete React framework for hybrid and server rendering
-- 🔐 [NextAuth.js](https://next-auth.js.org/) – A complete open source authentication solution for Next.js applications
-- ❇️ [SWR](https://swr.vercel.app/) – A React Hooks library for data fetching
-- 🔄 [Axios](https://github.com/axios/axios) – Promise based HTTP client for the browser and Node.js
-- 🎞️ [Framer Motion](https://www.framer.com/motion/) – A production-ready motion library for React
-- 👓 [Sass](https://sass-lang.com/) – A powerful and professional CSS extension language
-- ✨ [React Icons](https://react-icons.github.io/react-icons/) – A collection of popular icons to React projects
-- 🎨 [Tailwind CSS](https://tailwindcss.com/) – A utility-first CSS framework packed with classes
-- 🐺 [Husky](https://github.com/typicode/husky) – Modern native Git hooks made easy
-- 💩 [lint-staged](https://github.com/okonet/lint-staged) – Run linters against staged git files and don't let 💩 slip into your code base
-- 📓 [commitlint](https://commitlint.js.org/#/) – Helps your team adhering to a commit convention
-- 📱 [next-pwa](https://github.com/shadowwalker/next-pwa) – A PWA plugin for Next.js
-- 📈 [next-seo](https://github.com/garmeeh/next-seo) – A plugin that makes managing your SEO easier in Next.js projects
+## ⚙️ Tech Stack
 
-## ▶️ Get Started
+| Dependency                                                                                             | Category     | Description                                                                          |
+| ------------------------------------------------------------------------------------------------------ | ------------ | ------------------------------------------------------------------------------------ |
+| [@commitlint/cli](https://commitlint.js.org/)                                                          | Tool         | Lint commit messages.                                                                |
+| [@commitlint/config-conventional](https://commitlint.js.org/)                                          | Tool         | Shareable commitlint config enforcing conventional commits.                          |
+| [@eslint/eslintrc](https://eslint.org/docs/latest/use/configure/)                                      | Tool         | ESLint configuration API.                                                            |
+| [@eslint/js](https://eslint.org/docs/latest/use/configure/)                                            | Tool         | ESLint's JavaScript API.                                                             |
+| [@mdx-js/loader](https://mdxjs.com/)                                                                   | Build Tool   | MDX loader for webpack.                                                              |
+| [@mdx-js/react](https://mdxjs.com/)                                                                    | Library      | React integration for MDX.                                                           |
+| [@next/eslint-plugin-next](https://nextjs.org/docs/basic-features/eslint)                              | Plugin       | ESLint plugin for Next.js.                                                           |
+| [@next/mdx](https://nextjs.org/docs/advanced-features/using-mdx)                                       | Framework    | MDX support for Next.js.                                                             |
+| [@radix-ui/react-alert-dialog](https://www.radix-ui.com/docs/primitives/components/alert-dialog)       | UI Component | Radix UI Alert Dialog component.                                                     |
+| [@radix-ui/react-avatar](https://www.radix-ui.com/docs/primitives/components/avatar)                   | UI Component | Radix UI Avatar component.                                                           |
+| [@radix-ui/react-checkbox](https://www.radix-ui.com/docs/primitives/components/checkbox)               | UI Component | Radix UI Checkbox component.                                                         |
+| [@radix-ui/react-dropdown-menu](https://www.radix-ui.com/docs/primitives/components/dropdown-menu)     | UI Component | Radix UI Dropdown Menu component.                                                    |
+| [@radix-ui/react-label](https://www.radix-ui.com/docs/primitives/components/label)                     | UI Component | Radix UI Label component.                                                            |
+| [@radix-ui/react-navigation-menu](https://www.radix-ui.com/docs/primitives/components/navigation-menu) | UI Component | Radix UI Navigation Menu component.                                                  |
+| [@radix-ui/react-select](https://www.radix-ui.com/docs/primitives/components/select)                   | UI Component | Radix UI Select component.                                                           |
+| [@radix-ui/react-slot](https://www.radix-ui.com/docs/primitives/components/slot)                       | UI Component | Radix UI Slot component.                                                             |
+| [@tailwindcss/postcss](https://tailwindcss.com/docs/using-with-preprocessors)                          | Plugin       | Tailwind CSS PostCSS plugin.                                                         |
+| [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)                              | Plugin       | Tailwind CSS Typography plugin.                                                      |
+| [@tanstack/react-table](https://tanstack.com/table/v8)                                                 | Library      | Headless UI for building tables in React.                                            |
+| [@types/mdx](https://mdxjs.com/)                                                                       | Types        | TypeScript definitions for MDX.                                                      |
+| [@types/node](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/node)               | Types        | TypeScript definitions for Node.js.                                                  |
+| [@types/react](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react)             | Types        | TypeScript definitions for React.                                                    |
+| [@typescript-eslint/eslint-plugin](https://typescript-eslint.io/)                                      | Plugin       | TypeScript plugin for ESLint.                                                        |
+| [@typescript-eslint/parser](https://typescript-eslint.io/)                                             | Plugin       | TypeScript parser for ESLint.                                                        |
+| [class-variance-authority](https://github.com/joe-bell/cva)                                            | Utility      | Utility for managing class variance in CSS.                                          |
+| [clsx](https://github.com/lukeed/clsx)                                                                 | Utility      | A tiny utility for constructing `className` strings conditionally.                   |
+| [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version)                   | Tool         | A tool for versioning and tagging releases.                                          |
+| [del-cli](https://github.com/sindresorhus/del-cli)                                                     | Tool         | CLI for deleting files and directories.                                              |
+| [eslint-config-next](https://nextjs.org/docs/basic-features/eslint)                                    | Plugin       | ESLint configuration for Next.js.                                                    |
+| [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier)                           | Plugin       | Turns off all rules that are unnecessary or might conflict with Prettier.            |
+| [eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier)                           | Plugin       | Runs Prettier as an ESLint rule and reports differences as individual ESLint issues. |
+| [eslint-plugin-react-hooks](https://reactjs.org/docs/hooks-rules.html)                                 | Plugin       | ESLint plugin for React hooks.                                                       |
+| [eslint](https://eslint.org/)                                                                          | Tool         | A tool for identifying and reporting on patterns in ECMAScript/JavaScript code.      |
+| [husky](https://typicode.github.io/husky/#/)                                                           | Tool         | Git hooks made easy.                                                                 |
+| [lint-staged](https://github.com/okonet/lint-staged)                                                   | Tool         | Run linters on git staged files.                                                     |
+| [lucide-react](https://lucide.dev/)                                                                    | Library      | Beautiful & consistent icon toolkit made by the community.                           |
+| [motion](https://motion.dev/)                                                                          | Library      | A library for animations in React.                                                   |
+| [next-auth](https://next-auth.js.org/)                                                                 | Library      | Authentication for Next.js.                                                          |
+| [next-themes](https://github.com/pacocoursey/next-themes)                                              | Plugin       | Perfect Next.js dark mode in 2 lines of code.                                        |
+| [next](https://nextjs.org/)                                                                            | Framework    | The React Framework for Production.                                                  |
+| [postcss](https://postcss.org/)                                                                        | Tool         | A tool for transforming CSS with JavaScript.                                         |
+| [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)             | Plugin       | Prettier plugin for Tailwind CSS.                                                    |
+| [prettier](https://prettier.io/)                                                                       | Tool         | An opinionated code formatter.                                                       |
+| [pretty-quick](https://github.com/azz/pretty-quick)                                                    | Tool         | Runs Prettier on your changed files.                                                 |
+| [react-dom](https://reactjs.org/docs/react-dom.html)                                                   | Library      | Serves as the entry point to the DOM and server renderers for React.                 |
+| [react](https://reactjs.org/)                                                                          | Library      | A JavaScript library for building user interfaces.                                   |
+| [sonner](https://sonner.dev/)                                                                          | Library      | A toast notification library for React.                                              |
+| [tailwind-merge](https://github.com/dcastil/tailwind-merge)                                            | Utility      | Utility for merging Tailwind CSS classes.                                            |
+| [tailwind-scrollbar](https://github.com/adoxography/tailwind-scrollbar)                                | Plugin       | Tailwind CSS plugin for styling scrollbars.                                          |
+| [tailwindcss-animate](https://github.com/benface/tailwindcss-animate)                                  | Plugin       | A Tailwind CSS plugin that provides utilities for animating elements.                |
+| [tailwindcss](https://tailwindcss.com/)                                                                | Framework    | A utility-first CSS framework.                                                       |
+| [typescript](https://www.typescriptlang.org/)                                                          | Language     | A typed superset of JavaScript that compiles to plain JavaScript.                    |
+| [vaul](https://vaul.dev/)                                                                              | Library      | A library for managing secrets in React applications.                                |
 
-1. Clone this repository into your machine and enter in the created folder:
+## 🚀 Contributing
 
-   ```bash
-   $ git clone https://github.com/gustavomorinaga/github-unfollow-checker.git
-   $ cd github-unfollow-checker
-   ```
+Contributions are welcome! Please adhere to the guidelines in the [CONTRIBUTING.md](/CONTRIBUTING.md) file.
 
-2. Install all dependencies of the repository:
+## 📜 License
 
-   ```bash
-   $ yarn install
-   ```
+This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
 
-3. Create a `.env.local` file in the root of the project, containing this variables:
-
-   ```init
-   GITHUB_CLIENT_ID
-   GITHUB_CLIENT_SECRET
-
-   NEXTAUTH_URL
-   ```
-
-4. Run this command to run the project:
-
-   ```bash
-   $ yarn dev
-   ```
-
-👨‍💻 Good Hacking!
-
-## ❤️ Thanks for your attention!
-
-### License
-
-This project is licensed under the MIT License - see the [LICENSE](/LICENSE) page for details.
+<p align="center">
+ ❤️ Thanks for your attention!
+</p>

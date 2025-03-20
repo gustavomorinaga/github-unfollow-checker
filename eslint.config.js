@@ -12,13 +12,12 @@ const config = [
 	}),
 	{
 		ignores: [
-			'.next/',
-			'.pnp',
 			'**/.DS_Store',
 			'**/.env.development.local',
 			'**/.env.local',
 			'**/.env.production.local',
 			'**/.env.test.local',
+			'**/.github',
 			'**/.husky',
 			'**/.next',
 			'**/.pnp.js',
