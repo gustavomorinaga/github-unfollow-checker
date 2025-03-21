@@ -3,9 +3,11 @@
  <h1 align="center">GitHub Unfollow Checker</h1>
 </p>
 
-A simple tool to check the users that doesn't follow you back 🧐
+<p align="center">
+ A simple tool to check the users that doesn't follow you back 🧐
+</p>
 
-<p align="left">
+<p align="center">
  <a href="https://nextjs.org" title="Open Next.js Website">
   <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Made with Next.js" />
  </a>
@@ -37,7 +39,6 @@ To find those users who use such a scheme, this tool will help you with that!
 - **Search Users**: Search for users by username.
 - **Dark Mode**: Toggle between light and dark mode.
 - **Responsive Design**: Works on all devices.
-- **PWA Support**: Install the app on your device.
 
 ## ⚙️ Tech Stack
 
@@ -99,7 +100,7 @@ To find those users who use such a scheme, this tool will help you with that!
 
 ## 🚀 Contributing
 
-Contributions are welcome! Please adhere to the guidelines in the [CONTRIBUTING.md](/CONTRIBUTING.md) file.
+Contributions are welcome! Please adhere to the guidelines in the [CONTRIBUTING](/.github/CONTRIBUTING.md) file.
 
 ## 📜 License
 
