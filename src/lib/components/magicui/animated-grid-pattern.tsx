@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { ComponentPropsWithoutRef, useEffect, useId, useRef, useState } from 'react';
 
 import { cn } from '$lib/utils/ui';
+import { generateRandomValue } from '$lib/utils/random';
 
 export interface AnimatedGridPatternProps extends ComponentPropsWithoutRef<'svg'> {
 	width?: number;
@@ -37,8 +38,8 @@ export function AnimatedGridPattern({
 
 	function getPos() {
 		return [
-			Math.floor((Math.random() * dimensions.width) / width),
-			Math.floor((Math.random() * dimensions.height) / height)
+			Math.floor((generateRandomValue() * dimensions.width) / width),
+			Math.floor((generateRandomValue() * dimensions.height) / height)
 		];
 	}
 
