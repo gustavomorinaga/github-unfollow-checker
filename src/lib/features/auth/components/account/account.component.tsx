@@ -27,7 +27,7 @@ export async function Account() {
 
 	if (!session)
 		return (
-			<Button size='sm' aria-label='Get Started' asChild>
+			<Button size='sm' aria-label='Get Started' asChild className='hidden md:inline-flex'>
 				<Link href='/login'>
 					<span className='select-none'>Get Started</span>
 				</Link>
