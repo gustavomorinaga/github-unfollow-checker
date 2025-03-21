@@ -9,9 +9,10 @@
  */
 export const generateRandomValue = () => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const crypto = window.crypto || (window as any).msCrypto;
-	const maxUint32 = 0xffffffff;
+	const crypto = typeof window !== 'undefined' && (window.crypto || (window as any).msCrypto);
+	if (!crypto) return 0;
 
+	const maxUint32 = 0xffffffff;
 	const array = new Uint32Array(1);
 	const [randomValue] = crypto.getRandomValues(array);
 
