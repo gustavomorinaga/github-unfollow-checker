@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as Slot from '@radix-ui/react-slot';
+
 import { cn } from '$lib/utils/ui';
 
 export interface ShimmerButtonProps extends React.ComponentPropsWithoutRef<'button'> {
@@ -10,6 +12,7 @@ export interface ShimmerButtonProps extends React.ComponentPropsWithoutRef<'butt
 	background?: string;
 	className?: string;
 	children?: React.ReactNode;
+	asChild?: boolean;
 }
 
 export const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
@@ -22,12 +25,15 @@ export const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonPr
 			background = 'rgba(0, 0, 0, 1)',
 			className,
 			children,
+			asChild = false,
 			...props
 		},
 		ref
 	) => {
+		const Comp = asChild ? Slot.Root : 'button';
+
 		return (
-			<button
+			<Comp
 				style={
 					{
 						'--spread': '90deg',
@@ -59,7 +65,9 @@ export const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonPr
 						<div className='animate-spin-around absolute -inset-full w-auto [translate:0_0] rotate-0 [background:conic-gradient(from_calc(270deg-(var(--spread)*0.5)),transparent_0,var(--shimmer-color)_var(--spread),transparent_var(--spread))]' />
 					</div>
 				</div>
-				{children}
+
+				{/* Slot */}
+				<Slot.Slottable>{children}</Slot.Slottable>
 
 				{/* Highlight */}
 				<div
@@ -85,7 +93,7 @@ export const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonPr
 						'absolute [inset:var(--cut)] -z-20 [border-radius:var(--radius)] [background:var(--bg)]'
 					)}
 				/>
-			</button>
+			</Comp>
 		);
 	}
 );

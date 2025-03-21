@@ -1,6 +1,6 @@
 import { auth } from '$lib/auth';
 
-const WHITELISTED_PATHS = ['/login', '/legal'];
+const WHITELISTED_PATHS = ['/', '/login', '/legal'];
 
 export default auth((req) => {
 	const isAuthenticatedUser = Boolean(req.auth);

@@ -1,3 +1,5 @@
-export default function UnfollowersPage() {
-	return <h1>Unfollowers</h1>;
+import { HomeView } from '$lib/features/marketing/views/home';
+
+export default function HomePage() {
+	return <HomeView />;
 }

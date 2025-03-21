@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { auth, handleSignIn, handleSignOut } from '$lib/auth';
+import { auth, handleSignOut } from '$lib/auth';
 import { Button } from '$lib/components/ui/button';
 import {
 	DropdownMenu,
@@ -27,8 +27,10 @@ export async function Account() {
 
 	if (!session)
 		return (
-			<Button size='sm' aria-label='Login' onClick={handleSignIn}>
-				<span className='select-none'>Login</span>
+			<Button size='sm' aria-label='Get Started' asChild>
+				<Link href='/login'>
+					<span className='select-none'>Get Started</span>
+				</Link>
 			</Button>
 		);
 

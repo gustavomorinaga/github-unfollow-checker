@@ -37,14 +37,19 @@ export async function ContinueSessionForm({ className, ...props }: TContinueSess
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<Link href='/dashboard' className='contents'>
-						<ShimmerButton background={siteMetadata.other['theme-color']} className='w-full'>
+					<ShimmerButton
+						aria-label={`Continue as @${session.user.login}`}
+						background={siteMetadata.other['theme-color']}
+						asChild
+						className='w-full'
+					>
+						<Link href='/dashboard'>
 							<Avatar className='mr-3 size-6 shrink-0 ring ring-white' />
 							<span className='truncate select-none'>
-								Continue as <strong>@{session.user.login}</strong>
+								Continue as <strong>{`@${session.user.login}`}</strong>
 							</span>
-						</ShimmerButton>
-					</Link>
+						</Link>
+					</ShimmerButton>
 				</CardContent>
 				<CardFooter>
 					<LegalAgreement className='text-muted-foreground text-center text-balance' />
