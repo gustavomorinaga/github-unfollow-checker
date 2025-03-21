@@ -52,6 +52,7 @@ To find those users who use such a scheme, this tool will help you with that!
 | [@mdx-js/react](https://mdxjs.com/)                                                                    | Library      | React integration for MDX.                                                           |
 | [@next/eslint-plugin-next](https://nextjs.org/docs/basic-features/eslint)                              | Plugin       | ESLint plugin for Next.js.                                                           |
 | [@next/mdx](https://nextjs.org/docs/advanced-features/using-mdx)                                       | Framework    | MDX support for Next.js.                                                             |
+| [@radix-ui/react-accordion](https://www.radix-ui.com/docs/primitives/components/accordion)             | UI Component | Radix UI Accordion component.                                                        |
 | [@radix-ui/react-alert-dialog](https://www.radix-ui.com/docs/primitives/components/alert-dialog)       | UI Component | Radix UI Alert Dialog component.                                                     |
 | [@radix-ui/react-avatar](https://www.radix-ui.com/docs/primitives/components/avatar)                   | UI Component | Radix UI Avatar component.                                                           |
 | [@radix-ui/react-checkbox](https://www.radix-ui.com/docs/primitives/components/checkbox)               | UI Component | Radix UI Checkbox component.                                                         |
