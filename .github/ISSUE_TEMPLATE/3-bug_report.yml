@@ -1,0 +1,63 @@
+name: Bug report
+description: Report an issue with
+labels: [triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thanks for taking the time to create an issue! Please search open/closed issues before submitting, as the issue may have already been reported/addressed.
+
+  - type: markdown
+    attributes:
+      value: |
+        #### If you aren't sure if something is a bug or not, please do not create an issue, instead ask in one of the following channels:
+        - [Discussions](https://github.com/gustavomorinaga/github-unfollow-checker/discussions/new?category=help)
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is. If you intend to submit a PR for this issue, tell us how in the description. Thanks!
+      placeholder: Bug description
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: |
+        Provide a minimal reproduction of the problem. Include a StackBlitz or link to a GitHub repository that we can easily run to recreate the issue. If a report is vague and does not have a reproduction, it will be closed without warning.
+        ***Do not simply add a code snippet or a screenshot. We need a reproduction that we can easily run to recreate the issue.***
+      placeholder: Reproduction
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Please include browser console and server logs around the time this bug occurred. Optional if provided reproduction. Please try not to insert an image but copy paste the log text.
+      render: bash
+
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: Output of `npx envinfo --system --npmPackages @mdx-js/react,@next/mdx,@radix-ui/react-alert-dialog,@radix-ui/react-avatar,@radix-ui/react-checkbox,@radix-ui/react-dropdown-menu,@radix-ui/react-label,@radix-ui/react-navigation-menu,@radix-ui/react-select,@tanstack/react-table,clsx,lucide-react,motion,next,next-auth,next-themes,react,react-dom,sonner,tailwindcss,typescript --binaries --browsers`
+      render: bash
+      placeholder: System, Binaries, Browsers
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Select the severity of this issue
+      options:
+        - annoyance
+        - blocking an upgrade
+        - blocking all usage of tool
+    validations:
+      required: true
