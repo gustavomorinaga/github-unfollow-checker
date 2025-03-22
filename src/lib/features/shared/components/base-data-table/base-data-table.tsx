@@ -7,6 +7,7 @@ import {
 	getCoreRowModel,
 	getFacetedRowModel,
 	getFacetedUniqueValues,
+	getFilteredRowModel,
 	getPaginationRowModel,
 	useReactTable,
 	type ColumnDef,
@@ -59,6 +60,7 @@ function DataTable<TData, TValue>({
 		getCoreRowModel: getCoreRowModel(),
 		getFacetedRowModel: getFacetedRowModel(),
 		getFacetedUniqueValues: getFacetedUniqueValues(),
+		getFilteredRowModel: getFilteredRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		onRowSelectionChange: setRowSelection
 	});

@@ -56,6 +56,10 @@
 		@apply border-border outline-ring/50;
 	}
 
+	html {
+		@apply scrollbar-thin scrollbar-thumb-muted-foreground scrollbar-track-muted antialiased;
+	}
+
 	body {
 		@apply bg-background text-foreground;
 	}

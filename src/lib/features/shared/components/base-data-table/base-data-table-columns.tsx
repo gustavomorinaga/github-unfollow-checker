@@ -17,8 +17,9 @@ import { UserRoundCheck, UserRoundX } from 'lucide-react';
 const baseColumnsMap = {
 	select: {
 		id: 'select',
-		enableSorting: false,
+		enableColumnFilter: false,
 		enableHiding: false,
+		enableSorting: false,
 		header: ({ table }) => (
 			<div className='flex w-8 items-center justify-center'>
 				<Checkbox
@@ -48,6 +49,7 @@ const baseColumnsMap = {
 	},
 	login: {
 		accessorKey: 'login',
+		enableColumnFilter: true,
 		header: () => <span>Username</span>,
 		cell: ({ row }) => {
 			const { avatar_url: image, login: username, html_url: profileURL } = row.original;
@@ -75,6 +77,7 @@ const baseColumnsMap = {
 	},
 	type: {
 		accessorKey: 'type',
+		enableColumnFilter: true,
 		header: () => <span className='sr-only'>Type</span>,
 		cell: ({ row }) => {
 			const { type } = row.original;
@@ -90,6 +93,7 @@ const baseColumnsMap = {
 	},
 	followed: {
 		accessorKey: 'followedBy',
+		enableColumnFilter: true,
 		header: () => <span className='sr-only'>Following status</span>,
 		cell: ({ row }) => {
 			const followedBy = row.getValue<TUser['followedBy']>('followedBy');
@@ -112,6 +116,9 @@ const baseColumnsMap = {
 	},
 	actions: {
 		id: 'actions',
+		enableColumnFilter: false,
+		enableHiding: false,
+		enableSorting: false,
 		header: () => <span>Actions</span>,
 		cell: ({ row: { original: user } }) => (
 			<div className='flex w-full items-center justify-end'>
