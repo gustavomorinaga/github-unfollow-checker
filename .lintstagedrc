@@ -1,5 +1,4 @@
 {
 	"*.+(md)": "pnpm format:staged",
-	"src/**/*.+(js|jsx|ts|tsx)": "pnpm format:staged && pnpm lint",
-	"docs/**/*.+(md)": "pnpm format:staged"
+	"src/**/*.+(js|jsx|ts|tsx)": "pnpm format:staged && pnpm lint"
 }
