@@ -39,6 +39,7 @@ To find those users who use such a scheme, this tool will help you with that!
 - **Search Users**: Search for users by username.
 - **Dark Mode**: Toggle between light and dark mode.
 - **Responsive Design**: Works on all devices.
+<!-- - **PWA Support**: Install the app on your device. -->
 
 ## ⚙️ Tech Stack
 
@@ -69,6 +70,7 @@ To find those users who use such a scheme, this tool will help you with that!
 | [@types/react](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react)             | Types        | TypeScript definitions for React.                                                    |
 | [@typescript-eslint/eslint-plugin](https://typescript-eslint.io/)                                      | Plugin       | TypeScript plugin for ESLint.                                                        |
 | [@typescript-eslint/parser](https://typescript-eslint.io/)                                             | Plugin       | TypeScript parser for ESLint.                                                        |
+| [@uidotdev/usehooks](https://usehooks.com/)                                                            | Library      | A collection of modern, server-safe React hooks – from the ui.dev team               |
 | [class-variance-authority](https://github.com/joe-bell/cva)                                            | Utility      | Utility for managing class variance in CSS.                                          |
 | [clsx](https://github.com/lukeed/clsx)                                                                 | Utility      | A tiny utility for constructing `className` strings conditionally.                   |
 | [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version)                   | Tool         | A tool for versioning and tagging releases.                                          |
