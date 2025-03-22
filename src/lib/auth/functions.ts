@@ -10,7 +10,7 @@ import { signIn, signOut } from './auth';
  */
 export async function handleSignIn() {
 	'use server';
-	return signIn('github');
+	await signIn('github', { redirectTo: '/' });
 }
 
 /**
@@ -22,5 +22,5 @@ export async function handleSignIn() {
  */
 export async function handleSignOut() {
 	'use server';
-	return signOut({ redirectTo: '/login' });
+	await signOut({ redirectTo: '/home' });
 }

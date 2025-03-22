@@ -9,7 +9,6 @@ import {
 	CardHeader,
 	CardTitle
 } from '$lib/components/ui/card';
-import { siteMetadata } from '$lib/configs/site';
 import { LegalAgreement } from '$lib/features/auth/components/legal-agreement';
 import { cn } from '$lib/utils/ui';
 
@@ -35,7 +34,7 @@ export async function LoginForm({ className, ...props }: TLoginFormProps) {
 						<ShimmerButton
 							name='github'
 							type='submit'
-							background={siteMetadata.other['theme-color']}
+							background='var(--primary)'
 							className='w-full'
 						>
 							<GitHub className='mr-3 size-5 shrink-0' />

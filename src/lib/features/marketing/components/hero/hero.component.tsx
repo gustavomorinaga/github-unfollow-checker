@@ -2,10 +2,9 @@ import Link from 'next/link';
 
 import { AnimatedGridPattern } from '$lib/components/magicui/animated-grid-pattern';
 import { ShimmerButton } from '$lib/components/magicui/shimmer-button';
-import { Badge } from '$lib/components/ui/badge';
-import { siteMetadata } from '$lib/configs/site';
+import { ReleaseBadge } from '$lib/features/marketing/components/release-badge';
 
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export function Hero() {
 	return (
@@ -18,10 +17,9 @@ export function Hero() {
 			/>
 
 			<div className='relative z-10 text-center'>
-				<Badge className='from-accent via-accent-foreground/20 to-accent text-accent-foreground rounded-full border-none bg-gradient-to-br via-70% px-2 py-1 shadow-sm'>
-					<span>Just released v3</span>
-					<Sparkles />
-				</Badge>
+				<div className='flex items-center justify-center'>
+					<ReleaseBadge />
+				</div>
 
 				<h1 className='mt-6 text-4xl !leading-[1.2] font-bold tracking-tight text-balance sm:text-5xl md:text-6xl'>
 					Your GitHub Network, Your Rules
@@ -33,11 +31,7 @@ export function Hero() {
 				</p>
 
 				<div className='mt-12 flex items-center justify-center gap-4'>
-					<ShimmerButton
-						aria-label='Get Started'
-						background={siteMetadata.other['theme-color']}
-						asChild
-					>
+					<ShimmerButton aria-label='Get Started' background='var(--primary)' asChild>
 						<Link href='/login'>
 							<span className='select-none'>Get Started</span>
 							<ArrowUpRight className='ml-3' />

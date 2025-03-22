@@ -8,7 +8,7 @@ export default auth((req) => {
 
 	if (!isAuthenticatedUser && !isWhitelistedPath) {
 		const isRootPath = req.nextUrl.pathname === '/';
-		const redirectPath = isRootPath ? '/home' : `/login?next=${req.nextUrl.pathname}`;
+		const redirectPath = isRootPath ? '/home' : '/login';
 		const newURL = new URL(redirectPath, req.nextUrl.origin);
 		return Response.redirect(newURL);
 	}

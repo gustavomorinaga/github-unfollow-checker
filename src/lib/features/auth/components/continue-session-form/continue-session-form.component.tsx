@@ -10,7 +10,6 @@ import {
 	CardHeader,
 	CardTitle
 } from '$lib/components/ui/card';
-import { siteMetadata } from '$lib/configs/site';
 import { Avatar } from '$lib/features/auth/components/avatar';
 import { LegalAgreement } from '$lib/features/auth/components/legal-agreement';
 import { cn } from '$lib/utils/ui';
@@ -39,7 +38,7 @@ export async function ContinueSessionForm({ className, ...props }: TContinueSess
 				<CardContent>
 					<ShimmerButton
 						aria-label={`Continue as @${session.user.login}`}
-						background={siteMetadata.other['theme-color']}
+						background='var(--primary)'
 						asChild
 						className='w-full'
 					>
