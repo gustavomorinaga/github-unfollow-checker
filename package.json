@@ -1,6 +1,6 @@
 {
 	"name": "github-unfollow-checker",
-	"version": "2.0.2",
+	"version": "3.0.0",
 	"private": true,
 	"type": "module",
 	"description": "A simple tool to check the users that doesn't follow you back 🧐",
