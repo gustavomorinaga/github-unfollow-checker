@@ -61,7 +61,7 @@ To find those users who use such a scheme, this tool will help you with that!
 | [@radix-ui/react-label](https://www.radix-ui.com/docs/primitives/components/label)                     | UI Component | Radix UI Label component.                                                            |
 | [@radix-ui/react-navigation-menu](https://www.radix-ui.com/docs/primitives/components/navigation-menu) | UI Component | Radix UI Navigation Menu component.                                                  |
 | [@radix-ui/react-select](https://www.radix-ui.com/docs/primitives/components/select)                   | UI Component | Radix UI Select component.                                                           |
-| [@radix-ui/react-slot](https://www.radix-ui.com/docs/primitives/components/slot)                       | UI Component | Radix UI Slot component.                                                             |
+| [@radix-ui/react-slot](https://www.radix-ui.com/primitives/docs/utilities/slot)                        | UI Component | Radix UI Slot component.                                                             |
 | [@tailwindcss/postcss](https://tailwindcss.com/docs/using-with-preprocessors)                          | Plugin       | Tailwind CSS PostCSS plugin.                                                         |
 | [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)                              | Plugin       | Tailwind CSS Typography plugin.                                                      |
 | [@tanstack/react-table](https://tanstack.com/table/v8)                                                 | Library      | Headless UI for building tables in React.                                            |
@@ -93,13 +93,13 @@ To find those users who use such a scheme, this tool will help you with that!
 | [pretty-quick](https://github.com/azz/pretty-quick)                                                    | Tool         | Runs Prettier on your changed files.                                                 |
 | [react-dom](https://reactjs.org/docs/react-dom.html)                                                   | Library      | Serves as the entry point to the DOM and server renderers for React.                 |
 | [react](https://reactjs.org/)                                                                          | Library      | A JavaScript library for building user interfaces.                                   |
-| [sonner](https://sonner.dev/)                                                                          | Library      | A toast notification library for React.                                              |
+| [sonner](https://sonner.emilkowal.ski/)                                                                | Library      | An opinionated toast component for React.                                            |
 | [tailwind-merge](https://github.com/dcastil/tailwind-merge)                                            | Utility      | Utility for merging Tailwind CSS classes.                                            |
 | [tailwind-scrollbar](https://github.com/adoxography/tailwind-scrollbar)                                | Plugin       | Tailwind CSS plugin for styling scrollbars.                                          |
-| [tailwindcss-animate](https://github.com/benface/tailwindcss-animate)                                  | Plugin       | A Tailwind CSS plugin that provides utilities for animating elements.                |
+| [tailwindcss-animate](https://github.com/jamiebuilds/tailwindcss-animate)                              | Plugin       | A Tailwind CSS plugin for creating beautiful animations                              |
 | [tailwindcss](https://tailwindcss.com/)                                                                | Framework    | A utility-first CSS framework.                                                       |
 | [typescript](https://www.typescriptlang.org/)                                                          | Language     | A typed superset of JavaScript that compiles to plain JavaScript.                    |
-| [vaul](https://vaul.dev/)                                                                              | Library      | A library for managing secrets in React applications.                                |
+| [vaul](https://vaul.emilkowal.ski/)                                                                    | Library      | Drawer component for React.                                                          |
 
 ## 🚀 Contributing
 
