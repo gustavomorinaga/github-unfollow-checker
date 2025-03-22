@@ -21,6 +21,10 @@ const faq: Array<TFAQ> = [
 		answer: `${siteMetadata.applicationName} uses the GitHub API to fetch your followers and following lists. It compares them to identify users who don’t follow you back or whom you don’t follow back.`
 	},
 	{
+		question: `Is ${siteMetadata.applicationName} free to use?`,
+		answer: `Yes, ${siteMetadata.applicationName} is free to use. As an open-source project, anyone can contribute to its development and improvement.`
+	},
+	{
 		question: 'Is my data safe?',
 		answer:
 			'Yes, your data is safe. We only process your GitHub username and access token temporarily to interact with the GitHub API. No sensitive data is stored permanently.'

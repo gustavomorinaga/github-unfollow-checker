@@ -33,7 +33,6 @@ export const siteMetadata: TSiteMetadata = {
 	keywords: ['GitHub', 'Unfollow', 'Checker', 'Followers', 'Following', 'Users'],
 	authors: [{ name: 'Gustavo Morinaga', url: 'https://gustavomorinaga.dev' }],
 	assets: '/assets',
-	manifest: '/site.webmanifest',
 	robots: { index: true, follow: true },
 	icons: [
 		{

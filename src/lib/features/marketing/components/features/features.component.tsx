@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
 	Eye,
+	// MonitorDown,
 	Moon,
 	Search,
 	Shield,
@@ -58,6 +59,11 @@ const features: Array<TFeature> = [
 		title: 'Responsive Design',
 		description: 'Enjoy a seamless experience on all devices.'
 	}
+	// {
+	// 	icon: MonitorDown,
+	// 	title: 'Progressive Web App',
+	// 	description: 'Install the application on your device for quick access.'
+	// }
 ];
 
 /**
