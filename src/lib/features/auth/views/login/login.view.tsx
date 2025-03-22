@@ -1,7 +1,4 @@
-import Link from 'next/link';
-
 import { auth } from '$lib/auth';
-import { LogoText } from '$lib/components/icons/logo-text';
 import { FlickeringGrid } from '$lib/components/magicui/flickering-grid';
 import { ContinueSessionForm } from '$lib/features/auth/components/continue-session-form';
 import { LoginForm } from '$lib/features/auth/components/login-form';
@@ -35,10 +32,6 @@ export async function LoginView() {
 			/>
 
 			<div className='z-10 flex w-full max-w-sm flex-col gap-6'>
-				<Link href='/' className='contents'>
-					<LogoText className='bg-card text-card-foreground self-center rounded-xl border px-4 py-2 shadow-sm' />
-				</Link>
-
 				{session ? <ContinueSessionForm /> : <LoginForm />}
 			</div>
 		</div>

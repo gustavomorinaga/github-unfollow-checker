@@ -13,18 +13,14 @@ type TFooterProps = React.ComponentProps<'footer'>;
  * @returns The rendered footer element with the specified content and props.
  */
 export function Footer({ className, ...props }: TFooterProps) {
-	const {
-		owner: { email }
-	} = repoMetadata;
-
 	return (
 		<footer className={cn('bg-muted border-t p-4', className)} {...props}>
-			<aside className='container mx-auto flex max-w-3xl flex-col gap-2 text-center text-xs text-balance md:text-sm'>
+			<aside className='container mx-auto flex flex-col gap-2 text-center text-xs md:text-sm'>
 				<Link href='/' className='contents'>
 					<LogoText className='w-fit self-center' />
 				</Link>
 
-				<p className='text-muted-foreground'>
+				<p className='text-muted-foreground text-balance'>
 					{siteMetadata.applicationName} is not affiliated with or endorsed by GitHub. All content
 					posted here is public and owned by its respective authors.
 				</p>
@@ -43,7 +39,7 @@ export function Footer({ className, ...props }: TFooterProps) {
 					</Button>
 					<div>|</div>
 					<Button variant='link' asChild>
-						<a href={`mailto:${email}`}>Contact</a>
+						<a href={`mailto:${repoMetadata.owner.email}`}>Contact</a>
 					</Button>
 				</div>
 

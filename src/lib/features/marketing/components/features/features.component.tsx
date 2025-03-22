@@ -60,6 +60,11 @@ const features: Array<TFeature> = [
 	}
 ];
 
+/**
+ * The `Features` component renders a section with the features of the application.
+ *
+ * @returns The rendered section with the features of the application.
+ */
 export function Features() {
 	return (
 		<div className='flex min-h-screen items-center justify-center py-12'>
@@ -68,13 +73,13 @@ export function Features() {
 					Optimize your GitHub network
 				</h2>
 
-				<div className='mx-auto mt-10 grid gap-6 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3'>
+				<div className='mx-auto mt-10 grid max-w-screen-md gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3'>
 					{features.map((feature) => (
 						<div key={feature.title} className='flex flex-col rounded-xl border px-5 py-6'>
 							<div className='bg-muted mb-3 flex size-10 items-center justify-center rounded-full'>
-								<feature.icon className='h-6 w-6' />
+								<feature.icon className='size-6' />
 							</div>
-							<span className='text-lg font-semibold'>{feature.title}</span>
+							<span className='text-lg font-semibold text-balance'>{feature.title}</span>
 							<p className='text-foreground/80 mt-1 text-sm text-balance'>{feature.description}</p>
 						</div>
 					))}

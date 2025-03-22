@@ -9,10 +9,7 @@ type TContentProps = React.ComponentProps<'main'>;
  */
 export function Content({ className, children, ...props }: TContentProps) {
 	return (
-		<main
-			className={cn('container mx-auto flex size-full max-w-3xl flex-1 flex-col', className)}
-			{...props}
-		>
+		<main className={cn('container mx-auto flex size-full flex-1 flex-col', className)} {...props}>
 			{children}
 		</main>
 	);

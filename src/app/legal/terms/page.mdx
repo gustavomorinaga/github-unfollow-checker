@@ -1,13 +1,15 @@
+import { repoMetadata, siteMetadata } from '$lib/configs/site';
+
 # Terms of Use
 
 **Effective Date:** 2025-03-11
 **Last Updated:** 2025-03-11
 
-Welcome to **[GitHub Unfollow Checker](https://github-unfollow-checker.vercel.app)**. These Terms of Use govern your use of our website and services. By accessing or using our website, you agree to be bound by these Terms.
+Welcome to <a href={siteMetadata.openGraph.url}>{siteMetadata.applicationName}</a>. These Terms of Use govern your use of our website and services. By accessing or using our website, you agree to be bound by these Terms.
 
 ## 1. Acceptance of Terms
 
-By using **GitHub Unfollow Checker**, you confirm that you have read, understood, and agreed to these Terms. If you do not agree, please do not use our services.
+By using **{siteMetadata.applicationName}**, you confirm that you have read, understood, and agreed to these Terms. If you do not agree, please do not use our services.
 
 ## 2. Personal Use Only
 
@@ -31,7 +33,7 @@ We are **not responsible** for any actions taken based on the information provid
 
 ## 5. No Affiliation with GitHub
 
-**GitHub Unfollow Checker is not affiliated with, endorsed by, or officially connected to GitHub Inc.** GitHub and its logo are trademarks of GitHub Inc.
+**{siteMetadata.applicationName} is not affiliated with, endorsed by, or officially connected to GitHub Inc.** GitHub and its logo are trademarks of GitHub Inc.
 
 ## 6. Limitation of Liability
 
@@ -61,4 +63,4 @@ We may update these Terms from time to time. Any significant changes will be ann
 
 If you have any questions about these Terms, please contact us at:
 
-📧 **Email:** [me@gustavomorinaga.dev](mailto:me@gustavomorinaga.dev)
+📧 **Email:** <a href={`mailto:${repoMetadata.owner.email}`}>{repoMetadata.owner.email}</a>

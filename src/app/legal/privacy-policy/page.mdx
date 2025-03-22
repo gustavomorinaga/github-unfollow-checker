@@ -1,16 +1,19 @@
+import { repoMetadata, siteMetadata } from '$lib/configs/site';
+
 # Privacy Policy
 
 **Effective Date:** 2025-03-11
-**Last Updated:** 2025-03-11
+**Last Updated:** 2025-03-21
 
-Welcome to **[GitHub Unfollow Checker](https://github-unfollow-checker.vercel.app)**. Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal data in compliance with the **General Data Protection Regulation (GDPR)**.
+Welcome to <a href={siteMetadata.openGraph.url}>{siteMetadata.applicationName}</a>. Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal data in compliance with the **General Data Protection Regulation (GDPR)**.
 
 ## 1. Data We Collect
 
 We collect the following personal data to provide our services:
 
-- **GitHub Username** – Required to check unfollowers.
 - **GitHub Access Token** – Used to interact with the GitHub API (not stored permanently).
+- **GitHub Followers & Following** – Used to show user connections.
+- **GitHub Profile Data** – Used to display user information.
 
 We do **not** collect or process any sensitive personal data (e.g., payment details, addresses, or emails).
 
@@ -22,8 +25,8 @@ We collect data when users **log in with GitHub** via [Auth.js](https://authjs.d
 
 We collect and process user data for the following purposes:
 
-- To connect to the GitHub API and check unfollowers.
-- To allow users to **unfollow** their unfollowers directly from the platform.
+- To connect to the GitHub API and view **unfollowers**, **not mutuals**, **followers**, and **following**.
+- To allow users to **follow** or **unfollow** other users directly from our platform.
 - To allow users to **whitelist** certain followers they don’t want to unfollow.
 - To enhance user experience.
 
@@ -40,12 +43,12 @@ Under GDPR, we process user data based on:
 
 As a user, you have the following rights under GDPR:
 
-- **Access:** You can request a copy of your personal data.
-- **Deletion:** You can stop using our service anytime, and your data will no longer be processed.
-- **Correction:** Since we only process GitHub data, updates should be made directly in GitHub.
-- **Data Portability:** You can request to receive your data in a structured format.
+- **Access:** You can request a copy of your personal data directly from GitHub.
+- **Deletion:** Since we do not store your data permanently, you can revoke our access to your GitHub data by disconnecting our application from your GitHub account.
+- **Correction:** Any updates to your data should be made directly in GitHub, as we only process GitHub data.
+- **Data Portability:** You can request your data directly from GitHub in a structured format.
 
-To exercise any of these rights, contact us at **[me@gustavomorinaga.dev](mailto:me@gustavomorinaga.dev)**.
+To exercise any of these rights, please refer to GitHub's privacy settings or contact GitHub support.
 
 ## 6. Data Sharing
 
@@ -75,4 +78,4 @@ We may update this Privacy Policy from time to time. Users will be notified of s
 
 If you have any questions about this Privacy Policy or your data rights, please contact us at:
 
-📧 **Email:** [me@gustavomorinaga.dev](mailto:me@gustavomorinaga.dev)
+📧 **Email:** <a href={`mailto:${repoMetadata.owner.email}`}>{repoMetadata.owner.email}</a>
