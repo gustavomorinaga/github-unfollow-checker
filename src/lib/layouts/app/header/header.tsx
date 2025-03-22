@@ -20,7 +20,7 @@ export function Header({ className, ...props }: THeaderProps) {
 				<div className='container mx-auto flex h-[52px] flex-col px-2 py-2 md:px-4 lg:px-0'>
 					<div className='flex items-center justify-between gap-4 sm:justify-start md:justify-between'>
 						<div className='flex'>
-							<Link href='/' className='contents'>
+							<Link href='/home' className='contents'>
 								<LogoText />
 							</Link>
 						</div>

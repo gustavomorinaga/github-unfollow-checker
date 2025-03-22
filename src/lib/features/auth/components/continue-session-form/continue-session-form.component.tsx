@@ -43,7 +43,7 @@ export async function ContinueSessionForm({ className, ...props }: TContinueSess
 						asChild
 						className='w-full'
 					>
-						<Link href='/dashboard'>
+						<Link href='/'>
 							<Avatar className='mr-3 size-6 shrink-0 ring ring-white' />
 							<span className='truncate select-none'>
 								Continue as <strong>{`@${session.user.login}`}</strong>

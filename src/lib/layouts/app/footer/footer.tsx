@@ -16,7 +16,7 @@ export function Footer({ className, ...props }: TFooterProps) {
 	return (
 		<footer className={cn('bg-muted border-t p-4', className)} {...props}>
 			<aside className='container mx-auto flex flex-col gap-2 text-center text-xs md:text-sm'>
-				<Link href='/' className='contents'>
+				<Link href='/home' className='contents'>
 					<LogoText className='w-fit self-center' />
 				</Link>
 
@@ -27,7 +27,7 @@ export function Footer({ className, ...props }: TFooterProps) {
 
 				<div className='text-muted-foreground flex items-center justify-center gap-2 [&>a]:px-1 [&>div]:select-none'>
 					<Button variant='link' asChild>
-						<Link href='/'>Home</Link>
+						<Link href='/home'>Home</Link>
 					</Button>
 					<div>|</div>
 					<Button variant='link' asChild>

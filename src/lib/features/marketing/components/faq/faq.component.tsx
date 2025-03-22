@@ -74,12 +74,7 @@ export function FAQ() {
 					Questions & Answers
 				</h2>
 
-				<Accordion
-					type='single'
-					defaultValue='question-0'
-					collapsible
-					className='mt-6 w-full max-w-screen-md'
-				>
+				<Accordion type='single' collapsible className='mt-6 w-full max-w-screen-md'>
 					{faq.map(({ question, answer }, index) => (
 						<AccordionItem key={question} value={`question-${index}`}>
 							<AccordionTrigger className='cursor-pointer text-left text-lg'>

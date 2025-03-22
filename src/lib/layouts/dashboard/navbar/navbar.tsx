@@ -41,11 +41,11 @@ export function NavBar({ className, ...props }: TNavBarProps) {
 
 	const memoizedMenuItems = React.useMemo(() => {
 		const menuItems: Array<TMenuItem> = [
-			{ href: '/dashboard', title: 'Unfollowers' },
-			{ href: '/dashboard/not-mutuals', title: 'Not Mutuals' },
-			{ href: '/dashboard/followers', title: 'Followers' },
-			{ href: '/dashboard/following', title: 'Following' },
-			{ href: '/dashboard/whitelist', title: 'Whitelist' }
+			{ href: '/', title: 'Unfollowers' },
+			{ href: '/not-mutuals', title: 'Not Mutuals' },
+			{ href: '/followers', title: 'Followers' },
+			{ href: '/following', title: 'Following' },
+			{ href: '/whitelist', title: 'Whitelist' }
 		];
 
 		return menuItems.map((item) =>

@@ -34,7 +34,7 @@ function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
 
 				{!pending && (
 					<Button size='sm' variant='link' asChild>
-						<Link href='/dashboard'>View unfollowers</Link>
+						<Link href='/'>View unfollowers</Link>
 					</Button>
 				)}
 			</div>

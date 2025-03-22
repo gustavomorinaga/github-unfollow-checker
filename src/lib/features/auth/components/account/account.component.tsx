@@ -64,7 +64,7 @@ export async function Account() {
 								<span className='line-clamp-1 text-sm font-medium'>{session.user.name}</span>
 								<div className='flex items-center gap-2'>
 									<span className='text-muted-foreground group-hover:text-primary line-clamp-1 text-xs underline-offset-2 transition-colors group-hover:underline'>
-										@{session.user.login}
+										{`@${session.user.login}`}
 									</span>
 								</div>
 							</div>
@@ -73,14 +73,14 @@ export async function Account() {
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem asChild>
-					<Link href='/dashboard'>
+					<Link href='/'>
 						<Boxes />
 						<span className='select-none'>Dashboard</span>
 					</Link>
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem asChild>
-					<Link href='/'>
+					<Link href='/home'>
 						<House />
 						<span className='select-none'>Home Page</span>
 					</Link>

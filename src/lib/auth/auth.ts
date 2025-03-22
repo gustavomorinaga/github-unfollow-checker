@@ -29,7 +29,7 @@ declare module 'next-auth/jwt' {
 	}
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
 	providers: [GitHub],
 	pages: {
 		signIn: '/login'
@@ -52,6 +52,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			session.user = { ...session.user, login, html_url };
 
 			return session;
+		},
+		redirect: async ({ url, baseUrl }) => {
+			const parsedURL = new URL(url);
+
+			// Handle `next` query param to redirect to the desired page
+			const nextURL = parsedURL.searchParams.get('next');
+			if (nextURL) return `${baseUrl}${nextURL}`;
+
+			// Allows relative callback URLs
+			if (url.startsWith('/')) return `${baseUrl}${url}`;
+
+			// Allows callback URLs on the same origin
+			if (parsedURL.origin === baseUrl) return url;
+
+			return baseUrl;
 		}
 	}
 });
