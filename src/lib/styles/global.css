@@ -1,0 +1,163 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@plugin '@tailwindcss/typography';
+@plugin 'tailwind-scrollbar';
+@plugin 'tailwindcss-animate';
+
+@layer base {
+	:root {
+		--background: oklch(100% 0 0);
+		--foreground: oklch(13.71% 0.036 258.53);
+		--card: oklch(100% 0 0);
+		--card-foreground: oklch(13.71% 0.036 258.53);
+		--popover: oklch(100% 0 0);
+		--popover-foreground: oklch(13.71% 0.036 258.53);
+		--primary: oklch(50.05% 0.2239 277.46);
+		--primary-foreground: oklch(98.38% 0.0035 247.86);
+		--secondary: oklch(96.84% 0.0068 247.9);
+		--secondary-foreground: oklch(20.79% 0.0399 265.73);
+		--muted: oklch(96.84% 0.0068 247.9);
+		--muted-foreground: oklch(55.47% 0.0407 257.44);
+		--accent: oklch(96.84% 0.0068 247.9);
+		--accent-foreground: oklch(20.79% 0.0399 265.73);
+		--destructive: oklch(63.68% 0.2078 25.33);
+		--destructive-foreground: oklch(98.38% 0.0035 247.86);
+		--border: oklch(92.9% 0.0126 255.53);
+		--input: oklch(92.9% 0.0126 255.53);
+		--ring: oklch(50.05% 0.2239 277.46);
+		--radius: 0.75rem;
+	}
+
+	.dark {
+		--background: oklch(13.71% 0.036 258.53);
+		--foreground: oklch(98.38% 0.0035 247.86);
+		--card: oklch(13.71% 0.036 258.53);
+		--card-foreground: oklch(98.38% 0.0035 247.86);
+		--popover: oklch(13.71% 0.036 258.53);
+		--popover-foreground: oklch(98.38% 0.0035 247.86);
+		--primary: oklch(62.32% 0.1879 277.46);
+		--primary-foreground: oklch(20.79% 0.0399 265.73);
+		--secondary: oklch(28% 0.0369 259.97);
+		--secondary-foreground: oklch(98.38% 0.0035 247.86);
+		--muted: oklch(28% 0.0369 259.97);
+		--muted-foreground: oklch(71.07% 0.0351 256.79);
+		--accent: oklch(28% 0.0369 259.97);
+		--accent-foreground: oklch(98.38% 0.0035 247.86);
+		--destructive: oklch(39.59% 0.1331 25.72);
+		--destructive-foreground: oklch(98.38% 0.0035 247.86);
+		--border: oklch(28% 0.0369 259.97);
+		--input: oklch(28% 0.0369 259.97);
+		--ring: oklch(48.78% 0.217 277.46);
+	}
+
+	* {
+		@apply border-border outline-ring/50;
+	}
+
+	html {
+		@apply scrollbar-thin scrollbar-thumb-muted-foreground scrollbar-track-muted antialiased;
+	}
+
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-chart-1: var(--chart-1);
+	--color-chart-2: var(--chart-2);
+	--color-chart-3: var(--chart-3);
+	--color-chart-4: var(--chart-4);
+	--color-chart-5: var(--chart-5);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-ring: var(--sidebar-ring);
+
+	--border-xl: calc(var(--radius) + 4px);
+	--border-lg: var(--radius);
+	--border-md: calc(var(--radius) - 2px);
+	--border-sm: calc(var(--radius) - 4px);
+
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
+	--animate-gradient: gradient 8s linear infinite;
+	--animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+	--animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+
+	@keyframes accordion-down {
+		from {
+			height: 0;
+		}
+		to {
+			height: var(--radix-accordion-content-height);
+		}
+	}
+
+	@keyframes accordion-up {
+		from {
+			height: var(--radix-accordion-content-height);
+		}
+		to {
+			height: 0;
+		}
+	}
+
+	@keyframes gradient {
+		to {
+			background-position: var(--bg-size, 300%) 0;
+		}
+	}
+
+	@keyframes shimmer-slide {
+		to {
+			transform: translate(calc(100cqw - 100%));
+		}
+	}
+
+	@keyframes spin-around {
+		0% {
+			transform: translateZ(0) rotate(0);
+		}
+		15%,
+		35% {
+			transform: translateZ(0) rotate(90deg);
+		}
+		65%,
+		85% {
+			transform: translateZ(0) rotate(270deg);
+		}
+		to {
+			transform: translateZ(0) rotate(1turn);
+		}
+	}
+}
