@@ -15,9 +15,11 @@ import { NavBar } from './navbar';
 export function DashboardLayout({ children }: React.PropsWithChildren) {
 	return (
 		<Compose components={[SessionProvider, PreferencesProvider, DataProvider]}>
-			<NavBar className='md:mt-4' />
-			{children}
-			<ErrorBoundary />
+			<div className='mx-auto flex w-full max-w-screen-md flex-col'>
+				<NavBar className='md:mt-4' />
+				{children}
+				<ErrorBoundary />
+			</div>
 		</Compose>
 	);
 }
