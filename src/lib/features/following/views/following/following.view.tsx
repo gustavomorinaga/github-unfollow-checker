@@ -2,12 +2,17 @@
 
 import dynamic from 'next/dynamic';
 
+import { BaseDataTableSkeleton } from '$lib/features/shared/components/base-data-table/base-data-table-skeleton';
+
 const DataTable = dynamic(
 	() =>
 		import('$lib/features/following/components/following-table').then(
 			(module) => module.FollowingDataTable
 		),
-	{ ssr: false }
+	{
+		ssr: false,
+		loading: () => <BaseDataTableSkeleton />
+	}
 );
 
 /**

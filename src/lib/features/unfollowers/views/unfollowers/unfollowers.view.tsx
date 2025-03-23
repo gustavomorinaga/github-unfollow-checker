@@ -2,12 +2,17 @@
 
 import dynamic from 'next/dynamic';
 
+import { BaseDataTableSkeleton } from '$lib/features/shared/components/base-data-table/base-data-table-skeleton';
+
 const DataTable = dynamic(
 	() =>
 		import('$lib/features/unfollowers/components/unfollowers-table').then(
 			(module) => module.UnfollowersDataTable
 		),
-	{ ssr: false }
+	{
+		ssr: false,
+		loading: () => <BaseDataTableSkeleton />
+	}
 );
 
 /**

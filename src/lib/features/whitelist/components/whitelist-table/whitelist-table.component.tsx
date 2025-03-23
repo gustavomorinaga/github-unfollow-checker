@@ -19,7 +19,7 @@ type TWhitelistDataTableProps = React.ComponentProps<'div'>;
  *
  * @returns The rendered `WhitelistDataTable` component.
  */
-function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
+export function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
 	const { data, pending } = useData();
 
 	const whitelist = React.useMemo(() => {
@@ -60,7 +60,3 @@ function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
 		</div>
 	);
 }
-
-const MemoizedWhitelistDataTable = React.memo(WhitelistDataTable);
-
-export { MemoizedWhitelistDataTable as WhitelistDataTable };

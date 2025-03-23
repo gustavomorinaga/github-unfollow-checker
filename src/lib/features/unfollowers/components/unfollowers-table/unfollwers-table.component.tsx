@@ -17,7 +17,7 @@ type TUnfollowersDataTableProps = React.ComponentProps<'div'>;
  *
  * @returns The rendered `UnfollowersDataTable` component.
  */
-function UnfollowersDataTable({ className, ...props }: TUnfollowersDataTableProps) {
+export function UnfollowersDataTable({ className, ...props }: TUnfollowersDataTableProps) {
 	const { data, pending } = useData();
 
 	const unfollowers = React.useMemo(() => {
@@ -50,7 +50,3 @@ function UnfollowersDataTable({ className, ...props }: TUnfollowersDataTableProp
 		</div>
 	);
 }
-
-const MemoizedUnfollowersDataTable = React.memo(UnfollowersDataTable);
-
-export { MemoizedUnfollowersDataTable as UnfollowersDataTable };

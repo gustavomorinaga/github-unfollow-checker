@@ -17,7 +17,7 @@ type TFollowersDataTableProps = React.ComponentProps<'div'>;
  *
  * @returns The rendered `FollowersDataTable` component.
  */
-function FollowersDataTable({ className, ...props }: TFollowersDataTableProps) {
+export function FollowersDataTable({ className, ...props }: TFollowersDataTableProps) {
 	const { data, pending } = useData();
 
 	const followers = React.useMemo(() => {
@@ -48,7 +48,3 @@ function FollowersDataTable({ className, ...props }: TFollowersDataTableProps) {
 		</div>
 	);
 }
-
-const MemoizedFollowersDataTable = React.memo(FollowersDataTable);
-
-export { MemoizedFollowersDataTable as FollowersDataTable };

@@ -17,7 +17,7 @@ type TNotMutualsDataTableProps = React.ComponentProps<'div'>;
  *
  * @returns The rendered `NotMutualsDataTable` component.
  */
-function NotMutualsDataTable({ className, ...props }: TNotMutualsDataTableProps) {
+export function NotMutualsDataTable({ className, ...props }: TNotMutualsDataTableProps) {
 	const { data, pending } = useData();
 
 	const notMutuals = React.useMemo(() => {
@@ -48,7 +48,3 @@ function NotMutualsDataTable({ className, ...props }: TNotMutualsDataTableProps)
 		</div>
 	);
 }
-
-const MemoizedNotMutualsDataTable = React.memo(NotMutualsDataTable);
-
-export { MemoizedNotMutualsDataTable as NotMutualsDataTable };
