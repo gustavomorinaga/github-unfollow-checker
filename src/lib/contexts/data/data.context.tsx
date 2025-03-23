@@ -158,8 +158,11 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		sleep(SLEEP_DURATION).then(() => setPending(false));
 	}, [session]);
 
-	const follow = React.useCallback(
-		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
+	const handleFollowAction = React.useCallback(
+		async (
+			usernameOrUsernames: TUser['login'] | Array<TUser['login']>,
+			action: 'follow' | 'unfollow'
+		) => {
 			const isAccessTokenMissing = !session?.accessToken;
 			const isUserNotAuthenticated = !session?.user;
 			if (isAccessTokenMissing && isUserNotAuthenticated) {
@@ -173,7 +176,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
 			const fetcher = fetch(apiURL, {
-				method: 'PUT',
+				method: action === 'follow' ? 'PUT' : 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${session.accessToken}`
@@ -187,33 +190,16 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		[session]
 	);
 
+	const follow = React.useCallback(
+		(usernameOrUsernames: TUser['login'] | Array<TUser['login']>) =>
+			handleFollowAction(usernameOrUsernames, 'follow'),
+		[handleFollowAction]
+	);
+
 	const unfollow = React.useCallback(
-		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
-			const isAccessTokenMissing = !session?.accessToken;
-			const isUserNotAuthenticated = !session?.user;
-			if (isAccessTokenMissing && isUserNotAuthenticated) {
-				setError(new Error('User not authenticated'));
-				return;
-			}
-
-			const usernames = Array.isArray(usernameOrUsernames)
-				? usernameOrUsernames
-				: [usernameOrUsernames];
-
-			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
-			const fetcher = fetch(apiURL, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${session.accessToken}`
-				},
-				body: JSON.stringify({ usernames })
-			}).then<TDataResponse>((res) => res.json());
-
-			const [fetchError] = await catchError(fetcher);
-			if (!fetchError) pruneData(usernames);
-		},
-		[session]
+		(usernameOrUsernames: TUser['login'] | Array<TUser['login']>) =>
+			handleFollowAction(usernameOrUsernames, 'unfollow'),
+		[handleFollowAction]
 	);
 
 	const addToWhitelist = React.useCallback(async (idOrIDs: TUser['id'] | Array<TUser['id']>) => {
