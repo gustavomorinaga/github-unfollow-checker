@@ -202,31 +202,42 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		[handleFollowAction]
 	);
 
-	const addToWhitelist = React.useCallback(async (idOrIDs: TUser['id'] | Array<TUser['id']>) => {
-		setWhitelistIDs((prevWhitelist) => {
-			const usersToAdd = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
-			const newWhitelist = [...new Set([...prevWhitelist, ...usersToAdd])];
-			localStorage.setItem(CACHE_KEYS.WHITELIST, JSON.stringify(newWhitelist));
-			return newWhitelist;
-		});
-	}, []);
-
-	const removeFromWhitelist = React.useCallback(
-		async (idOrIDs: TUser['id'] | Array<TUser['id']>) => {
+	const handleWhitelistAction = React.useCallback(
+		async (idOrIDs: TUser['id'] | Array<TUser['id']>, action: 'add' | 'remove' | 'clear') => {
 			setWhitelistIDs((prevWhitelist) => {
-				const idsToRemove = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
-				const newWhitelist = prevWhitelist.filter((item) => !idsToRemove.includes(item));
-				localStorage.setItem(CACHE_KEYS.WHITELIST, JSON.stringify(newWhitelist));
-				return newWhitelist;
+				const ids = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
+
+				const actionMap: Record<typeof action, () => Array<TUser['id']>> = {
+					add: () => [...new Set([...prevWhitelist, ...ids])],
+					remove: () => prevWhitelist.filter((item) => !ids.includes(item)),
+					clear: () => INITIAL_WHITELIST
+				};
+
+				if (!actionMap[action]) return prevWhitelist;
+
+				const updatedWhitelist = actionMap[action]();
+
+				localStorage.setItem(CACHE_KEYS.WHITELIST, JSON.stringify(updatedWhitelist));
+				return updatedWhitelist;
 			});
 		},
 		[]
 	);
 
-	const clearWhitelist = React.useCallback(async () => {
-		setWhitelistIDs(INITIAL_WHITELIST);
-		localStorage.removeItem(CACHE_KEYS.WHITELIST);
-	}, []);
+	const addToWhitelist = React.useCallback(
+		(idOrIDs: TUser['id'] | Array<TUser['id']>) => handleWhitelistAction(idOrIDs, 'add'),
+		[handleWhitelistAction]
+	);
+
+	const removeFromWhitelist = React.useCallback(
+		(idOrIDs: TUser['id'] | Array<TUser['id']>) => handleWhitelistAction(idOrIDs, 'remove'),
+		[handleWhitelistAction]
+	);
+
+	const clearWhitelist = React.useCallback(
+		() => handleWhitelistAction([], 'clear'),
+		[handleWhitelistAction]
+	);
 
 	const refresh = React.useCallback(async () => {
 		alreadyRequested.current = false;
