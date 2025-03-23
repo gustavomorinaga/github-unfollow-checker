@@ -27,7 +27,7 @@ type TManageUserDropdownMenuProps = React.ComponentProps<typeof DropdownMenu> & 
  * @returns The rendered dropdown menu.
  */
 export function ManageUserDropdownMenu({ user, ...props }: TManageUserDropdownMenuProps) {
-	const { whitelistIDs, addToWhitelist, removeFromWhitelist, follow, unfollow } = useData();
+	const { data, addToWhitelist, removeFromWhitelist, follow, unfollow } = useData();
 
 	return (
 		<DropdownMenu {...props}>
@@ -46,7 +46,7 @@ export function ManageUserDropdownMenu({ user, ...props }: TManageUserDropdownMe
 						<span className='select-none'>View profile</span>
 					</a>
 				</DropdownMenuItem>
-				{whitelistIDs.includes(user.id) ? (
+				{data.whitelist.includes(user.id) ? (
 					<DropdownMenuItem
 						variant='destructive'
 						aria-label='Remove from whitelist'

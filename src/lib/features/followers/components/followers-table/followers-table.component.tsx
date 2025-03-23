@@ -18,12 +18,12 @@ type TFollowersDataTableProps = React.ComponentProps<'div'>;
  * @returns The rendered `FollowersDataTable` component.
  */
 function FollowersDataTable({ className, ...props }: TFollowersDataTableProps) {
-	const { data, pending, whitelistIDs } = useData();
+	const { data, pending } = useData();
 
 	const followers = React.useMemo(() => {
 		if (!data.followers.length) return [];
-		return data.followers.filter((user) => !whitelistIDs.includes(user.id));
-	}, [data.followers, whitelistIDs]);
+		return data.followers.filter((user) => !data.whitelist.includes(user.id));
+	}, [data.followers, data.whitelist]);
 
 	const memoizedFeedback = React.useMemo(() => {
 		return (

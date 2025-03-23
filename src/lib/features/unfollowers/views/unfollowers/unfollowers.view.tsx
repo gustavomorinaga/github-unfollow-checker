@@ -1,6 +1,14 @@
 'use client';
 
-import { UnfollowersDataTable as DataTable } from '$lib/features/unfollowers/components/unfollowers-table';
+import dynamic from 'next/dynamic';
+
+const DataTable = dynamic(
+	() =>
+		import('$lib/features/unfollowers/components/unfollowers-table').then(
+			(module) => module.UnfollowersDataTable
+		),
+	{ ssr: false }
+);
 
 /**
  * The view component for the Unfollowers feature.

@@ -2,14 +2,14 @@
 
 import React from 'react';
 
+import { useDebounce } from '@uidotdev/usehooks';
+
 import { Button } from '$lib/components/ui/button';
 import { useDataTable } from '$lib/features/shared/components/base-data-table/base-data-table-context';
 import { SearchBarInput } from '$lib/features/shared/components/search-bar-input';
 import { abbreviateNumber } from '$lib/utils/formatters';
 import { cn } from '$lib/utils/ui';
 import type { TUser } from '$lib/types';
-
-import { useDebounce } from '@uidotdev/usehooks';
 
 export type TBaseDataTableToolbarProps = React.ComponentProps<'header'>;
 

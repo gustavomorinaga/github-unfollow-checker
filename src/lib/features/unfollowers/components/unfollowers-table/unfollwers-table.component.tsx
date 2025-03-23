@@ -18,12 +18,12 @@ type TUnfollowersDataTableProps = React.ComponentProps<'div'>;
  * @returns The rendered `UnfollowersDataTable` component.
  */
 function UnfollowersDataTable({ className, ...props }: TUnfollowersDataTableProps) {
-	const { data, pending, whitelistIDs } = useData();
+	const { data, pending } = useData();
 
 	const unfollowers = React.useMemo(() => {
 		if (!data.unfollowers.length) return [];
-		return data.unfollowers.filter((user) => !whitelistIDs.includes(user.id));
-	}, [data.unfollowers, whitelistIDs]);
+		return data.unfollowers.filter((user) => !data.whitelist.includes(user.id));
+	}, [data.unfollowers, data.whitelist]);
 
 	const memoizedFeedback = React.useMemo(() => {
 		return (

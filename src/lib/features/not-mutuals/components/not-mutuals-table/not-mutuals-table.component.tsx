@@ -18,12 +18,12 @@ type TNotMutualsDataTableProps = React.ComponentProps<'div'>;
  * @returns The rendered `NotMutualsDataTable` component.
  */
 function NotMutualsDataTable({ className, ...props }: TNotMutualsDataTableProps) {
-	const { data, pending, whitelistIDs } = useData();
+	const { data, pending } = useData();
 
 	const notMutuals = React.useMemo(() => {
 		if (!data.notMutuals.length) return [];
-		return data.notMutuals.filter((user) => !whitelistIDs.includes(user.id));
-	}, [data.notMutuals, whitelistIDs]);
+		return data.notMutuals.filter((user) => !data.whitelist.includes(user.id));
+	}, [data.notMutuals, data.whitelist]);
 
 	const memoizedFeedback = React.useMemo(() => {
 		return (

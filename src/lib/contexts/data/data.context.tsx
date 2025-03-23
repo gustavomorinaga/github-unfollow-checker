@@ -4,12 +4,13 @@ import React from 'react';
 
 import { useSession } from 'next-auth/react';
 
+import { useLocalStorage } from '$lib/hooks/local-storage';
 import type { TDataResponse } from '$lib/server/repositories/data';
 import type { TUser } from '$lib/types';
 import { catchError } from '$lib/utils/errors';
 import { sleep } from '$lib/utils/sleep';
 
-type TData = TDataResponse & { whitelist: Array<TUser> };
+type TData = TDataResponse & { whitelist: Array<TUser['id']> };
 
 const INITIAL_DATA: TData = {
 	followers: [],
@@ -18,7 +19,6 @@ const INITIAL_DATA: TData = {
 	unfollowers: [],
 	whitelist: []
 };
-const INITIAL_WHITELIST: Array<TUser['id']> = [];
 const CACHE_KEYS = {
 	FOLLOWERS: 'followers',
 	FOLLOWING: 'following',
@@ -30,7 +30,7 @@ const SLEEP_DURATION = 1_000;
 
 type TDataContext = {
 	/**
-	 * The data response from the server.
+	 * The data available in the context.
 	 */
 	data: TData;
 	/**
@@ -41,10 +41,6 @@ type TDataContext = {
 	 * A boolean indicating whether the fetch operation is in progress.
 	 */
 	pending: boolean;
-	/**
-	 * An array of user IDs that are whitelisted.
-	 */
-	whitelistIDs: Array<TUser['id']>;
 	/**
 	 * A function to manually trigger a refresh of the data response.
 	 */
@@ -84,40 +80,49 @@ const DataContext = React.createContext<TDataContext | undefined>(undefined);
  * - If the user is not authenticated, it sets an error state.
  */
 export function DataProvider({ children }: React.PropsWithChildren) {
-	const isLocalStorageAvailable = typeof localStorage !== 'undefined';
-
 	const { data: session } = useSession({ required: true });
 
 	const alreadyRequested = React.useRef(false);
 
-	const [data, setData] = React.useState<TDataResponse>(INITIAL_DATA);
+	const [followers, setFollowers] = useLocalStorage(CACHE_KEYS.FOLLOWERS, INITIAL_DATA.followers);
+	const [following, setFollowing] = useLocalStorage(CACHE_KEYS.FOLLOWING, INITIAL_DATA.following);
+	const [notMutuals, setNotMutuals] = useLocalStorage(
+		CACHE_KEYS.NOT_MUTUALS,
+		INITIAL_DATA.notMutuals
+	);
+	const [unfollowers, setUnfollowers] = useLocalStorage(
+		CACHE_KEYS.UNFOLLOWERS,
+		INITIAL_DATA.unfollowers
+	);
+	const [whitelist, setWhitelist] = useLocalStorage(CACHE_KEYS.WHITELIST, INITIAL_DATA.whitelist);
+
 	const [error, setError] = React.useState<Error | null>(null);
 	const [pending, setPending] = React.useState<boolean>(true);
-	const [whitelistIDs, setWhitelistIDs] = React.useState<Array<TUser['id']>>(() => {
-		if (!isLocalStorageAvailable) return INITIAL_WHITELIST;
 
-		const whitelist = localStorage.getItem(CACHE_KEYS.WHITELIST);
-		if (!whitelist) {
-			localStorage.setItem(CACHE_KEYS.WHITELIST, JSON.stringify(INITIAL_WHITELIST));
-			return INITIAL_WHITELIST;
-		}
+	const data = React.useMemo<TData>(
+		() => ({
+			followers,
+			following,
+			notMutuals,
+			unfollowers,
+			whitelist
+		}),
+		[followers, following, notMutuals, unfollowers, whitelist]
+	);
 
-		return JSON.parse(whitelist);
-	});
-
-	function pruneData(usernames: Array<TUser['login']>) {
+	const pruneData = React.useCallback((usernames: Array<TUser['login']>) => {
 		const usernameSet = new Set(usernames);
 
 		const pruneUsersFromList = (list: Array<TUser>) =>
 			list.filter((user) => !usernameSet.has(user.login));
 
-		setData((prevData) => {
-			const updatedData = { ...prevData };
-			for (const key of Object.keys(updatedData))
-				updatedData[key] = pruneUsersFromList(updatedData[key]);
-			return updatedData;
-		});
-	}
+		setFollowers(pruneUsersFromList(followers));
+		setFollowing(pruneUsersFromList(following));
+		setNotMutuals(pruneUsersFromList(notMutuals));
+		setUnfollowers(pruneUsersFromList(unfollowers));
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const fetchData = React.useCallback(async () => {
 		if (alreadyRequested.current) return;
@@ -146,16 +151,16 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 		if (fetchError) setError(fetchError);
 		else {
-			localStorage.setItem(CACHE_KEYS.FOLLOWERS, JSON.stringify(fetchedData.followers));
-			localStorage.setItem(CACHE_KEYS.FOLLOWING, JSON.stringify(fetchedData.following));
-			localStorage.setItem(CACHE_KEYS.NOT_MUTUALS, JSON.stringify(fetchedData.notMutuals));
-			localStorage.setItem(CACHE_KEYS.UNFOLLOWERS, JSON.stringify(fetchedData.unfollowers));
-
-			setData(fetchedData);
+			setFollowers(fetchedData.followers);
+			setFollowing(fetchedData.following);
+			setNotMutuals(fetchedData.notMutuals);
+			setUnfollowers(fetchedData.unfollowers);
 			setError(null);
 		}
 
 		sleep(SLEEP_DURATION).then(() => setPending(false));
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [session]);
 
 	const handleFollowAction = React.useCallback(
@@ -187,6 +192,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 			const [fetchError] = await catchError(fetcher);
 			if (!fetchError) pruneData(usernames);
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[session]
 	);
 
@@ -204,23 +210,23 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 	const handleWhitelistAction = React.useCallback(
 		async (idOrIDs: TUser['id'] | Array<TUser['id']>, action: 'add' | 'remove' | 'clear') => {
-			setWhitelistIDs((prevWhitelist) => {
+			setWhitelist((prevWhitelist) => {
 				const ids = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
 
 				const actionMap: Record<typeof action, () => Array<TUser['id']>> = {
 					add: () => [...new Set([...prevWhitelist, ...ids])],
 					remove: () => prevWhitelist.filter((item) => !ids.includes(item)),
-					clear: () => INITIAL_WHITELIST
+					clear: () => INITIAL_DATA.whitelist
 				};
 
 				if (!actionMap[action]) return prevWhitelist;
 
 				const updatedWhitelist = actionMap[action]();
 
-				localStorage.setItem(CACHE_KEYS.WHITELIST, JSON.stringify(updatedWhitelist));
 				return updatedWhitelist;
 			});
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[]
 	);
 
@@ -248,55 +254,10 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		fetchData();
 	}, [fetchData]);
 
-	React.useEffect(() => {
-		function handleStorageEvent(event: StorageEvent) {
-			if (!event.key) return;
-
-			const parsedEventValue = JSON.parse(event.newValue || '[]');
-
-			const eventMap: Record<(typeof CACHE_KEYS)[keyof typeof CACHE_KEYS], () => void> = {
-				[CACHE_KEYS.FOLLOWERS]: () => {
-					setData((prevData) => ({ ...prevData, followers: parsedEventValue }));
-					localStorage.setItem(CACHE_KEYS.FOLLOWERS, JSON.stringify(parsedEventValue));
-				},
-				[CACHE_KEYS.FOLLOWING]: () => {
-					setData((prevData) => ({ ...prevData, following: parsedEventValue }));
-					localStorage.setItem(CACHE_KEYS.FOLLOWING, JSON.stringify(parsedEventValue));
-				},
-				[CACHE_KEYS.NOT_MUTUALS]: () => {
-					setData((prevData) => ({ ...prevData, notMutuals: parsedEventValue }));
-					localStorage.setItem(CACHE_KEYS.NOT_MUTUALS, JSON.stringify(parsedEventValue));
-				},
-				[CACHE_KEYS.UNFOLLOWERS]: () => {
-					setData((prevData) => ({ ...prevData, unfollowers: parsedEventValue }));
-					localStorage.setItem(CACHE_KEYS.UNFOLLOWERS, JSON.stringify(parsedEventValue));
-				},
-				[CACHE_KEYS.WHITELIST]: () => {
-					setWhitelistIDs(parsedEventValue);
-					localStorage.setItem(CACHE_KEYS.WHITELIST, JSON.stringify(parsedEventValue));
-				}
-			};
-
-			return eventMap?.[event.key]?.();
-		}
-
-		window.addEventListener('storage', handleStorageEvent);
-
-		return () => {
-			window.removeEventListener('storage', handleStorageEvent);
-		};
-	}, []);
-
-	const whitelist = React.useMemo(() => {
-		if (!data.following.length) return [];
-		return data.following.filter((user) => whitelistIDs.includes(user.id));
-	}, [data.following, whitelistIDs]);
-
 	const value: TDataContext = {
-		data: { ...data, whitelist },
+		data,
 		error,
 		pending,
-		whitelistIDs,
 		follow,
 		unfollow,
 		addToWhitelist,

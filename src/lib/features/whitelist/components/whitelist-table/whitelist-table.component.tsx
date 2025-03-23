@@ -22,6 +22,11 @@ type TWhitelistDataTableProps = React.ComponentProps<'div'>;
 function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
 	const { data, pending } = useData();
 
+	const whitelist = React.useMemo(() => {
+		if (!data.following.length) return [];
+		return data.following.filter((user) => data.whitelist.includes(user.id));
+	}, [data.following, data.whitelist]);
+
 	const memoizedFeedback = React.useMemo(() => {
 		return (
 			<div className='flex size-full flex-col items-center justify-center'>
@@ -45,7 +50,7 @@ function WhitelistDataTable({ className, ...props }: TWhitelistDataTableProps) {
 		<div className={cn('flex flex-col gap-2', className)} {...props}>
 			<DataTable
 				columns={columns}
-				data={data.whitelist}
+				data={whitelist}
 				feedback={memoizedFeedback}
 				loading={pending}
 				className='[&_thead_th:not(:has(button[role=checkbox]))_span]:sr-only [&>div]:rounded-none [&>div]:border-x-0 [&>div]:border-y md:[&>div]:rounded-md md:[&>div]:border-x'

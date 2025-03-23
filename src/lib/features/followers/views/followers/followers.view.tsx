@@ -1,6 +1,14 @@
 'use client';
 
-import { FollowersDataTable as DataTable } from '$lib/features/followers/components/followers-table';
+import dynamic from 'next/dynamic';
+
+const DataTable = dynamic(
+	() =>
+		import('$lib/features/followers/components/followers-table').then(
+			(module) => module.FollowersDataTable
+		),
+	{ ssr: false }
+);
 
 /**
  * The view component for the Followers feature.
