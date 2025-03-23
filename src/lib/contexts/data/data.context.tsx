@@ -4,6 +4,8 @@ import React from 'react';
 
 import { useSession } from 'next-auth/react';
 
+import { inflate } from '@rescale/slim';
+
 import { useLocalStorage } from '$lib/hooks/local-storage';
 import type { TDataResponse } from '$lib/server/repositories/data';
 import type { TUser } from '$lib/types';
@@ -145,16 +147,18 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 		const fetcher = fetch(apiURL, {
 			headers: { Authorization: `Bearer ${session.accessToken}` }
-		}).then<TDataResponse>((res) => res.json());
+		}).then<string>((res) => res.json());
 
 		const [fetchError, fetchedData] = await catchError(fetcher);
 
 		if (fetchError) setError(fetchError);
 		else {
-			setFollowers(fetchedData.followers);
-			setFollowing(fetchedData.following);
-			setNotMutuals(fetchedData.notMutuals);
-			setUnfollowers(fetchedData.unfollowers);
+			const inflatedData = inflate(fetchedData) as TDataResponse;
+
+			setFollowers(inflatedData.followers);
+			setFollowing(inflatedData.following);
+			setNotMutuals(inflatedData.notMutuals);
+			setUnfollowers(inflatedData.unfollowers);
 			setError(null);
 		}
 

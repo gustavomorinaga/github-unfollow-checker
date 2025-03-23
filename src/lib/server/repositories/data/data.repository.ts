@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
+import { deflate } from '@rescale/slim';
+
 import { GITHUB_API_URL } from '$lib/server/constants/github';
 import type { TUser } from '$lib/types';
 
@@ -47,15 +49,15 @@ type TDataHandler = {
 	GET: (
 		request: NextRequest,
 		{ params }: { params: Promise<{ username: string }> }
-	) => Promise<NextResponse>;
+	) => Promise<NextResponse<string | { error: string }>>;
 	/**
 	 * Follows users.
 	 */
-	PUT: (request: NextRequest) => Promise<NextResponse>;
+	PUT: (request: NextRequest) => Promise<NextResponse<{ success: boolean } | { error: string }>>;
 	/**
 	 * Unfollows users.
 	 */
-	DELETE: (request: NextRequest) => Promise<NextResponse>;
+	DELETE: (request: NextRequest) => Promise<NextResponse<{ success: boolean } | { error: string }>>;
 };
 
 /**
@@ -108,7 +110,8 @@ export const dataHandler: TDataHandler = {
 			.filter((following) => unfollowersSet.has(following.login))
 			.map((following) => ({ ...following, followedBy: true }));
 
-		const response: TDataResponse = { followers, following, notMutuals, unfollowers };
+		const data: TDataResponse = { followers, following, notMutuals, unfollowers };
+		const response = deflate(data);
 
 		return NextResponse.json(response);
 	},
