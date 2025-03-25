@@ -10,33 +10,24 @@ import {
 import { useData } from '$lib/contexts/data';
 import type { TUser } from '$lib/types';
 
-import {
-	BookMinus,
-	BookPlus,
-	ExternalLink,
-	MoreHorizontal,
-	UserRoundMinus,
-	UserRoundPlus
-} from 'lucide-react';
+import { BookMinus, BookPlus, ExternalLink, UserRoundMinus, UserRoundPlus } from 'lucide-react';
 
-type TManageUserDropdownMenuProps = React.ComponentProps<typeof DropdownMenu> & { user: TUser };
+type TManageUserDropdownMenuProps = React.ComponentProps<typeof DropdownMenu> & {
+	triggerProps?: React.ComponentProps<typeof Button>;
+	user: TUser;
+};
 
 /**
  * Dropdown menu for managing a user.
  *
  * @returns The rendered dropdown menu.
  */
-export function ManageUserDropdownMenu({ user, ...props }: TManageUserDropdownMenuProps) {
+export function ManageUserDropdownMenu({ children, user, ...props }: TManageUserDropdownMenuProps) {
 	const { data, addToWhitelist, removeFromWhitelist, follow, unfollow } = useData();
 
 	return (
 		<DropdownMenu {...props}>
-			<DropdownMenuTrigger asChild>
-				<Button size='icon' variant='ghost' aria-label='Open menu' title='Open menu'>
-					<MoreHorizontal />
-					<span className='sr-only select-none'>Open menu</span>
-				</Button>
-			</DropdownMenuTrigger>
+			<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
 			<DropdownMenuContent align='end' className='w-48'>
 				<DropdownMenuLabel>Actions</DropdownMenuLabel>
 				<DropdownMenuSeparator />
@@ -75,7 +66,11 @@ export function ManageUserDropdownMenu({ user, ...props }: TManageUserDropdownMe
 						<span className='select-none'>Unfollow</span>
 					</DropdownMenuItem>
 				) : (
-					<DropdownMenuItem aria-label='Follow' onClick={() => follow(user.login)}>
+					<DropdownMenuItem
+						variant='default'
+						aria-label='Follow'
+						onClick={() => follow(user.login)}
+					>
 						<UserRoundPlus />
 						<span className='select-none'>Follow</span>
 					</DropdownMenuItem>

@@ -9,7 +9,7 @@ import { Checkbox } from '$lib/components/ui/checkbox';
 import { ManageUserDropdownMenu } from '$lib/features/shared/components/manage-user-dropdown-menu';
 import type { TUser } from '$lib/types';
 
-import { UserRoundCheck, UserRoundX } from 'lucide-react';
+import { MoreHorizontal, UserRoundCheck, UserRoundX } from 'lucide-react';
 
 /**
  * Defines the base columns map for the User Table.
@@ -122,7 +122,18 @@ const baseColumnsMap = {
 		header: () => <span>Actions</span>,
 		cell: ({ row: { original: user } }) => (
 			<div className='flex w-full items-center justify-end'>
-				<ManageUserDropdownMenu user={user} />
+				<ManageUserDropdownMenu user={user}>
+					<Button
+						size='icon'
+						variant='ghost'
+						aria-label='Open menu'
+						title='Open menu'
+						className='rounded-sm'
+					>
+						<MoreHorizontal />
+						<span className='sr-only select-none'>Open menu</span>
+					</Button>
+				</ManageUserDropdownMenu>
 			</div>
 		)
 	}
