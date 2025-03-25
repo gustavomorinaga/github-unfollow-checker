@@ -128,69 +128,56 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		]
 	);
 
-	const pruneData = React.useCallback(
-		(usernames: Array<TUser['login']>) => {
-			const usernameSet = new Set(usernames);
+	const fetchData = React.useCallback(
+		async ({ shouldUpdatePending = true } = {}) => {
+			if (alreadyRequested.current) return;
+			if (!session) return;
 
-			const pruneUsersFromList = (list: Array<TUser>) =>
-				list.filter((user) => !usernameSet.has(user.login));
+			if (shouldUpdatePending) setPending(true);
 
-			const filteredData = {
-				followers: pruneUsersFromList(data.followers),
-				following: pruneUsersFromList(data.following),
-				notMutuals: pruneUsersFromList(data.notMutuals),
-				unfollowers: pruneUsersFromList(data.unfollowers)
-			};
+			const isAccessTokenMissing = !session.accessToken;
+			const isUserNotAuthenticated = !session.user;
+			if (isAccessTokenMissing && isUserNotAuthenticated) {
+				setError(new Error('User not authenticated'));
+				if (shouldUpdatePending) sleep(SLEEP_DURATION).then(() => setPending(false));
+				return;
+			}
 
-			setDeflatedFollowers(deflate(filteredData.followers));
-			setDeflatedFollowing(deflate(filteredData.following));
-			setDeflatedNotMutuals(deflate(filteredData.notMutuals));
-			setDeflatedUnfollowers(deflate(filteredData.unfollowers));
+			// * Prevent multiple requests
+			alreadyRequested.current = true;
+
+			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
+
+			const fetcher = fetch(apiURL, {
+				headers: { Authorization: `Bearer ${session.accessToken}` }
+			}).then<string>((res) => res.json());
+
+			const [fetchError, fetchedData] = await catchError(fetcher);
+
+			if (fetchError) setError(fetchError);
+			else {
+				const inflatedData = inflate(fetchedData) as TDataResponse;
+
+				setDeflatedFollowers(deflate(inflatedData.followers));
+				setDeflatedFollowing(deflate(inflatedData.following));
+				setDeflatedNotMutuals(deflate(inflatedData.notMutuals));
+				setDeflatedUnfollowers(deflate(inflatedData.unfollowers));
+				setError(null);
+			}
+
+			if (shouldUpdatePending) sleep(SLEEP_DURATION).then(() => setPending(false));
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[data.followers, data.following, data.notMutuals, data.unfollowers]
+		[session]
 	);
 
-	const fetchData = React.useCallback(async () => {
-		if (alreadyRequested.current) return;
-		if (!session) return;
-
-		setPending(true);
-
-		const isAccessTokenMissing = !session.accessToken;
-		const isUserNotAuthenticated = !session.user;
-		if (isAccessTokenMissing && isUserNotAuthenticated) {
-			setError(new Error('User not authenticated'));
-			sleep(SLEEP_DURATION).then(() => setPending(false));
-			return;
-		}
-
-		// * Prevent multiple requests
-		alreadyRequested.current = true;
-
-		const apiURL = new URL(`/api/${session.user.login}`, location.origin);
-
-		const fetcher = fetch(apiURL, {
-			headers: { Authorization: `Bearer ${session.accessToken}` }
-		}).then<string>((res) => res.json());
-
-		const [fetchError, fetchedData] = await catchError(fetcher);
-
-		if (fetchError) setError(fetchError);
-		else {
-			const inflatedData = inflate(fetchedData) as TDataResponse;
-
-			setDeflatedFollowers(deflate(inflatedData.followers));
-			setDeflatedFollowing(deflate(inflatedData.following));
-			setDeflatedNotMutuals(deflate(inflatedData.notMutuals));
-			setDeflatedUnfollowers(deflate(inflatedData.unfollowers));
-			setError(null);
-		}
-
-		sleep(SLEEP_DURATION).then(() => setPending(false));
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [session]);
+	const refresh = React.useCallback(
+		async (options?: Partial<{ shouldUpdatePending: boolean }>) => {
+			alreadyRequested.current = false;
+			return fetchData(options);
+		},
+		[fetchData]
+	);
 
 	const handleFollowAction = React.useCallback(
 		async (
@@ -219,9 +206,9 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 			}).then<TDataResponse>((res) => res.json());
 
 			const [fetchError] = await catchError(fetcher);
-			if (!fetchError) pruneData(usernames);
+			if (!fetchError) refresh({ shouldUpdatePending: false });
 		},
-		[session, pruneData]
+		[session, refresh]
 	);
 
 	const follow = React.useCallback(
@@ -268,11 +255,6 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		() => handleWhitelistAction([], 'clear'),
 		[handleWhitelistAction]
 	);
-
-	const refresh = React.useCallback(async () => {
-		alreadyRequested.current = false;
-		return fetchData();
-	}, [fetchData]);
 
 	React.useEffect(() => {
 		fetchData();
