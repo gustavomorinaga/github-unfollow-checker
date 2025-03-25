@@ -1,26 +1,5 @@
 import type { Metadata } from 'next';
 
-export type TRepoMetadata = {
-	owner: {
-		email: string;
-		name: string;
-		username: string;
-	};
-	repo: string;
-};
-
-/**
- * Metadata information about the repository owner and the repository itself.
- */
-export const repoMetadata: TRepoMetadata = {
-	owner: {
-		email: 'me@gustavomorinaga.dev',
-		name: 'Gustavo Morinaga',
-		username: 'gustavomorinaga'
-	},
-	repo: 'github-unfollow-checker'
-};
-
 export type TSiteMetadata = Metadata & { other: Metadata['other'] & { 'theme-color': string } };
 
 /**
@@ -30,7 +9,16 @@ export const siteMetadata: TSiteMetadata = {
 	applicationName: 'GitHub Unfollow Checker',
 	title: 'GitHub Unfollow Checker',
 	description: "A simple tool to check the users that doesn't follow you back 🧐",
-	keywords: ['GitHub', 'Unfollow', 'Checker', 'Followers', 'Following', 'Users'],
+	keywords: [
+		'Checker',
+		'Follow',
+		'Followers',
+		'Following',
+		'GitHub',
+		'Unfollow',
+		'Unfollowers',
+		'Users'
+	],
 	authors: [{ name: 'Gustavo Morinaga', url: 'https://gustavomorinaga.dev' }],
 	assets: '/assets',
 	robots: { index: true, follow: true },
@@ -60,7 +48,7 @@ export const siteMetadata: TSiteMetadata = {
 		url: 'https://github-unfollow-checker.vercel.app',
 		images: [
 			{
-				url: 'https://github-unfollow-checker.vercel.app/assets/logo.png',
+				url: 'https://github-unfollow-checker.vercel.app/assets/images/logo.png',
 				width: 283,
 				height: 283,
 				alt: 'GitHub Unfollow Checker Banner Image'
@@ -71,3 +59,15 @@ export const siteMetadata: TSiteMetadata = {
 		'theme-color': '#3730A3'
 	}
 };
+
+/**
+ * Generate the site metadata.
+ *
+ * @param metadata The metadata to be merged with the site metadata.
+ * @returns The generated site metadata.
+ */
+export const generateSiteMetadata = (metadata: Partial<TSiteMetadata>): TSiteMetadata => ({
+	...siteMetadata,
+	...metadata,
+	...(metadata.title && { title: `${siteMetadata.applicationName} | ${metadata.title}` })
+});

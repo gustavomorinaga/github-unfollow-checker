@@ -6,7 +6,7 @@ export const metadata = siteMetadata;
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
 	return (
-		<html lang='en' suppressHydrationWarning>
+		<html lang='en'>
 			<body>
 				<Layout>{children}</Layout>
 			</body>

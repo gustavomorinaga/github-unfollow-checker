@@ -2,7 +2,8 @@ import Link from 'next/link';
 
 import { LogoText } from '$lib/components/icons/logo-text';
 import { Button } from '$lib/components/ui/button';
-import { repoMetadata, siteMetadata } from '$lib/configs/site';
+import { repoMetadata } from '$lib/configs/repo';
+import { siteMetadata } from '$lib/configs/site';
 import { cn } from '$lib/utils/ui';
 
 type TFooterProps = React.ComponentProps<'footer'>;

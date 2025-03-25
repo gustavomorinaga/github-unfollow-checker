@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { LogoText } from '$lib/components/icons/logo-text';
 import { ModeToggle } from '$lib/components/theme';
 import { Account } from '$lib/features/auth/components/account';
-import { GitHubRepoButton } from '$lib/features/social/github-repo-button';
+import { GitHubRepoButton } from '$lib/features/social/components/github-repo-button';
 import { cn } from '$lib/utils/ui';
 
 type THeaderProps = React.ComponentProps<'header'>;
