@@ -129,17 +129,17 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 	);
 
 	const fetchData = React.useCallback(
-		async ({ shouldUpdatePending = true } = {}) => {
+		async ({ silent = true } = {}) => {
 			if (alreadyRequested.current) return;
 			if (!session) return;
 
-			if (shouldUpdatePending) setPending(true);
+			if (silent) setPending(true);
 
 			const isAccessTokenMissing = !session.accessToken;
 			const isUserNotAuthenticated = !session.user;
 			if (isAccessTokenMissing && isUserNotAuthenticated) {
 				setError(new Error('User not authenticated'));
-				if (shouldUpdatePending) sleep(SLEEP_DURATION).then(() => setPending(false));
+				if (silent) sleep(SLEEP_DURATION).then(() => setPending(false));
 				return;
 			}
 
@@ -165,14 +165,14 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 				setError(null);
 			}
 
-			if (shouldUpdatePending) sleep(SLEEP_DURATION).then(() => setPending(false));
+			if (silent) sleep(SLEEP_DURATION).then(() => setPending(false));
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[session]
 	);
 
 	const refresh = React.useCallback(
-		async (options?: Partial<{ shouldUpdatePending: boolean }>) => {
+		async (options?: Partial<{ silent: boolean }>) => {
 			alreadyRequested.current = false;
 			return fetchData(options);
 		},
@@ -206,7 +206,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 			}).then<TDataResponse>((res) => res.json());
 
 			const [fetchError] = await catchError(fetcher);
-			if (!fetchError) refresh({ shouldUpdatePending: false });
+			if (!fetchError) refresh({ silent: false });
 		},
 		[session, refresh]
 	);
