@@ -56,6 +56,7 @@ function DataTable<TData, TValue>({
 		columns,
 		initialState: { pagination: { pageIndex: 0, pageSize: preferences.pageSize } },
 		state: { rowSelection },
+		autoResetPageIndex: false,
 		enableRowSelection: true,
 		getCoreRowModel: getCoreRowModel(),
 		getFacetedRowModel: getFacetedRowModel(),

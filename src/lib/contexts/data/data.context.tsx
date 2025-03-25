@@ -4,9 +4,10 @@ import React from 'react';
 
 import { useSession } from 'next-auth/react';
 
-import { inflate } from '@rescale/slim';
+import { deflate, inflate } from '@rescale/slim';
 
-import { useLocalStorage } from '$lib/hooks/local-storage';
+import { useLocalStorage } from 'react-haiku';
+
 import type { TDataResponse } from '$lib/server/repositories/data';
 import type { TUser } from '$lib/types';
 import { catchError } from '$lib/utils/errors';
@@ -21,14 +22,7 @@ const INITIAL_DATA: TData = {
 	unfollowers: [],
 	whitelist: []
 };
-const CACHE_KEYS = {
-	FOLLOWERS: 'followers',
-	FOLLOWING: 'following',
-	NOT_MUTUALS: 'notMutuals',
-	UNFOLLOWERS: 'unfollowers',
-	WHITELIST: 'whitelist'
-} as const;
-const SLEEP_DURATION = 1_000;
+const SLEEP_DURATION = 700;
 
 type TDataContext = {
 	/**
@@ -84,47 +78,71 @@ const DataContext = React.createContext<TDataContext | undefined>(undefined);
 export function DataProvider({ children }: React.PropsWithChildren) {
 	const { data: session } = useSession({ required: true });
 
-	const alreadyRequested = React.useRef(false);
+	const CACHE_KEYS = {
+		FOLLOWERS: `${session?.user.login}:followers`,
+		FOLLOWING: `${session?.user.login}:following`,
+		NOT_MUTUALS: `${session?.user.login}:not-mutuals`,
+		UNFOLLOWERS: `${session?.user.login}:unfollowers`,
+		WHITELIST: `${session?.user.login}:whitelist`
+	} as const;
 
-	const [followers, setFollowers] = useLocalStorage(CACHE_KEYS.FOLLOWERS, INITIAL_DATA.followers);
-	const [following, setFollowing] = useLocalStorage(CACHE_KEYS.FOLLOWING, INITIAL_DATA.following);
-	const [notMutuals, setNotMutuals] = useLocalStorage(
+	const [deflatedFollowers, setDeflatedFollowers] = useLocalStorage(
+		CACHE_KEYS.FOLLOWERS,
+		deflate(INITIAL_DATA.followers)
+	);
+	const [deflatedFollowing, setDeflatedFollowing] = useLocalStorage(
+		CACHE_KEYS.FOLLOWING,
+		deflate(INITIAL_DATA.following)
+	);
+	const [deflatedNotMutuals, setDeflatedNotMutuals] = useLocalStorage(
 		CACHE_KEYS.NOT_MUTUALS,
-		INITIAL_DATA.notMutuals
+		deflate(INITIAL_DATA.notMutuals)
 	);
-	const [unfollowers, setUnfollowers] = useLocalStorage(
+	const [deflatedUnfollowers, setDeflatedUnfollowers] = useLocalStorage(
 		CACHE_KEYS.UNFOLLOWERS,
-		INITIAL_DATA.unfollowers
+		deflate(INITIAL_DATA.unfollowers)
 	);
-	const [whitelist, setWhitelist] = useLocalStorage(CACHE_KEYS.WHITELIST, INITIAL_DATA.whitelist);
+	const [deflatedWhitelist, setDeflatedWhitelist] = useLocalStorage(
+		CACHE_KEYS.WHITELIST,
+		deflate(INITIAL_DATA.whitelist)
+	);
 
+	const alreadyRequested = React.useRef(false);
 	const [error, setError] = React.useState<Error | null>(null);
 	const [pending, setPending] = React.useState<boolean>(true);
 
 	const data = React.useMemo<TData>(
 		() => ({
-			followers,
-			following,
-			notMutuals,
-			unfollowers,
-			whitelist
+			followers: inflate(deflatedFollowers) as TData['followers'],
+			following: inflate(deflatedFollowing) as TData['following'],
+			notMutuals: inflate(deflatedNotMutuals) as TData['notMutuals'],
+			unfollowers: inflate(deflatedUnfollowers) as TData['unfollowers'],
+			whitelist: inflate(deflatedWhitelist) as TData['whitelist']
 		}),
-		[followers, following, notMutuals, unfollowers, whitelist]
+		[
+			deflatedFollowers,
+			deflatedFollowing,
+			deflatedNotMutuals,
+			deflatedUnfollowers,
+			deflatedWhitelist
+		]
 	);
 
-	const pruneData = React.useCallback((usernames: Array<TUser['login']>) => {
-		const usernameSet = new Set(usernames);
+	const pruneData = React.useCallback(
+		(usernames: Array<TUser['login']>) => {
+			const usernameSet = new Set(usernames);
 
-		const pruneUsersFromList = (list: Array<TUser>) =>
-			list.filter((user) => !usernameSet.has(user.login));
+			const pruneUsersFromList = (list: Array<TUser>) =>
+				list.filter((user) => !usernameSet.has(user.login));
 
-		setFollowers(pruneUsersFromList(followers));
-		setFollowing(pruneUsersFromList(following));
-		setNotMutuals(pruneUsersFromList(notMutuals));
-		setUnfollowers(pruneUsersFromList(unfollowers));
-
+			setDeflatedFollowers(deflate(pruneUsersFromList(data.followers)));
+			setDeflatedFollowing(deflate(pruneUsersFromList(data.following)));
+			setDeflatedNotMutuals(deflate(pruneUsersFromList(data.notMutuals)));
+			setDeflatedUnfollowers(deflate(pruneUsersFromList(data.unfollowers)));
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		[data]
+	);
 
 	const fetchData = React.useCallback(async () => {
 		if (alreadyRequested.current) return;
@@ -155,10 +173,10 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 		else {
 			const inflatedData = inflate(fetchedData) as TDataResponse;
 
-			setFollowers(inflatedData.followers);
-			setFollowing(inflatedData.following);
-			setNotMutuals(inflatedData.notMutuals);
-			setUnfollowers(inflatedData.unfollowers);
+			setDeflatedFollowers(deflate(inflatedData.followers));
+			setDeflatedFollowing(deflate(inflatedData.following));
+			setDeflatedNotMutuals(deflate(inflatedData.notMutuals));
+			setDeflatedUnfollowers(deflate(inflatedData.unfollowers));
 			setError(null);
 		}
 
@@ -213,8 +231,9 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 	);
 
 	const handleWhitelistAction = React.useCallback(
-		async (idOrIDs: TUser['id'] | Array<TUser['id']>, action: 'add' | 'remove' | 'clear') => {
-			setWhitelist((prevWhitelist) => {
+		async (idOrIDs: TUser['id'] | Array<TUser['id']>, action: 'add' | 'remove' | 'clear') =>
+			setDeflatedWhitelist((prev) => {
+				const prevWhitelist = inflate(prev) as Array<TUser['id']>;
 				const ids = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
 
 				const actionMap: Record<typeof action, () => Array<TUser['id']>> = {
@@ -223,15 +242,10 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 					clear: () => INITIAL_DATA.whitelist
 				};
 
-				if (!actionMap[action]) return prevWhitelist;
-
 				const updatedWhitelist = actionMap[action]();
-
-				return updatedWhitelist;
-			});
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
+				return deflate(updatedWhitelist);
+			}),
+		[setDeflatedWhitelist]
 	);
 
 	const addToWhitelist = React.useCallback(

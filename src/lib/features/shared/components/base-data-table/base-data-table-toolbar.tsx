@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useDebounce } from '@uidotdev/usehooks';
+import { useDebounce } from 'react-haiku';
 
 import { Button } from '$lib/components/ui/button';
 import { useDataTable } from '$lib/features/shared/components/base-data-table/base-data-table-context';
