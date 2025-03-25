@@ -135,13 +135,20 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 			const pruneUsersFromList = (list: Array<TUser>) =>
 				list.filter((user) => !usernameSet.has(user.login));
 
-			setDeflatedFollowers(deflate(pruneUsersFromList(data.followers)));
-			setDeflatedFollowing(deflate(pruneUsersFromList(data.following)));
-			setDeflatedNotMutuals(deflate(pruneUsersFromList(data.notMutuals)));
-			setDeflatedUnfollowers(deflate(pruneUsersFromList(data.unfollowers)));
+			const filteredData = {
+				followers: pruneUsersFromList(data.followers),
+				following: pruneUsersFromList(data.following),
+				notMutuals: pruneUsersFromList(data.notMutuals),
+				unfollowers: pruneUsersFromList(data.unfollowers)
+			};
+
+			setDeflatedFollowers(deflate(filteredData.followers));
+			setDeflatedFollowing(deflate(filteredData.following));
+			setDeflatedNotMutuals(deflate(filteredData.notMutuals));
+			setDeflatedUnfollowers(deflate(filteredData.unfollowers));
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[data]
+		[data.followers, data.following, data.notMutuals, data.unfollowers]
 	);
 
 	const fetchData = React.useCallback(async () => {
@@ -214,8 +221,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 			const [fetchError] = await catchError(fetcher);
 			if (!fetchError) pruneData(usernames);
 		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[session]
+		[session, pruneData]
 	);
 
 	const follow = React.useCallback(
