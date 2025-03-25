@@ -48,10 +48,10 @@ export const siteMetadata: TSiteMetadata = {
 		url: 'https://github-unfollow-checker.vercel.app',
 		images: [
 			{
-				url: 'https://github-unfollow-checker.vercel.app/assets/images/logo.png',
-				width: 283,
-				height: 283,
-				alt: 'GitHub Unfollow Checker Banner Image'
+				url: 'https://github-unfollow-checker.vercel.app/assets/images/banner.webp',
+				width: 1280,
+				height: 640,
+				alt: 'GitHub Unfollow Checker'
 			}
 		]
 	},
