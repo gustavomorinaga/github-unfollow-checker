@@ -225,14 +225,23 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 	const handleWhitelistAction = React.useCallback(
 		async (idOrIDs: TUser['id'] | Array<TUser['id']>, action: 'add' | 'remove' | 'clear') =>
-			setDeflatedWhitelist((prev) => {
+			setDeflatedWhitelist((prev: string) => {
 				const prevWhitelist = inflate(prev) as Array<TUser['id']>;
 				const ids = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
 
+				const addToWhitelist = (prevWhitelist: Array<TUser['id']>, ids: Array<TUser['id']>) => [
+					...new Set([...prevWhitelist, ...ids])
+				];
+
+				const removeFromWhitelist = (prevWhitelist: Array<TUser['id']>, ids: Array<TUser['id']>) =>
+					prevWhitelist.filter((item) => !ids.includes(item));
+
+				const clearWhitelist = () => INITIAL_DATA.whitelist;
+
 				const actionMap: Record<typeof action, () => Array<TUser['id']>> = {
-					add: () => [...new Set([...prevWhitelist, ...ids])],
-					remove: () => prevWhitelist.filter((item) => !ids.includes(item)),
-					clear: () => INITIAL_DATA.whitelist
+					add: () => addToWhitelist(prevWhitelist, ids),
+					remove: () => removeFromWhitelist(prevWhitelist, ids),
+					clear: () => clearWhitelist()
 				};
 
 				const updatedWhitelist = actionMap[action]();
