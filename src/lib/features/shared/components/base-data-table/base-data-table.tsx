@@ -9,6 +9,7 @@ import {
 	getFacetedUniqueValues,
 	getFilteredRowModel,
 	getPaginationRowModel,
+	getSortedRowModel,
 	useReactTable,
 	type ColumnDef,
 	type RowSelectionState
@@ -55,13 +56,15 @@ function DataTable<TData, TValue>({
 		data,
 		columns,
 		initialState: { pagination: { pageIndex: 0, pageSize: preferences.pageSize } },
-		state: { rowSelection },
+		state: { rowSelection, sorting: [{ id: 'login', desc: false }] },
+		autoResetPageIndex: false,
 		enableRowSelection: true,
 		getCoreRowModel: getCoreRowModel(),
 		getFacetedRowModel: getFacetedRowModel(),
 		getFacetedUniqueValues: getFacetedUniqueValues(),
 		getFilteredRowModel: getFilteredRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
+		getSortedRowModel: getSortedRowModel(),
 		onRowSelectionChange: setRowSelection
 	});
 

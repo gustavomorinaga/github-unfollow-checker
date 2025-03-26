@@ -1,6 +1,19 @@
 'use client';
 
-import { WhitelistDataTable as DataTable } from '$lib/features/whitelist/components/whitelist-table';
+import dynamic from 'next/dynamic';
+
+import { BaseDataTableSkeleton } from '$lib/features/shared/components/base-data-table/base-data-table-skeleton';
+
+const DataTable = dynamic(
+	() =>
+		import('$lib/features/whitelist/components/whitelist-table').then(
+			(module) => module.WhitelistDataTable
+		),
+	{
+		ssr: false,
+		loading: () => <BaseDataTableSkeleton />
+	}
+);
 
 /**
  * The view component for the Whitelist feature.

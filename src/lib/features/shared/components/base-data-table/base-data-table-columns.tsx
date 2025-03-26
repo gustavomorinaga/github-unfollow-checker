@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
 
 import { Avatar, AvatarFallback, AvatarImage } from '$lib/components/ui/avatar';
 import { Badge } from '$lib/components/ui/badge';
@@ -9,7 +9,7 @@ import { Checkbox } from '$lib/components/ui/checkbox';
 import { ManageUserDropdownMenu } from '$lib/features/shared/components/manage-user-dropdown-menu';
 import type { TUser } from '$lib/types';
 
-import { UserRoundCheck, UserRoundX } from 'lucide-react';
+import { MoreHorizontal, UserRoundCheck, UserRoundX } from 'lucide-react';
 
 /**
  * Defines the base columns map for the User Table.
@@ -80,8 +80,7 @@ const baseColumnsMap = {
 		enableColumnFilter: true,
 		header: () => <span className='sr-only'>Type</span>,
 		cell: ({ row }) => {
-			const { type } = row.original;
-
+			const type = row.getValue<TUser['type']>('type');
 			return (
 				<div className='flex w-16 justify-end'>
 					<Badge variant='secondary' className='border-muted-foreground/50 border select-none'>
@@ -89,6 +88,10 @@ const baseColumnsMap = {
 					</Badge>
 				</div>
 			);
+		},
+		filterFn: (row: Row<TUser>, key: keyof TUser, searchValue: Array<TUser['type']>) => {
+			const value = row.getValue<TUser['type']>(key);
+			return searchValue.includes(value);
 		}
 	},
 	followed: {
@@ -122,7 +125,18 @@ const baseColumnsMap = {
 		header: () => <span>Actions</span>,
 		cell: ({ row: { original: user } }) => (
 			<div className='flex w-full items-center justify-end'>
-				<ManageUserDropdownMenu user={user} />
+				<ManageUserDropdownMenu user={user}>
+					<Button
+						size='icon'
+						variant='ghost'
+						aria-label='Open menu'
+						title='Open menu'
+						className='rounded-sm'
+					>
+						<MoreHorizontal />
+						<span className='sr-only select-none'>Open menu</span>
+					</Button>
+				</ManageUserDropdownMenu>
 			</div>
 		)
 	}

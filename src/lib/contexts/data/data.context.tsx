@@ -4,12 +4,16 @@ import React from 'react';
 
 import { useSession } from 'next-auth/react';
 
+import { deflate, inflate } from '@rescale/slim';
+
+import { useLocalStorage } from 'react-haiku';
+
 import type { TDataResponse } from '$lib/server/repositories/data';
 import type { TUser } from '$lib/types';
 import { catchError } from '$lib/utils/errors';
 import { sleep } from '$lib/utils/sleep';
 
-type TData = TDataResponse & { whitelist: Array<TUser> };
+type TData = TDataResponse & { whitelist: Array<TUser['id']> };
 
 const INITIAL_DATA: TData = {
 	followers: [],
@@ -18,17 +22,11 @@ const INITIAL_DATA: TData = {
 	unfollowers: [],
 	whitelist: []
 };
-const INITIAL_WHITELIST: Array<TUser['id']> = [];
-const FOLLOWERS_KEY = 'followers';
-const FOLLOWING_KEY = 'following';
-const NOT_MUTUALS_KEY = 'notMutuals';
-const UNFOLLOWERS_KEY = 'unfollowers';
-const WHITELIST_KEY = 'whitelist';
-const SLEEP_DURATION = 1_000;
+const SLEEP_DURATION = 700;
 
 type TDataContext = {
 	/**
-	 * The data response from the server.
+	 * The data available in the context.
 	 */
 	data: TData;
 	/**
@@ -39,10 +37,6 @@ type TDataContext = {
 	 * A boolean indicating whether the fetch operation is in progress.
 	 */
 	pending: boolean;
-	/**
-	 * An array of user IDs that are whitelisted.
-	 */
-	whitelistIDs: Array<TUser['id']>;
 	/**
 	 * A function to manually trigger a refresh of the data response.
 	 */
@@ -82,72 +76,114 @@ const DataContext = React.createContext<TDataContext | undefined>(undefined);
  * - If the user is not authenticated, it sets an error state.
  */
 export function DataProvider({ children }: React.PropsWithChildren) {
-	const isLocalStorageAvailable = typeof localStorage !== 'undefined';
-
 	const { data: session } = useSession({ required: true });
 
-	const alreadyRequested = React.useRef(false);
+	const CACHE_KEYS = {
+		FOLLOWERS: `${session?.user.login}:followers`,
+		FOLLOWING: `${session?.user.login}:following`,
+		NOT_MUTUALS: `${session?.user.login}:not-mutuals`,
+		UNFOLLOWERS: `${session?.user.login}:unfollowers`,
+		WHITELIST: `${session?.user.login}:whitelist`
+	} as const;
 
-	const [data, setData] = React.useState<TDataResponse>(INITIAL_DATA);
+	const [deflatedFollowers, setDeflatedFollowers] = useLocalStorage(
+		CACHE_KEYS.FOLLOWERS,
+		deflate(INITIAL_DATA.followers)
+	);
+	const [deflatedFollowing, setDeflatedFollowing] = useLocalStorage(
+		CACHE_KEYS.FOLLOWING,
+		deflate(INITIAL_DATA.following)
+	);
+	const [deflatedNotMutuals, setDeflatedNotMutuals] = useLocalStorage(
+		CACHE_KEYS.NOT_MUTUALS,
+		deflate(INITIAL_DATA.notMutuals)
+	);
+	const [deflatedUnfollowers, setDeflatedUnfollowers] = useLocalStorage(
+		CACHE_KEYS.UNFOLLOWERS,
+		deflate(INITIAL_DATA.unfollowers)
+	);
+	const [deflatedWhitelist, setDeflatedWhitelist] = useLocalStorage(
+		CACHE_KEYS.WHITELIST,
+		deflate(INITIAL_DATA.whitelist)
+	);
+
+	const alreadyRequested = React.useRef(false);
 	const [error, setError] = React.useState<Error | null>(null);
 	const [pending, setPending] = React.useState<boolean>(true);
-	const [whitelistIDs, setWhitelistIDs] = React.useState<Array<TUser['id']>>(() => {
-		if (!isLocalStorageAvailable) return INITIAL_WHITELIST;
 
-		const whitelist = localStorage.getItem(WHITELIST_KEY);
-		if (!whitelist) {
-			localStorage.setItem(WHITELIST_KEY, JSON.stringify(INITIAL_WHITELIST));
-			return INITIAL_WHITELIST;
-		}
+	const data = React.useMemo<TData>(
+		() => ({
+			followers: inflate(deflatedFollowers) as TData['followers'],
+			following: inflate(deflatedFollowing) as TData['following'],
+			notMutuals: inflate(deflatedNotMutuals) as TData['notMutuals'],
+			unfollowers: inflate(deflatedUnfollowers) as TData['unfollowers'],
+			whitelist: inflate(deflatedWhitelist) as TData['whitelist']
+		}),
+		[
+			deflatedFollowers,
+			deflatedFollowing,
+			deflatedNotMutuals,
+			deflatedUnfollowers,
+			deflatedWhitelist
+		]
+	);
 
-		return JSON.parse(whitelist);
-	});
+	const fetchData = React.useCallback(
+		async ({ silent = true } = {}) => {
+			if (alreadyRequested.current) return;
+			if (!session) return;
 
-	const fetchData = React.useCallback(async () => {
-		if (alreadyRequested.current) return;
-		if (!session) return;
+			if (silent) setPending(true);
 
-		setPending(true);
+			const isAccessTokenMissing = !session.accessToken;
+			const isUserNotAuthenticated = !session.user;
+			if (isAccessTokenMissing && isUserNotAuthenticated) {
+				setError(new Error('User not authenticated'));
+				if (silent) sleep(SLEEP_DURATION).then(() => setPending(false));
+				return;
+			}
 
-		const isAccessTokenMissing = !session.accessToken;
-		const isUserNotAuthenticated = !session.user;
-		if (isAccessTokenMissing && isUserNotAuthenticated) {
-			setError(new Error('User not authenticated'));
-			sleep(SLEEP_DURATION).then(() => setPending(false));
-			return;
-		}
+			// * Prevent multiple requests
+			alreadyRequested.current = true;
 
-		// * Prevent multiple requests
-		alreadyRequested.current = true;
+			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
 
-		const apiURL = new URL(`/api/${session.user.login}`, location.origin);
+			const fetcher = fetch(apiURL, {
+				headers: { Authorization: `Bearer ${session.accessToken}` }
+			}).then<string>((res) => res.json());
 
-		const fetcher = fetch(apiURL, {
-			headers: { Authorization: `Bearer ${session.accessToken}` }
-		}).then<TDataResponse>((res) => res.json());
+			const [fetchError, fetchedData] = await catchError(fetcher);
 
-		const [fetchError, fetchedData] = await catchError(fetcher);
+			if (fetchError) setError(fetchError);
+			else {
+				const inflatedData = inflate(fetchedData) as TDataResponse;
 
-		if (fetchError) setError(fetchError);
-		else {
-			if (fetchedData.followers)
-				localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(fetchedData.followers));
-			if (fetchedData.following)
-				localStorage.setItem(FOLLOWING_KEY, JSON.stringify(fetchedData.following));
-			if (fetchedData.notMutuals)
-				localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(fetchedData.notMutuals));
-			if (fetchedData.unfollowers)
-				localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(fetchedData.unfollowers));
+				setDeflatedFollowers(deflate(inflatedData.followers));
+				setDeflatedFollowing(deflate(inflatedData.following));
+				setDeflatedNotMutuals(deflate(inflatedData.notMutuals));
+				setDeflatedUnfollowers(deflate(inflatedData.unfollowers));
+				setError(null);
+			}
 
-			setData(fetchedData);
-			setError(null);
-		}
+			if (silent) sleep(SLEEP_DURATION).then(() => setPending(false));
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[session]
+	);
 
-		sleep(SLEEP_DURATION).then(() => setPending(false));
-	}, [session]);
+	const refresh = React.useCallback(
+		async (options?: Partial<{ silent: boolean }>) => {
+			alreadyRequested.current = false;
+			return fetchData(options);
+		},
+		[fetchData]
+	);
 
-	const follow = React.useCallback(
-		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
+	const handleFollowAction = React.useCallback(
+		async (
+			usernameOrUsernames: TUser['login'] | Array<TUser['login']>,
+			action: 'follow' | 'unfollow'
+		) => {
 			const isAccessTokenMissing = !session?.accessToken;
 			const isUserNotAuthenticated = !session?.user;
 			if (isAccessTokenMissing && isUserNotAuthenticated) {
@@ -161,7 +197,7 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
 			const fetcher = fetch(apiURL, {
-				method: 'PUT',
+				method: action === 'follow' ? 'PUT' : 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${session.accessToken}`
@@ -170,150 +206,79 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 			}).then<TDataResponse>((res) => res.json());
 
 			const [fetchError] = await catchError(fetcher);
-			if (!fetchError) {
-				for (const username of usernames) {
-					setData(({ followers, following, notMutuals, unfollowers }) => {
-						return {
-							followers: followers.filter((user) => user.login !== username),
-							following: following.filter((user) => user.login !== username),
-							notMutuals: notMutuals.filter((user) => user.login !== username),
-							unfollowers: unfollowers.filter((user) => user.login !== username)
-						};
-					});
-				}
-			}
+			if (!fetchError) refresh({ silent: false });
 		},
-		[session?.accessToken, session?.user]
+		[session, refresh]
+	);
+
+	const follow = React.useCallback(
+		(usernameOrUsernames: TUser['login'] | Array<TUser['login']>) =>
+			handleFollowAction(usernameOrUsernames, 'follow'),
+		[handleFollowAction]
 	);
 
 	const unfollow = React.useCallback(
-		async (usernameOrUsernames: TUser['login'] | Array<TUser['login']>) => {
-			const isAccessTokenMissing = !session?.accessToken;
-			const isUserNotAuthenticated = !session?.user;
-			if (isAccessTokenMissing && isUserNotAuthenticated) {
-				setError(new Error('User not authenticated'));
-				return;
-			}
-
-			const usernames = Array.isArray(usernameOrUsernames)
-				? usernameOrUsernames
-				: [usernameOrUsernames];
-
-			const apiURL = new URL(`/api/${session.user.login}`, location.origin);
-			const fetcher = fetch(apiURL, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${session.accessToken}`
-				},
-				body: JSON.stringify({ usernames })
-			}).then<TDataResponse>((res) => res.json());
-
-			const [fetchError] = await catchError(fetcher);
-			if (!fetchError) {
-				for (const username of usernames) {
-					setData(({ followers, following, notMutuals, unfollowers }) => {
-						return {
-							followers: followers.filter((user) => user.login !== username),
-							following: following.filter((user) => user.login !== username),
-							notMutuals: notMutuals.filter((user) => user.login !== username),
-							unfollowers: unfollowers.filter((user) => user.login !== username)
-						};
-					});
-				}
-			}
-		},
-		[session?.accessToken, session?.user]
+		(usernameOrUsernames: TUser['login'] | Array<TUser['login']>) =>
+			handleFollowAction(usernameOrUsernames, 'unfollow'),
+		[handleFollowAction]
 	);
 
-	const addToWhitelist = React.useCallback(async (idOrIDs: TUser['id'] | Array<TUser['id']>) => {
-		setWhitelistIDs((prevWhitelist) => {
-			const usersToAdd = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
-			const newWhitelist = [...new Set([...prevWhitelist, ...usersToAdd])];
-			localStorage.setItem(WHITELIST_KEY, JSON.stringify(newWhitelist));
-			return newWhitelist;
-		});
-	}, []);
+	const handleWhitelistAction = React.useCallback(
+		async (idOrIDs: TUser['id'] | Array<TUser['id']>, action: 'add' | 'remove' | 'clear') =>
+			setDeflatedWhitelist((prev: string) => {
+				const prevWhitelist = inflate(prev) as Array<TUser['id']>;
+				const ids = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
+
+				const addToWhitelist = (prevWhitelist: Array<TUser['id']>, ids: Array<TUser['id']>) => [
+					...new Set([...prevWhitelist, ...ids])
+				];
+
+				const removeFromWhitelist = (prevWhitelist: Array<TUser['id']>, ids: Array<TUser['id']>) =>
+					prevWhitelist.filter((item) => !ids.includes(item));
+
+				const clearWhitelist = () => INITIAL_DATA.whitelist;
+
+				const actionMap: Record<typeof action, () => Array<TUser['id']>> = {
+					add: () => addToWhitelist(prevWhitelist, ids),
+					remove: () => removeFromWhitelist(prevWhitelist, ids),
+					clear: () => clearWhitelist()
+				};
+
+				const updatedWhitelist = actionMap[action]();
+				return deflate(updatedWhitelist);
+			}),
+		[setDeflatedWhitelist]
+	);
+
+	const addToWhitelist = React.useCallback(
+		(idOrIDs: TUser['id'] | Array<TUser['id']>) => handleWhitelistAction(idOrIDs, 'add'),
+		[handleWhitelistAction]
+	);
 
 	const removeFromWhitelist = React.useCallback(
-		async (idOrIDs: TUser['id'] | Array<TUser['id']>) => {
-			setWhitelistIDs((prevWhitelist) => {
-				const idsToRemove = Array.isArray(idOrIDs) ? idOrIDs : [idOrIDs];
-				const newWhitelist = prevWhitelist.filter((item) => !idsToRemove.includes(item));
-				localStorage.setItem(WHITELIST_KEY, JSON.stringify(newWhitelist));
-				return newWhitelist;
-			});
-		},
-		[]
+		(idOrIDs: TUser['id'] | Array<TUser['id']>) => handleWhitelistAction(idOrIDs, 'remove'),
+		[handleWhitelistAction]
 	);
 
-	const clearWhitelist = React.useCallback(async () => {
-		setWhitelistIDs([]);
-		localStorage.removeItem(WHITELIST_KEY);
-	}, []);
+	const clearWhitelist = React.useCallback(
+		() => handleWhitelistAction([], 'clear'),
+		[handleWhitelistAction]
+	);
 
 	React.useEffect(() => {
 		fetchData();
 	}, [fetchData]);
 
-	React.useEffect(() => {
-		function handleStorageEvent(event: StorageEvent) {
-			if (!event.key) return;
-
-			const parsedEventValue = JSON.parse(event.newValue || '[]');
-
-			const eventMap = {
-				[FOLLOWERS_KEY]: () => {
-					setData((prevData) => ({ ...prevData, followers: parsedEventValue }));
-					localStorage.setItem(FOLLOWERS_KEY, JSON.stringify(parsedEventValue));
-				},
-				[FOLLOWING_KEY]: () => {
-					setData((prevData) => ({ ...prevData, following: parsedEventValue }));
-					localStorage.setItem(FOLLOWING_KEY, JSON.stringify(parsedEventValue));
-				},
-				[NOT_MUTUALS_KEY]: () => {
-					setData((prevData) => ({ ...prevData, notMutuals: parsedEventValue }));
-					localStorage.setItem(NOT_MUTUALS_KEY, JSON.stringify(parsedEventValue));
-				},
-				[UNFOLLOWERS_KEY]: () => {
-					setData((prevData) => ({ ...prevData, unfollowers: parsedEventValue }));
-					localStorage.setItem(UNFOLLOWERS_KEY, JSON.stringify(parsedEventValue));
-				},
-				[WHITELIST_KEY]: () => {
-					setWhitelistIDs(parsedEventValue);
-					localStorage.setItem(WHITELIST_KEY, JSON.stringify(parsedEventValue));
-				}
-			};
-
-			return eventMap?.[event.key]?.();
-		}
-
-		window.addEventListener('storage', handleStorageEvent);
-
-		return () => {
-			window.removeEventListener('storage', handleStorageEvent);
-		};
-	}, []);
-
-	const whitelist = React.useMemo(() => {
-		if (!data.following.length) return [];
-		return data.following.filter((user) => whitelistIDs.includes(user.id));
-	}, [data.following, whitelistIDs]);
-
 	const value: TDataContext = {
-		data: { ...data, whitelist },
+		data,
 		error,
 		pending,
-		whitelistIDs,
-		refresh: async () => {
-			alreadyRequested.current = false;
-			return fetchData();
-		},
 		follow,
 		unfollow,
 		addToWhitelist,
 		removeFromWhitelist,
-		clearWhitelist
+		clearWhitelist,
+		refresh
 	};
 
 	return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

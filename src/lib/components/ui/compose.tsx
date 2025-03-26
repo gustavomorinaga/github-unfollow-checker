@@ -1,3 +1,5 @@
+'use client';
+
 export function Compose({
 	children,
 	components

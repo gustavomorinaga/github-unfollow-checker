@@ -1,6 +1,6 @@
 import { GitHub } from '$lib/components/icons/github';
 import { Button } from '$lib/components/ui/button';
-import { repoMetadata } from '$lib/configs/site';
+import { repoMetadata } from '$lib/configs/repo';
 
 type TGitHubRepoButtonProps = React.ComponentProps<typeof Button>;
 

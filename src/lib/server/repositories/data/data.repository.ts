@@ -1,6 +1,9 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
+import { deflate } from '@rescale/slim';
+
 import { GITHUB_API_URL } from '$lib/server/constants/github';
+import { guard } from '$lib/server/middlewares/guard';
 import type { TUser } from '$lib/types';
 
 /**
@@ -21,7 +24,7 @@ export type TDataResponse = {
  *
  * @returns A promise that resolves to an array of TUser objects containing all the fetched data.
  */
-async function fetchAllPages(url: URL, headers: RequestInit) {
+async function fetchAllPages(url: URL, fetchOptions: RequestInit) {
 	let results: Array<TUser> = [];
 	let page = 1;
 	let hasMore = true;
@@ -30,7 +33,7 @@ async function fetchAllPages(url: URL, headers: RequestInit) {
 		url.searchParams.set('page', page.toString());
 		url.searchParams.set('per_page', ITEMS_PER_PAGE.toString());
 
-		const data = await fetch(url, headers).then<Array<TUser>>((res) => res.json());
+		const data = await fetch(url, fetchOptions).then<Array<TUser>>((res) => res.json());
 
 		results = results.concat(data);
 		hasMore = data.length === ITEMS_PER_PAGE;
@@ -47,45 +50,31 @@ type TDataHandler = {
 	GET: (
 		request: NextRequest,
 		{ params }: { params: Promise<{ username: string }> }
-	) => Promise<NextResponse>;
+	) => Promise<NextResponse<string | { error: string }>>;
 	/**
 	 * Follows users.
 	 */
-	PUT: (request: NextRequest) => Promise<NextResponse>;
+	PUT: (request: NextRequest) => Promise<NextResponse<{ success: boolean } | { error: string }>>;
 	/**
 	 * Unfollows users.
 	 */
-	DELETE: (request: NextRequest) => Promise<NextResponse>;
+	DELETE: (request: NextRequest) => Promise<NextResponse<{ success: boolean } | { error: string }>>;
 };
 
 /**
  * Handles the data requests.
  */
 export const dataHandler: TDataHandler = {
-	GET: async (request, { params }) => {
-		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
-		if (!accessToken) {
-			return NextResponse.json(
-				{ error: 'Unauthorized' },
-				{ status: 401, headers: { 'Content-Type': 'application/json' } }
-			);
-		}
+	GET: guard(async (_, fetchOptions, { params }) => {
+		fetchOptions.method = 'GET';
 
 		const { username } = await params;
-
 		const followersURL = new URL(`${GITHUB_API_URL}/users/${username}/followers`);
 		const followingURL = new URL(`${GITHUB_API_URL}/users/${username}/following`);
 
-		const sharedRequestHeaders: RequestInit = {
-			headers: {
-				Authorization: `token ${accessToken}`,
-				accept: 'application/vnd.github+json'
-			}
-		};
-
 		const [fetchedFollowers, fetchedFollowing] = await Promise.all([
-			fetchAllPages(followersURL, sharedRequestHeaders),
-			fetchAllPages(followingURL, sharedRequestHeaders)
+			fetchAllPages(followersURL, fetchOptions),
+			fetchAllPages(followingURL, fetchOptions)
 		]);
 
 		const followersSet = new Set(fetchedFollowers.map((follower) => follower.login));
@@ -108,66 +97,37 @@ export const dataHandler: TDataHandler = {
 			.filter((following) => unfollowersSet.has(following.login))
 			.map((following) => ({ ...following, followedBy: true }));
 
-		const response: TDataResponse = { followers, following, notMutuals, unfollowers };
+		const data: TDataResponse = { followers, following, notMutuals, unfollowers };
+		const response = deflate(data);
 
 		return NextResponse.json(response);
-	},
-	PUT: async (request) => {
-		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
-		if (!accessToken) {
-			return NextResponse.json(
-				{ error: 'Unauthorized' },
-				{ status: 401, headers: { 'Content-Type': 'application/json' } }
-			);
-		}
+	}),
+	PUT: guard(async (request, fetchOptions) => {
+		fetchOptions.method = 'PUT';
 
-		const { usernames: usernamesToFollow }: { usernames: Array<TUser['login']> } =
-			await request.json();
+		const { usernames }: { usernames: Array<TUser['login']> } = await request.json();
 
-		const sharedRequestHeaders: RequestInit = {
-			method: 'PUT',
-			headers: {
-				Authorization: `token ${accessToken}`,
-				accept: 'application/vnd.github+json'
-			}
-		};
-
-		const followPromises = usernamesToFollow.map((username) => {
+		const followPromises = usernames.map((username) => {
 			const url = new URL(`${GITHUB_API_URL}/user/following/${username}`);
-			return fetch(url, sharedRequestHeaders);
+			return fetch(url, fetchOptions);
 		});
 
 		await Promise.all(followPromises);
 
 		return NextResponse.json({ success: true });
-	},
-	DELETE: async (request) => {
-		const accessToken = request.headers.get('authorization')?.replace('Bearer ', '');
-		if (!accessToken) {
-			return NextResponse.json(
-				{ error: 'Unauthorized' },
-				{ status: 401, headers: { 'Content-Type': 'application/json' } }
-			);
-		}
+	}),
+	DELETE: guard(async (request, fetchOptions) => {
+		fetchOptions.method = 'DELETE';
 
-		const { usernames: usernamesToUnfollow }: { usernames: Array<TUser['login']> } =
-			await request.json();
+		const { usernames }: { usernames: Array<TUser['login']> } = await request.json();
 
-		const sharedRequestHeaders: RequestInit = {
-			method: 'DELETE',
-			headers: {
-				Authorization: `token ${accessToken}`,
-				accept: 'application/vnd.github+json'
-			}
-		};
-
-		const unfollowPromises = usernamesToUnfollow.map((username) => {
+		const unfollowPromises = usernames.map((username) => {
 			const url = new URL(`${GITHUB_API_URL}/user/following/${username}`);
-			return fetch(url, sharedRequestHeaders);
+			return fetch(url, fetchOptions);
 		});
 
 		await Promise.all(unfollowPromises);
 
 		return NextResponse.json({ success: true });
-	}
+	})
 };

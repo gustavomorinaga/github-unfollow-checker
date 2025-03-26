@@ -1,4 +1,6 @@
-import { SessionProvider } from 'next-auth/react';
+'use client';
+
+import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react';
 
 import { Compose } from '$lib/components/ui/compose';
 import { DataProvider } from '$lib/contexts/data';
@@ -6,6 +8,15 @@ import { PreferencesProvider } from '$lib/contexts/preferences';
 import { ErrorBoundary } from '$lib/features/shared/components/error-boundary';
 
 import { NavBar } from './navbar';
+
+/**
+ * The `SessionProvider` component provides the session context for the application, with custom configuration.
+ *
+ * @returns The rendered `SessionProvider` component.
+ */
+function SessionProvider({ children }: React.PropsWithChildren) {
+	return <NextAuthSessionProvider refetchOnWindowFocus={false}>{children}</NextAuthSessionProvider>;
+}
 
 /**
  * The `DashboardLayout` component provides the dashboard layout structure for the application.
