@@ -1,10 +1,13 @@
 'use client';
 
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
+import type { DropdownMenuCheckboxItemProps } from '@radix-ui/react-dropdown-menu';
 
 import { cn } from '$lib/utils/ui';
 
 import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
+
+type Checked = DropdownMenuCheckboxItemProps['checked'];
 
 function DropdownMenu(props: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
 	return <DropdownMenuPrimitive.Root data-slot='dropdown-menu' {...props} />;
@@ -220,5 +223,6 @@ export {
 	DropdownMenuSub,
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
-	DropdownMenuTrigger
+	DropdownMenuTrigger,
+	type Checked
 };

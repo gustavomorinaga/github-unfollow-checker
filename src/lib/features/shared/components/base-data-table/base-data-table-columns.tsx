@@ -1,6 +1,6 @@
 'use client';
 
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
 
 import { Avatar, AvatarFallback, AvatarImage } from '$lib/components/ui/avatar';
 import { Badge } from '$lib/components/ui/badge';
@@ -80,8 +80,7 @@ const baseColumnsMap = {
 		enableColumnFilter: true,
 		header: () => <span className='sr-only'>Type</span>,
 		cell: ({ row }) => {
-			const { type } = row.original;
-
+			const type = row.getValue<TUser['type']>('type');
 			return (
 				<div className='flex w-16 justify-end'>
 					<Badge variant='secondary' className='border-muted-foreground/50 border select-none'>
@@ -89,6 +88,10 @@ const baseColumnsMap = {
 					</Badge>
 				</div>
 			);
+		},
+		filterFn: (row: Row<TUser>, key: keyof TUser, searchValue: Array<TUser['type']>) => {
+			const value = row.getValue<TUser['type']>(key);
+			return searchValue.includes(value);
 		}
 	},
 	followed: {

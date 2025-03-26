@@ -11,7 +11,10 @@ type TBaseDataTableSkeletonProps = React.ComponentProps<'div'>;
 export function BaseDataTableSkeleton({ className, ...props }: TBaseDataTableSkeletonProps) {
 	return (
 		<div className={cn('flex flex-col gap-4 px-4 py-4 md:px-0', className)} {...props}>
-			<Skeleton className='ml-auto h-9 w-full md:max-w-sm' />
+			<div className='flex gap-2'>
+				<Skeleton className='ml-auto h-9 w-full md:max-w-sm' />
+				<Skeleton className='size-9' />
+			</div>
 			<Skeleton className='h-36' />
 		</div>
 	);
