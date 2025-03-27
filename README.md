@@ -70,7 +70,6 @@ To find those users who use such a scheme, this tool will help you with that!
 | [@types/react](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react)             | Types        | TypeScript definitions for React.                                                    |
 | [@typescript-eslint/eslint-plugin](https://typescript-eslint.io/)                                      | Plugin       | TypeScript plugin for ESLint.                                                        |
 | [@typescript-eslint/parser](https://typescript-eslint.io/)                                             | Plugin       | TypeScript parser for ESLint.                                                        |
-| [@uidotdev/usehooks](https://usehooks.com/)                                                            | Library      | A collection of modern, server-safe React hooks – from the ui.dev team               |
 | [class-variance-authority](https://github.com/joe-bell/cva)                                            | Utility      | Utility for managing class variance in CSS.                                          |
 | [clsx](https://github.com/lukeed/clsx)                                                                 | Utility      | A tiny utility for constructing `className` strings conditionally.                   |
 | [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version)                   | Tool         | A tool for versioning and tagging releases.                                          |
@@ -92,6 +91,7 @@ To find those users who use such a scheme, this tool will help you with that!
 | [prettier](https://prettier.io/)                                                                       | Tool         | An opinionated code formatter.                                                       |
 | [pretty-quick](https://github.com/azz/pretty-quick)                                                    | Tool         | Runs Prettier on your changed files.                                                 |
 | [react-dom](https://reactjs.org/docs/react-dom.html)                                                   | Library      | Serves as the entry point to the DOM and server renderers for React.                 |
+| [react-haiku](https://www.reacthaiku.dev/)                                                             | Library      | A clean & lightweight collection of React Hooks & Utilities.                         |
 | [react](https://reactjs.org/)                                                                          | Library      | A JavaScript library for building user interfaces.                                   |
 | [sonner](https://sonner.emilkowal.ski/)                                                                | Library      | An opinionated toast component for React.                                            |
 | [tailwind-merge](https://github.com/dcastil/tailwind-merge)                                            | Utility      | Utility for merging Tailwind CSS classes.                                            |

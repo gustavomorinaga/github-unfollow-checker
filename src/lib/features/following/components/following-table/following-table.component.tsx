@@ -17,7 +17,7 @@ type TFollowingDataTableProps = React.ComponentProps<'div'>;
  *
  * @returns The rendered `FollowingDataTable` component.
  */
-function FollowingDataTable({ className, ...props }: TFollowingDataTableProps) {
+export function FollowingDataTable({ className, ...props }: TFollowingDataTableProps) {
 	const { data, pending } = useData();
 
 	const memoizedFeedback = React.useMemo(() => {
@@ -43,7 +43,3 @@ function FollowingDataTable({ className, ...props }: TFollowingDataTableProps) {
 		</div>
 	);
 }
-
-const MemoizedFollowersDataTable = React.memo(FollowingDataTable);
-
-export { MemoizedFollowersDataTable as FollowingDataTable };

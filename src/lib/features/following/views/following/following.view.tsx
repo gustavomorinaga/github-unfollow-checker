@@ -1,6 +1,19 @@
 'use client';
 
-import { FollowingDataTable as DataTable } from '$lib/features/following/components/following-table';
+import dynamic from 'next/dynamic';
+
+import { BaseDataTableSkeleton } from '$lib/features/shared/components/base-data-table/base-data-table-skeleton';
+
+const DataTable = dynamic(
+	() =>
+		import('$lib/features/following/components/following-table').then(
+			(module) => module.FollowingDataTable
+		),
+	{
+		ssr: false,
+		loading: () => <BaseDataTableSkeleton />
+	}
+);
 
 /**
  * The view component for the Following feature.

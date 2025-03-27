@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.1.1](https://github.com/gustavomorinaga/github-unfollow-checker/compare/v3.1.0...v3.1.1) (2025-03-27)
+
+### Bug Fixes
+
+- suggestions from github copilot ([9c1264a](https://github.com/gustavomorinaga/github-unfollow-checker/commit/9c1264a6e7590f5b96f1dfd9fad8e8485547dd47))
+
+## [3.1.0](https://github.com/gustavomorinaga/github-unfollow-checker/compare/v3.0.0...v3.1.0) (2025-03-27)
+
+### Documentation
+
+- update README to include react-haiku library in the resources list ([2896231](https://github.com/gustavomorinaga/github-unfollow-checker/commit/2896231ebbb95fab31d054be9210bd5a74d6057a))
+
+### Features
+
+- add background color to wrapper component for improved UI consistency ([e80a07b](https://github.com/gustavomorinaga/github-unfollow-checker/commit/e80a07b787230d3f3cc9f21cd49f1ddaeb3cc623))
+- add filters dropdown menu component for data table filtering ([c0837fd](https://github.com/gustavomorinaga/github-unfollow-checker/commit/c0837fd165a2b68337916ac4e0e4765d409a0033))
+- add guard middleware for access token validation in data requests ([5efc17f](https://github.com/gustavomorinaga/github-unfollow-checker/commit/5efc17f70a9e14041000c583c24b1ac088f037a7))
+- add legal views and metadata generation for terms and privacy policy pages ([ab5aec1](https://github.com/gustavomorinaga/github-unfollow-checker/commit/ab5aec1296b1ce95027fb30c58c245369475c381))
+- add skeleton loading components for data tables and refactor existing table components ([2d26887](https://github.com/gustavomorinaga/github-unfollow-checker/commit/2d268875d802fe4cab38bd646358f726f741bc8a))
+- add sorting functionality to data table component ([e752c94](https://github.com/gustavomorinaga/github-unfollow-checker/commit/e752c94c7b5561ab80375082a338c801ab68504b))
+- enhance user authentication components with session management and improve accessibility ([0ee34c3](https://github.com/gustavomorinaga/github-unfollow-checker/commit/0ee34c3a93e64951fffb26df51878ed4d63d558d))
+- enhance user dropdown menu with customizable trigger and icon integration ([d80109c](https://github.com/gustavomorinaga/github-unfollow-checker/commit/d80109c8b9c55d175340688daf214ac6c2befc81))
+- implement account dropdown menu and account details components for user authentication ([81e6d03](https://github.com/gustavomorinaga/github-unfollow-checker/commit/81e6d03a954e098ffac7c32f555752da7b26f842))
+- integrate @rescale/slim for data inflation and deflation ([63647c3](https://github.com/gustavomorinaga/github-unfollow-checker/commit/63647c3b2f44cf7420af6b5dcdc2ae084063e2dc))
+- replace banner image with a new webp format and update logo SVG; remove unused assets ([556ae2b](https://github.com/gustavomorinaga/github-unfollow-checker/commit/556ae2bdb30d92ca8ed6b663ce30bbc216c2ade9))
+
+### Bug Fixes
+
+- account dropdown menu items issue and update deps ([9235cd9](https://github.com/gustavomorinaga/github-unfollow-checker/commit/9235cd930fc72a8cfbf53291ac91b3b02613f481))
+- dropdown item destructive variant color inconsistency in light mode ([95b8d63](https://github.com/gustavomorinaga/github-unfollow-checker/commit/95b8d63bfbc969b89e779770e5769c4c0e10aa77))
+- pass session data to ContinueSessionForm ([85b401d](https://github.com/gustavomorinaga/github-unfollow-checker/commit/85b401d2d37cbbbe4c9631eb213d2e6de72cbabf))
+- sonarqube errors ([dd0eb9c](https://github.com/gustavomorinaga/github-unfollow-checker/commit/dd0eb9cc17e2cb249beffcb648da73af6099a093))
+- update release badge text to reflect new version 3.1 ([23e82e8](https://github.com/gustavomorinaga/github-unfollow-checker/commit/23e82e86e99d12c7cb9a04137b8c921b131900aa))
+
+### Improvements
+
+- consolidate localStorage keys into a single CACHE_KEYS object ([a9b546b](https://github.com/gustavomorinaga/github-unfollow-checker/commit/a9b546b7eebb33648c4b37d62873d51e504a6d16))
+- migrate login page to auth group route ([2fe8c95](https://github.com/gustavomorinaga/github-unfollow-checker/commit/2fe8c95df952a71b0cc231c76f27416efa8484a4))
+- optimize data pruning logic and update dependencies in useEffect hooks ([87677c6](https://github.com/gustavomorinaga/github-unfollow-checker/commit/87677c675bd0b25f39b6ae886b8352e9bd5478f2))
+- remove local storage hook and integrate react-haiku for state management ([c0fd9b8](https://github.com/gustavomorinaga/github-unfollow-checker/commit/c0fd9b8fdd203517c122cb56bc0b6cc6af4e6fa8))
+- rename shouldUpdatePending to silent for clarity in data fetching logic ([92f6cd8](https://github.com/gustavomorinaga/github-unfollow-checker/commit/92f6cd8fa20566aa938a1ef367e4eb6d575c00dc))
+- simplify data fetching logic and introduce optional pending state update ([cb2bf11](https://github.com/gustavomorinaga/github-unfollow-checker/commit/cb2bf1110c9342be3574283e277a19ad963d0f01))
+- streamline whitelist management with a unified handler function ([d56f8ea](https://github.com/gustavomorinaga/github-unfollow-checker/commit/d56f8eab12e3cc5a2ad23944f09460df05ffa329))
+- unify follow and unfollow logic into a single function ([76ee5c1](https://github.com/gustavomorinaga/github-unfollow-checker/commit/76ee5c19f2e450081bc1a3d5f97a781a34ed560f))
+- use @uidotdev/usehooks to handle local storage ([2e62aef](https://github.com/gustavomorinaga/github-unfollow-checker/commit/2e62aef8d276008081c695a64b8b29d3c6cc1a02))
+
 ## 3.0.0 (2025-03-22)
 
 ### Documentation

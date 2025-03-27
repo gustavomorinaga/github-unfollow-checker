@@ -32,7 +32,7 @@ export async function LoginView() {
 			/>
 
 			<div className='z-10 flex w-full max-w-sm flex-col gap-6'>
-				{session ? <ContinueSessionForm /> : <LoginForm />}
+				{session ? <ContinueSessionForm session={session} /> : <LoginForm />}
 			</div>
 		</div>
 	);

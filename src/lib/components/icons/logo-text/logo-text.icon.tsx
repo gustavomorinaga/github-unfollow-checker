@@ -11,7 +11,7 @@ type TLogoTextProps = React.ComponentProps<'div'>;
  */
 export function LogoText({ className, ...props }: TLogoTextProps) {
 	return (
-		<div className={cn('flex items-center gap-2 font-medium', className)} {...props}>
+		<div className={cn('flex items-center gap-2 text-base font-medium', className)} {...props}>
 			<Logo className='size-6' />
 			<span className='text-primary select-none'>{siteMetadata.applicationName}</span>
 		</div>

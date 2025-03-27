@@ -16,7 +16,7 @@ type TAppLayoutProps = React.PropsWithChildren;
 export function AppLayout({ children }: TAppLayoutProps) {
 	return (
 		<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-			<Wrapper>
+			<Wrapper vaul-drawer-wrapper=''>
 				<Header />
 				<Content>{children}</Content>
 				<Footer />

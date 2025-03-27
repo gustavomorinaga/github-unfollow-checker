@@ -1,6 +1,19 @@
 'use client';
 
-import { NotMutualsDataTable as DataTable } from '$lib/features/not-mutuals/components/not-mutuals-table';
+import dynamic from 'next/dynamic';
+
+import { BaseDataTableSkeleton } from '$lib/features/shared/components/base-data-table/base-data-table-skeleton';
+
+const DataTable = dynamic(
+	() =>
+		import('$lib/features/not-mutuals/components/not-mutuals-table').then(
+			(module) => module.NotMutualsDataTable
+		),
+	{
+		ssr: false,
+		loading: () => <BaseDataTableSkeleton />
+	}
+);
 
 /**
  * The view component for the Not Mutuals feature.
