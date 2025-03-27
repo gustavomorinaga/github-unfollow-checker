@@ -3,6 +3,6 @@ import { TermsView } from '$lib/features/legal/views/terms';
 
 export const metadata = generateSiteMetadata({ title: 'Terms of Use' });
 
-export default function PrivacyPolicyPage() {
+export default function TermsPage() {
 	return <TermsView />;
 }
