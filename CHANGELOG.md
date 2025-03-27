@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.1.1](https://github.com/gustavomorinaga/github-unfollow-checker/compare/v3.1.0...v3.1.1) (2025-03-27)
+
+### Bug Fixes
+
+- suggestions from github copilot ([9c1264a](https://github.com/gustavomorinaga/github-unfollow-checker/commit/9c1264a6e7590f5b96f1dfd9fad8e8485547dd47))
+
 ## [3.1.0](https://github.com/gustavomorinaga/github-unfollow-checker/compare/v3.0.0...v3.1.0) (2025-03-27)
 
 ### Documentation
