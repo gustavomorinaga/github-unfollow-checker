@@ -1,6 +1,12 @@
+'use client';
+
+import React from 'react';
+
 import Link from 'next/link';
 
-import { auth, handleSignOut } from '$lib/auth';
+import type { Session } from 'next-auth';
+import { signOut } from 'next-auth/react';
+
 import { Button } from '$lib/components/ui/button';
 import {
 	Drawer,
@@ -12,60 +18,97 @@ import {
 } from '$lib/components/ui/drawer';
 import { AccountDetails } from '$lib/features/auth/components/account-details';
 
-import { Boxes, House, LogOut, Menu } from 'lucide-react';
+import { ArrowUpRight, Boxes, House, LogOut } from 'lucide-react';
 
-export async function DrawerMenu() {
-	const session = await auth();
+type TDrawerMeuProps = React.ComponentProps<typeof Drawer> & {
+	session: Session | null;
+	contentProps?: React.ComponentProps<typeof DrawerContent>;
+	closeOnSelectOption?: boolean;
+};
+
+/**
+ * The `DrawerMenu` component renders a drawer menu with the specified content and props.
+ *
+ * @returns The rendered drawer menu component.
+ */
+export function DrawerMenu({
+	children,
+	session,
+	contentProps,
+	closeOnSelectOption = true,
+	...props
+}: TDrawerMeuProps) {
+	const [open, setOpen] = React.useState<TDrawerMeuProps['open']>(false);
+
+	function handleClose() {
+		if (closeOnSelectOption) setOpen(false);
+	}
 
 	return (
-		<Drawer>
-			<DrawerTrigger asChild>
-				<Button size='icon' variant='ghost' aria-label='Menu'>
-					<Menu />
-				</Button>
-			</DrawerTrigger>
-			<DrawerContent>
-				<div className='sr-only mx-auto w-full max-w-sm'>
-					<DrawerHeader className='text-left'>
+		<Drawer {...props} open={open} onOpenChange={setOpen}>
+			<DrawerTrigger asChild>{children}</DrawerTrigger>
+			<DrawerContent {...contentProps}>
+				<div className='mx-auto w-full max-w-sm'>
+					<DrawerHeader className='sr-only text-left'>
 						<DrawerTitle>Menu</DrawerTitle>
 						<DrawerDescription>Options to navigate through the application.</DrawerDescription>
 					</DrawerHeader>
-				</div>
-				<div className='flex flex-col gap-2 p-4'>
-					{session && (
-						<>
-							<div className='flex items-center justify-between rounded-md border p-2'>
-								<div className='flex'>
-									<AccountDetails />
-								</div>
-								<div className='flex'>
-									<Button
-										size='icon'
-										variant='outline'
-										aria-label='Sign Out'
-										onClick={handleSignOut}
-									>
-										<LogOut />
-										<span className='sr-only select-none'>Sign Out</span>
-									</Button>
-								</div>
-							</div>
 
-							<Button variant='outline' aria-label='Dashboard' asChild className='w-full'>
-								<Link href='/'>
-									<Boxes />
-									<span className='select-none'>Dashboard</span>
+					<div className='flex flex-col gap-2 p-4'>
+						{session ? (
+							<>
+								<div className='flex items-center justify-between rounded-md border p-2'>
+									<div className='flex'>
+										<AccountDetails session={session} />
+									</div>
+									<div className='flex'>
+										<Button
+											size='icon'
+											variant='outline'
+											aria-label='Sign Out'
+											onClick={() => signOut({ redirectTo: '/home' })}
+										>
+											<LogOut />
+											<span className='sr-only select-none'>Sign Out</span>
+										</Button>
+									</div>
+								</div>
+
+								<Button
+									variant='outline'
+									aria-label='Dashboard'
+									onClick={handleClose}
+									asChild
+									className='w-full'
+								>
+									<Link href='/'>
+										<Boxes />
+										<span className='select-none'>Dashboard</span>
+									</Link>
+								</Button>
+							</>
+						) : (
+							<Button size='sm' aria-label='Get Started' onClick={handleClose} asChild>
+								<Link href='/login'>
+									<ArrowUpRight />
+									<span className='select-none'>Get Started</span>
 								</Link>
 							</Button>
-						</>
-					)}
+						)}
 
-					<Button variant='outline' aria-label='Home Page' asChild className='w-full'>
-						<Link href='/home'>
-							<House />
-							<span className='select-none'>Home Page</span>
-						</Link>
-					</Button>
+						<Button
+							variant='outline'
+							aria-label='Home Page'
+							onClick={handleClose}
+							asChild
+							className='w-full'
+						>
+							<Link href='/home'>
+								<House />
+								<span className='select-none'>Home Page</span>
+							</Link>
+						</Button>
+					</div>
 				</div>
 			</DrawerContent>
 		</Drawer>

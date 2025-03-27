@@ -1,21 +1,29 @@
-import { auth } from '$lib/auth';
+import type { Session } from 'next-auth';
+
 import { Avatar } from '$lib/features/auth/components/avatar';
 
-export async function AccountDetails() {
-	const session = await auth();
+type TAccountDetailsProps = React.ComponentProps<'a'> & { session: Session };
 
-	if (!session) return null;
-
+/**
+ * The `AccountDetails` component renders the user's account details.
+ *
+ * @returns The rendered account details component.
+ */
+export function AccountDetails({ session, ...props }: TAccountDetailsProps) {
 	return (
 		<a
 			href={`https://github.com/${session.user.login}`}
 			target='_blank'
 			rel='noopener noreferrer'
 			className='group contents'
+			{...props}
 		>
 			<div className='flex gap-2'>
 				<div className='flex'>
-					<Avatar className='group-hover:ring-primary size-10 transition-[color,box-shadow] group-hover:ring-2' />
+					<Avatar
+						session={session}
+						className='group-hover:ring-primary size-10 transition-[color,box-shadow] group-hover:ring-2'
+					/>
 				</div>
 
 				<div className='flex flex-col'>

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
-import { auth, handleSignOut } from '$lib/auth';
-import { Button } from '$lib/components/ui/button';
+import type { Session } from 'next-auth';
+
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -11,46 +11,33 @@ import {
 	DropdownMenuTrigger
 } from '$lib/components/ui/dropdown-menu';
 import { AccountDetails } from '$lib/features/auth/components/account-details';
-import { Avatar } from '$lib/features/auth/components/avatar';
 
 import { Boxes, House, LogOut } from 'lucide-react';
 
+type TAccountDropdownMenuProps = React.ComponentProps<typeof DropdownMenu> & {
+	session: Session;
+	contentProps?: React.ComponentProps<typeof DropdownMenuContent>;
+	onSignOut?: () => void;
+};
+
 /**
- * The `Account` component handles user authentication and displays the user's account information.
+ * The `AccountDropdownMenu` component renders a dropdown menu with account details and actions.
  *
- * If the user is not authenticated, it renders a login button.
- * If the user is authenticated, it renders a dropdown menu with the user's avatar and account details.
- *
- * @returns The rendered component.
+ * @returns The rendered dropdown menu component.
  */
-export async function AccountDropdownMenu() {
-	const session = await auth();
-
-	if (!session)
-		return (
-			<Button size='sm' aria-label='Get Started' asChild className='hidden md:inline-flex'>
-				<Link href='/login'>
-					<span className='select-none'>Get Started</span>
-				</Link>
-			</Button>
-		);
-
+export function AccountDropdownMenu({
+	children,
+	session,
+	contentProps,
+	onSignOut,
+	...props
+}: TAccountDropdownMenuProps) {
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button
-					size='icon'
-					variant='ghost'
-					aria-label='Account'
-					className='data-[state="open"]:ring-primary overflow-hidden rounded-full ring ring-transparent'
-				>
-					<Avatar />
-					<span className='sr-only select-none'>Account</span>
-				</Button>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent align='end' className='w-64'>
+		<DropdownMenu {...props}>
+			<DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+			<DropdownMenuContent align='end' className='w-64' {...contentProps}>
 				<DropdownMenuLabel className='font-normal'>
-					<AccountDetails />
+					<AccountDetails session={session} />
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem asChild>
@@ -66,7 +53,7 @@ export async function AccountDropdownMenu() {
 						<span className='select-none'>Home Page</span>
 					</Link>
 				</DropdownMenuItem>
-				<DropdownMenuItem aria-label='Sign Out' onClick={handleSignOut}>
+				<DropdownMenuItem aria-label='Sign Out' onClick={onSignOut}>
 					<LogOut />
 					<span className='select-none'>Sign Out</span>
 				</DropdownMenuItem>

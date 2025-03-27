@@ -10,7 +10,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '$lib/components/ui/dropdown-menu';
-import { TUser } from '$lib/types';
+import type { TUser } from '$lib/types';
 
 export type TFilters = { type: Array<TUser['type']> };
 

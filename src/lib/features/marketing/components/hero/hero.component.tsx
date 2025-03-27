@@ -6,6 +6,11 @@ import { ReleaseBadge } from '$lib/features/marketing/components/release-badge';
 
 import { ArrowUpRight } from 'lucide-react';
 
+/**
+ * The `Hero` component renders the marketing hero section.
+ *
+ * @returns The rendered hero section component.
+ */
 export function Hero() {
 	return (
 		<div className='relative flex min-h-screen items-center justify-center overflow-hidden px-6'>

@@ -3,6 +3,11 @@ import { cn } from '$lib/utils/ui';
 
 import { Sparkles } from 'lucide-react';
 
+/**
+ * The `ReleaseBadge` component renders a badge for new stable releases.
+ *
+ * @returns The rendered release badge component.
+ */
 export function ReleaseBadge() {
 	return (
 		<div className='group relative flex w-fit items-center justify-center rounded-full px-4 py-1.5 shadow-[inset_0_-8px_10px_#8fdfff1f] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_#8fdfff3f]'>
