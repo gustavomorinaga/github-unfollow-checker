@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
-import { auth } from '$lib/auth';
+import type { Session } from 'next-auth';
+
 import { ShimmerButton } from '$lib/components/magicui/shimmer-button';
 import {
 	Card,
@@ -14,18 +15,20 @@ import { Avatar } from '$lib/features/auth/components/avatar';
 import { LegalAgreement } from '$lib/features/auth/components/legal-agreement';
 import { cn } from '$lib/utils/ui';
 
-type TContinueSessionFormProps = React.ComponentPropsWithoutRef<'div'>;
+type TContinueSessionFormProps = React.ComponentPropsWithoutRef<'div'> & {
+	session: Session;
+};
 
 /**
  * The `ContinueSessionForm` component renders a form to continue the session if a valid session exists.
  *
  * @returns The rendered component or null if no session exists.
  */
-export async function ContinueSessionForm({ className, ...props }: TContinueSessionFormProps) {
-	const session = await auth();
-
-	if (!session) return null;
-
+export async function ContinueSessionForm({
+	session,
+	className,
+	...props
+}: TContinueSessionFormProps) {
 	return (
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
 			<Card>
@@ -43,7 +46,7 @@ export async function ContinueSessionForm({ className, ...props }: TContinueSess
 						className='w-full'
 					>
 						<Link href='/'>
-							<Avatar className='mr-3 size-6 shrink-0 ring ring-white' />
+							<Avatar session={session} className='mr-3 size-6 shrink-0 ring ring-white' />
 							<span className='truncate select-none'>
 								Continue as <strong>{`@${session.user.login}`}</strong>
 							</span>
