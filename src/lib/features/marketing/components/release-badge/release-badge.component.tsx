@@ -30,7 +30,7 @@ export function ReleaseBadge() {
 				colorTo='var(--primary)'
 				className='text-sm font-medium'
 			>
-				New Stable 3.0 Release
+				New Stable 3.1 Release
 			</AnimatedGradientText>
 		</div>
 	);
