@@ -39,7 +39,16 @@ export function PreferencesProvider({ children }: React.PropsWithChildren) {
 	const [preferences, setPreferences] = React.useState<TData>(() => {
 		const isLocalStorageAvailable = typeof localStorage !== 'undefined';
 		const data = isLocalStorageAvailable ? localStorage.getItem(CACHE_KEY) : null;
-		if (data) return JSON.parse(data);
+
+		if (data) {
+			try {
+				return JSON.parse(data);
+			} catch (error) {
+				console.warn('Failed to parse preferences from localStorage:', error);
+				// Clear corrupted data
+				if (isLocalStorageAvailable) localStorage.removeItem(CACHE_KEY);
+			}
+		}
 
 		if (isLocalStorageAvailable) localStorage.setItem(CACHE_KEY, JSON.stringify(INITIAL_DATA));
 
@@ -62,10 +71,21 @@ export function PreferencesProvider({ children }: React.PropsWithChildren) {
 				return;
 			}
 
-			const parsedData = JSON.parse(serializedData);
-			const isValidPageSize = pageSizeOptions.includes(parsedData.pageSize);
+			try {
+				const parsedData = JSON.parse(serializedData);
+				const isValidPageSize = pageSizeOptions.includes(parsedData.pageSize);
 
-			if (isValidPageSize) setPreferences(parsedData);
+				if (isValidPageSize) setPreferences(parsedData);
+				else {
+					console.warn('Invalid page size in cached preferences, resetting to default');
+					setPreferences(INITIAL_DATA);
+					localStorage.setItem(CACHE_KEY, JSON.stringify(INITIAL_DATA));
+				}
+			} catch (error) {
+				console.warn('Failed to parse cached preferences:', error);
+				setPreferences(INITIAL_DATA);
+				localStorage.setItem(CACHE_KEY, JSON.stringify(INITIAL_DATA));
+			}
 		}
 
 		function handleStorageEvent(event: StorageEvent) {

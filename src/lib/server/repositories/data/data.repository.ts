@@ -33,7 +33,13 @@ async function fetchAllPages(url: URL, fetchOptions: RequestInit) {
 		url.searchParams.set('page', page.toString());
 		url.searchParams.set('per_page', ITEMS_PER_PAGE.toString());
 
-		const data = await fetch(url, fetchOptions).then<Array<TUser>>((res) => res.json());
+		const response = await fetch(url, fetchOptions);
+
+		if (!response.ok) {
+			throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+		}
+
+		const data: Array<TUser> = await response.json();
 
 		results = results.concat(data);
 		hasMore = data.length === ITEMS_PER_PAGE;

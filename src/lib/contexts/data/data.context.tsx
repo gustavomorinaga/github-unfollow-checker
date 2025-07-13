@@ -150,7 +150,15 @@ export function DataProvider({ children }: React.PropsWithChildren) {
 
 			const fetcher = fetch(apiURL, {
 				headers: { Authorization: `Bearer ${session.accessToken}` }
-			}).then<string>((res) => res.json());
+			}).then<string>(async (res) => {
+				if (!res.ok) {
+					throw new Error(`API request failed: ${res.status} ${res.statusText}`);
+				}
+
+				const data: string = await res.json();
+
+				return data;
+			});
 
 			const [fetchError, fetchedData] = await catchError(fetcher);
 

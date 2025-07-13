@@ -32,7 +32,8 @@ export const guard =
 		const fetchOptions: RequestInit = {
 			headers: {
 				Authorization: `token ${accessToken}`,
-				accept: 'application/vnd.github+json'
+				accept: 'application/vnd.github+json',
+				'Content-Type': 'application/json'
 			}
 		};
 
